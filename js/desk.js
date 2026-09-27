@@ -78,9 +78,9 @@
     // File list
     list.innerHTML = files.length ? files.map(function (x, i) {
       var canPreview = IMAGE.test(x.ext) || x.ext === "SVG";
-      return '<div class="row">' + DS.fmt(x.ext) + '<span class="fn">' + esc(x.name) + '</span><span class="label">' + human(x.size) + "</span>" +
-        (kind === "icon" ? "<span></span>" : (canPreview ? '<button data-act="role" data-i="' + i + '" title="Toggle preview image">' + (x.role === "preview" ? '<span class="role">Preview ✓</span>' : "Use as preview") + "</button>" : '<span class="role">Design file</span>')) +
-        '<button data-act="remove" data-i="' + i + '">Remove</button></div>';
+      return '<div class="row">' + DS.fmt(x.ext) + '<span class="fn">' + esc(x.name) + '</span><span class="label size">' + human(x.size) + "</span>" +
+        '<span class="role-slot">' + (kind === "icon" ? "" : (canPreview ? '<button data-act="role" data-i="' + i + '" aria-pressed="' + (x.role === "preview") + '">' + (x.role === "preview" ? '<span class="role">Preview image ✓</span>' : "Use as preview") + "</button>" : '<span class="role">Design file</span>')) + "</span>" +
+        '<button class="rm" data-act="remove" data-i="' + i + '" aria-label="Remove ' + esc(x.name) + '">Remove</button></div>';
     }).join("") : "";
 
     // Warnings

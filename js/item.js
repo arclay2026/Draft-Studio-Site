@@ -30,23 +30,23 @@
   var sizes = it.files.filter(function (f) { return f.size; }).map(function (f) { return String(f.format).toUpperCase() + " " + f.size; });
 
   root.innerHTML =
-    '<nav class="crumbs label" aria-label="Breadcrumb"><span><a href="index.html">Archive</a><span class="sep">/</span><a href="' + it.page + '">' + esc(it.typeLabel) + 's</a><span class="sep">/</span><a href="' + it.page + "?cat=" + encodeURIComponent(it.category) + '">' + esc(it.category) + '</a><span class="sep">/</span><span class="label-ink">' + it.no + "</span></span>" +
-    "<span>" + (prev ? '<a href="' + prev.url + '">← ' + prev.no + "</a>" : "") + (prev && next ? '<span class="sep">·</span>' : "") + (next ? '<a href="' + next.url + '">' + next.no + " →</a>" : "") + "</span></nav>" +
+    '<nav class="crumbs label" aria-label="Breadcrumb"><ol><li><a href="index.html">Archive</a></li><li><a href="' + it.page + '">' + esc(it.typeLabel) + 's</a></li><li><a href="' + it.page + "?cat=" + encodeURIComponent(it.category) + '">' + esc(it.category) + '</a></li><li><span class="label-ink" aria-current="page">' + it.no + "</span></li></ol>" +
+    '<span class="nav">' + (prev ? '<a href="' + prev.url + '" aria-label="Previous record">← ' + prev.no + "</a>" : "") + (next ? '<a href="' + next.url + '" aria-label="Next record">' + next.no + " →</a>" : "") + "</span></nav>" +
 
     '<section class="record">' +
       '<div class="lighttable" id="lt">' +
         (it.preview ? '<img class="plate-hero-vt" src="' + esc(it.preview) + '" alt="' + esc(it.title) + '">' : '<p class="label">No preview available</p>') +
-        '<span class="crops" aria-hidden="true"></span><span class="reg t" aria-hidden="true"></span><span class="reg b" aria-hidden="true"></span>' +
-        '<span class="lt-note label">' + (it.preview ? "Click artwork to zoom" : "") + "</span>" +
+        '<span class="deco" aria-hidden="true"><span class="crops"></span><span class="reg t"></span><span class="reg b"></span></span>' +
+        (it.preview ? '<button class="btn btn-sm zoom-btn" id="zoom-btn" aria-pressed="false">Zoom in</button>' : "") +
       "</div>" +
       '<aside class="spec">' +
         '<div class="label">' + it.no + " — " + esc(it.typeLabel) + "</div>" +
         "<h1>" + esc(it.title) + "</h1>" +
         (it.description ? '<p class="lede">' + esc(it.description) + "</p>" : "") +
         '<div><div class="label" style="margin-bottom:8px">Download — free</div>' + DS.downloads(it) + "</div>" +
-        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-          '<button class="btn btn-sm" data-save="' + esc(it.id) + '" aria-pressed="false" id="save-btn">' + DS.icon.save.replace("<svg", '<svg width="15" height="15"') + ' <span>Save</span></button>' +
-          '<button class="btn btn-sm" id="share-btn">' + DS.icon.link.replace("<svg", '<svg width="15" height="15"') + " Copy link</button>" +
+        '<div class="btn-row">' +
+          '<button class="btn btn-sm" data-save="' + esc(it.id) + '" aria-pressed="false" id="save-btn">' + DS.icon.save + ' <span>Save</span></button>' +
+          '<button class="btn btn-sm" id="share-btn">' + DS.icon.link + " Copy link</button>" +
           '<button class="btn btn-sm" data-quick="' + esc(it.id) + '">Quick look</button>' +
         "</div>" +
         '<dl class="spec-table">' +
@@ -69,18 +69,23 @@
       (next ? '<a href="' + next.url + '"><span class="label">Next · ' + next.no + ' →</span><span class="t">' + esc(next.title) + "</span></a>" : "<span></span>") +
     "</nav>" +
 
-    (related.length ? '<section class="sect"><div class="folio"><span class="label label-ink">§ Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
-      '<div class="sect-head" style="margin-top:20px"><h2 class="h2">Also filed <em class="s">nearby</em></h2></div>' +
-      '<div class="shelf-wrap"><div class="shelf">' + related.map(function (r) { return DS.plate(r, { showType: true }); }).join("") + "</div></div></section>" : "");
+    (related.length ? '<section class="section"><div class="folio"><span class="label label-ink">§ Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
+      '<div class="sect-head"><h2 class="h2">Also filed <em class="s">nearby</em></h2></div>' +
+      '<div class="shelf" tabindex="0" aria-label="Related designs">' + related.map(function (r) { return DS.plate(r, { showType: true, fixed: true }); }).join("") + "</div></section>" : "");
 
   function row(k, v, raw) { return "<div><dt>" + k + "</dt><dd>" + (raw ? v : esc(v)) + "</dd></div>"; }
 
-  // Zoom on the light table
-  var lt = $("#lt"), img = $("#lt img");
-  if (img) lt.addEventListener("click", function () {
-    lt.classList.toggle("is-zoom");
-    $(".lt-note", lt).textContent = lt.classList.contains("is-zoom") ? "Click to fit · scroll to pan" : "Click artwork to zoom";
-  });
+  DS.markNav(it.type === "logo" ? "logos" : "templates");
+
+  // Zoom on the light table (hover/desktop only; touch devices pinch-zoom)
+  var lt = $("#lt"), img = $("#lt img"), zb = $("#zoom-btn");
+  function toggleZoom() {
+    if (!window.matchMedia("(hover: hover) and (min-width: 1024px)").matches) return;
+    var on = lt.classList.toggle("is-zoom");
+    if (zb) { zb.textContent = on ? "Fit to screen" : "Zoom in"; zb.setAttribute("aria-pressed", on); }
+  }
+  if (img) img.addEventListener("click", toggleZoom);
+  if (zb) zb.addEventListener("click", function (e) { e.stopPropagation(); toggleZoom(); });
 
   $("#share-btn").addEventListener("click", function () { DS.copy(location.href, "Link copied"); });
   var sb = $("#save-btn");

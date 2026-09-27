@@ -33,7 +33,7 @@
     probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font:inherit";
     probe.textContent = sel.options[sel.selectedIndex].text;
     sel.parentNode.appendChild(probe);
-    sel.style.width = (probe.getBoundingClientRect().width + 24) + "px";
+    sel.style.setProperty("--w", (probe.getBoundingClientRect().width + 26) + "px");
     probe.remove();
   }
 
@@ -45,23 +45,23 @@
     if (state.sort === "az") list.sort(function (a, b) { return a.title.localeCompare(b.title); });
 
     if (!list.length) {
-      out.innerHTML = '<div class="empty"><p class="label">No records</p><p class="h2" style="margin-top:12px">' +
+      out.innerHTML = '<div class="empty"><p class="label">No records</p><p class="h2">' +
         (all.length ? 'Nothing filed under that. <em class="s">Try another word.</em>' : 'New work is <em class="s">on the way.</em>') + "</p></div>";
     } else if (state.view === "plates") {
       out.innerHTML = '<div class="masonry">' + list.map(function (it, n) { return DS.plate(it, { i: n }); }).join("") + "</div>";
     } else {
       out.innerHTML = '<div class="index-table" role="table">' +
-        '<div class="index-row head label" role="row"><span class="no">No.</span><span></span><span>Title</span><span class="cat">Category</span><span class="fm">Formats</span><span class="date">Filed</span><span></span></div>' +
+        '<div class="index-row head label" role="row"><span class="no">No.</span><span></span><span>Title</span><span class="cat">Category</span><span class="fm">Formats</span><span class="date">Filed</span><span>Actions</span></div>' +
         list.map(function (it, n) {
           var f = it.files[0];
           return '<div class="index-row" role="row" style="--i:' + n + '" data-preview="' + esc(it.preview) + '">' +
             '<span class="no label label-ink">' + it.no + "</span>" +
             '<a class="thumb" href="' + it.url + '" data-plate-link tabindex="-1">' + (it.preview ? '<img src="' + esc(it.preview) + '" alt="" loading="lazy">' : "") + "</a>" +
-            '<a class="t" href="' + it.url + '" data-plate-link>' + esc(it.title) + "</a>" +
+            '<span><a class="t" href="' + it.url + '" data-plate-link>' + esc(it.title) + '</a><span class="sub label">' + it.no + " · " + esc(it.category) + "</span></span>" +
             '<span class="cat muted">' + esc(it.category) + "</span>" +
             '<span class="fm">' + DS.fmts(it.formats) + "</span>" +
             '<span class="date label">' + DS.fmtDate(it.date) + "</span>" +
-            '<span class="acts"><button class="save" data-save="' + esc(it.id) + '" aria-pressed="false">' + DS.icon.save + "</button>" +
+            '<span class="acts"><button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + DS.icon.save + "</button>" +
             (f ? '<a class="dl-sq" href="' + esc(f.path) + '" download data-dl aria-label="Download ' + esc(String(f.format).toUpperCase()) + '">' + DS.icon.down + "</a>" : "") + "</span></div>";
         }).join("") + "</div>";
     }

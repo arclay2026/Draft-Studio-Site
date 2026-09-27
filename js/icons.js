@@ -109,5 +109,5 @@
   render();
   var fromHash = all.filter(function (i) { return i.id === initialHash; })[0];
   if (fromHash) select(fromHash, true);
-  else if (all[0]) select(all[0], false);
+  else if (all[0] && window.matchMedia("(min-width: 1024px)").matches) select(all[0], false);
 })();

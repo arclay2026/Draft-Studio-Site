@@ -25,11 +25,28 @@ design's record, and `icons.html#id` selects the icon.
 
 ## Design system
 
-- Colours: ink `#111111`, paper `#f4f3ef`, blue `#2457ff` (used only as a signal).
-  Dark mode swaps ink and paper. Tokens are at the top of `css/archive.css`.
-- Type: Manrope (brand), Instrument Serif italic (contrast), JetBrains Mono (metadata).
-- Artwork sits on "plates" framed by printer's crop marks. Sharp edges, hairline rules.
-- Motion is subtle and respects the visitor's "reduce motion" setting.
+The rule: **break the grid for art, never for function.** Artwork (the moving
+wall, the light table, the seal) may bleed, rotate and layer; text, search,
+navigation and controls always sit on the grid.
+
+All tokens live at the top of `css/archive.css`:
+
+- **Colour:** ink `#111111`, paper `#f4f3ef`, blue `#2457ff` as the only signal colour.
+  Dark mode swaps ink and paper and uses a lighter blue for text so it stays readable.
+- **Type:** Manrope (brand), Instrument Serif italic (contrast), JetBrains Mono (metadata).
+  A fluid scale (`--fs-label` … `--fs-mega`) grows smoothly from phone to desktop; big headlines
+  scale to their container, so they never run off the screen. Nothing is smaller than 12px.
+- **Spacing:** a 4px scale (`--s1` … `--s9`) plus `--section` for the gap between sections.
+- **Grid and container:** 4 columns on phones, 8 on tablets, 12 on desktop; content is centred in a
+  1600px container with a fluid side margin.
+- **Breakpoints:** mobile below 768px, tablet 768px, desktop 1024px, large 1440px (mobile first).
+- **Navigation:** a labelled tab bar at the bottom of the screen on phones (Templates, Logos, Icons,
+  Search, Saved), which becomes the floating dock on tablet and desktop, where it also opens the Index.
+  Upload ("File a design") and the theme switch sit top right on every page.
+- **Touch:** every control is at least 44×44px. On touch screens a design's Save, Preview and
+  Download buttons sit under the artwork; with a mouse on desktop they appear over it on hover.
+- **Accessibility:** skip link, landmarks, labelled controls, visible focus, keyboard support
+  (`/` opens search, Esc closes), and "reduce motion" stops all movement.
 
 ## Adding content (all you ever edit is `js/catalog.js`)
 

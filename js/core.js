@@ -136,11 +136,13 @@
     $all("[data-save]").forEach(function (b) {
       var on = DS.saved.has(b.getAttribute("data-save"));
       b.setAttribute("aria-pressed", on);
-      b.setAttribute("aria-label", on ? "Remove from saved" : "Save");
+      var t = (DS.byId(b.getAttribute("data-save")) || {}).title || "design";
+      b.setAttribute("aria-label", on ? "Remove " + t + " from saved" : "Save " + t);
       b.title = on ? "Saved" : "Save";
     });
     $all(".saved-n").forEach(function (n) {
       n.textContent = pad(saved.length, 2);
+      if (saved.length) n.removeAttribute("data-zero"); else n.setAttribute("data-zero", "");
       if (bump) { n.classList.remove("bump"); void n.offsetWidth; n.classList.add("bump"); }
     });
     if ($("#ov-saved.is-open")) renderSaved();
@@ -175,15 +177,15 @@
   DS.plate = function (it, opt) {
     opt = opt || {};
     var first = it.files[0];
-    return '<article class="plate" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + (opt.reveal ? " data-reveal" : "") + ">" +
-      '<a class="plate-media" href="' + it.url + '" data-cursor="View" data-plate-link>' +
+    return '<article class="plate' + (opt.fixed ? " is-fixed" : "") + '" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + (opt.reveal ? " data-reveal" : "") + ">" +
+      '<a class="plate-media" href="' + it.url + '" data-cursor="View" data-plate-link tabindex="-1" aria-hidden="true">' +
         (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + esc(it.title) + '" loading="lazy" decoding="async">' : '<span class="label">No preview</span>') +
         '<span class="crops" aria-hidden="true"></span>' +
       "</a>" +
-      '<button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save">' + I.save + "</button>" +
+      '<button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + I.save + "</button>" +
       '<div class="plate-tools">' +
-        '<button class="tool" data-quick="' + esc(it.id) + '">' + I.eye + "<span>Quick look</span></button>" +
-        (first ? '<a class="tool dl" href="' + esc(first.path) + '" download data-dl>' + I.down + "<span>" + esc(String(first.format).toUpperCase()) + "</span></a>" : "") +
+        '<button class="tool" data-quick="' + esc(it.id) + '" aria-label="Quick look: ' + esc(it.title) + '">' + I.eye + "<span>Preview</span></button>" +
+        (first ? '<a class="tool dl" href="' + esc(first.path) + '" download data-dl aria-label="Download ' + esc(it.title) + " as " + esc(String(first.format).toUpperCase()) + '">' + I.down + "<span>" + esc(String(first.format).toUpperCase()) + "</span></a>" : "") +
       "</div>" +
       '<div class="plate-meta">' +
         '<span class="plate-no">' + it.no + "</span>" +
@@ -205,7 +207,7 @@
 
   /* ---------- overlays ---------- */
   var stack = [];
-  function overlay(id, cls, html) {
+  function overlay(id, title, html, noBar) {
     var el = document.getElementById(id);
     if (!el) {
       el = document.createElement("div");
@@ -216,9 +218,13 @@
         if (e.target === el || e.target.closest("[data-close]")) DS.close();
       });
     }
-    el.innerHTML = '<div class="overlay-panel ' + (cls || "") + '"><button class="overlay-close" data-close>Close ' + '<span class="kbd">Esc</span></button>' + html + "</div>";
+    el.setAttribute("aria-label", title);
+    el.innerHTML = '<div class="overlay-panel">' + (noBar ? "" : DS.overlayBar(title)) + html + "</div>";
     return el;
   }
+  DS.overlayBar = function (title) {
+    return '<div class="overlay-bar"><p class="label">' + esc(title) + '</p><button class="overlay-close" data-close>Close ' + I.close + "</button></div>";
+  };
   DS.open = function (el, focusSel) {
     if (stack.indexOf(el) === -1) stack.push({ el: el, focus: document.activeElement });
     el.classList.add("is-open");
@@ -238,8 +244,7 @@
   function openIndex() {
     var t = DS.ofType("template"), l = DS.ofType("logo");
     var cats = uniq(items.map(function (i) { return i.category; })).sort();
-    var el = overlay("ov-index", "",
-      '<div class="label">Index — Draft Studio archive</div>' +
+    var el = overlay("ov-index", "Index — Draft Studio archive",
       '<ul class="index-list">' +
         row("01", "index.html", "Front page", "", items[0]) +
         row("02", "templates.html", "Templates", pad(t.length, 2), t[0]) +
@@ -251,8 +256,8 @@
           var it = items.filter(function (i) { return i.category === c; })[0];
           return '<a href="' + it.page + "?cat=" + encodeURIComponent(c) + '">' + esc(c) + "</a>";
         }).join("") + "</div>" +
-        '<div><div class="label">Your archive</div><a href="#" data-open-saved>Saved (' + '<span class="saved-n">00</span>)</a><a href="#" data-open-search>Search <span class="kbd">/</span></a></div>' +
-        '<div><div class="label">Contributors</div><a href="desk.html">Archive desk — file a design</a>' + (SITE.email ? '<a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + "</a>" : "") + "</div>" +
+        '<div><div class="label">Your archive</div><a href="#" data-open-search>Search the archive</a><a href="#" data-open-saved><span>Saved designs (<span class="saved-n">00</span>)</span></a></div>' +
+        '<div><div class="label">Contributors</div><a href="desk.html">Archive desk — upload a design</a>' + (SITE.email ? '<a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + "</a>" : "") + "</div>" +
       "</div>"
     );
     function row(n, href, name, count, it) {
@@ -270,9 +275,9 @@
     return Object.keys(c).sort(function (a, b) { return c[b] - c[a]; }).slice(0, 10);
   })();
   function openSearch(initial) {
-    var el = overlay("ov-search", "",
-      '<label class="search-field"><span class="sr-only">Search the archive</span><input type="search" id="q-all" placeholder="Search the archive" autocomplete="off" spellcheck="false"></label>' +
-      '<div class="search-meta"><span class="label" id="q-count"></span><span class="label">Enter ↵ open first · Esc close</span></div>' +
+    var el = overlay("ov-search", "Search the archive",
+      '<label class="search-field">' + I.search + '<span class="sr-only">Search templates, logos and icons</span><input type="search" id="q-all" placeholder="Type to search" autocomplete="off" spellcheck="false" enterkeyhint="search"></label>' +
+      '<div class="search-meta"><p class="label" id="q-count" aria-live="polite"></p><p class="label hint">Enter ↵ opens the first result · Esc closes</p></div>' +
       '<div id="q-results"></div>'
     );
     var input = $("#q-all", el), out = $("#q-results", el), count = $("#q-count", el);
@@ -323,22 +328,22 @@
     }).join("") : '<p class="h3" style="margin-top:20px">Nothing saved yet.</p><p class="muted" style="margin-top:8px">Use the bookmark on any design to keep it here.</p>';
   }
   function openSaved() {
-    var el = overlay("ov-saved", "", '<div class="label">Saved — <span class="saved-n">00</span></div><h2 class="h2" style="margin-top:10px">Your <em class="s">shortlist</em></h2><div class="saved-body"></div><p class="label" style="margin-top:22px">Saved on this device only</p>');
+    var el = overlay("ov-saved", "Saved designs", '<h2 class="h2">Your <em class="s">shortlist</em> <sup class="count saved-n">00</sup></h2><div class="saved-body"></div><p class="label" style="margin-top:22px">Saved on this device only</p>');
     renderSaved(); syncSaved(); DS.open(el);
   }
 
   /* Quick look */
   DS.quick = function (it) {
-    var el = overlay("ov-quick", "",
+    var el = overlay("ov-quick", "Quick look: " + it.title,
       '<div class="quick-art">' + (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + esc(it.title) + '">' : "") + '<span class="crops"></span></div>' +
-      '<div class="quick-info">' +
+      '<div class="quick-info">' + DS.overlayBar("Quick look") +
         '<div class="label">' + it.no + " · " + esc(it.typeLabel) + " · " + esc(it.category) + "</div>" +
         '<h2 class="h2">' + esc(it.title) + "</h2>" +
         (it.description ? '<p class="muted">' + esc(it.description) + "</p>" : "") +
         DS.downloads(it) +
-        '<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="' + it.url + '">Open full record <span class="arrow arrow-right">' + "→</span></a>" +
+        '<div class="btn-row"><a class="btn" href="' + it.url + '">Open full record <span class="arrow arrow-right">' + "→</span></a>" +
         '<button class="btn" data-save="' + esc(it.id) + '" aria-pressed="false">Save</button></div>' +
-      "</div>"
+      "</div>", true
     );
     DS.open(el); syncSaved();
   };
@@ -442,13 +447,12 @@
     els.forEach(function (e) { io.observe(e); });
   };
 
-  /* Dock: compact while scrolling down */
-  var dock = $(".dock"), lastY = 0;
-  if (dock) window.addEventListener("scroll", function () {
-    var y = window.scrollY;
-    dock.classList.toggle("is-compact", y > 240 && y > lastY);
-    lastY = y;
-  }, { passive: true });
+  /* Navigation: mark the current section (used by record pages) */
+  DS.markNav = function (sec) {
+    $all(".dock-item[data-sec]").forEach(function (a) {
+      if (a.getAttribute("data-sec") === sec) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+  };
 
   /* 3D logo mark: stack flat copies in depth */
   DS.build3d = function (obj, opts) {

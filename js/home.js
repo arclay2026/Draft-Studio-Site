@@ -50,16 +50,16 @@
   /* Intro details */
   var last = items[0];
   var lf = $("#last-filed");
-  if (lf && last) lf.innerHTML = '<span class="label">Last filed</span><span class="label label-ink">' + last.no + '</span><a href="' + last.url + '">' + esc(last.title) + '</a><span class="label">' + esc(DS.ago(last.date)) + "</span>";
+  if (lf && last) lf.innerHTML = '<span class="label">Last filed</span><a href="' + last.url + '">' + esc(last.title) + '</a><span class="label when">' + last.no + " · " + esc(DS.ago(last.date)) + "</span>";
   var searchBtn = $("#intro-search");
-  if (searchBtn) searchBtn.querySelector(".ph").textContent = "Search " + pad(items.length + icons.length, 2) + " resources";
-  DS.build3d($(".seal .logo3d-obj"), { layers: 14, gap: 0.8 });
+  if (searchBtn) searchBtn.querySelector(".ph").textContent = "Search " + (items.length + icons.length) + " designs & icons";
+  if (window.matchMedia("(min-width: 768px)").matches) DS.build3d($(".seal .logo3d-obj"), { layers: 14, gap: 0.8 });
 
   /* ---------- 2. Ticker of newest records ---------- */
   var tick = $("#ticker");
   if (tick) {
     var t = items.slice(0, 8).map(function (it) {
-      return '<a href="' + it.url + '"><span class="star">✦</span><span class="label label-ink">' + it.no + '</span><span class="t">' + esc(it.title) + "</span>" + DS.fmts(it.formats) + '<span class="label">' + DS.fmtDate(it.date) + "</span></a>";
+      return '<a class="ticker-item" href="' + it.url + '" tabindex="-1"><span class="star">✦</span><span class="label label-ink">' + it.no + '</span><span class="t">' + esc(it.title) + "</span>" + DS.fmts(it.formats) + '<span class="label">' + DS.fmtDate(it.date) + "</span></a>";
     }).join("");
     tick.innerHTML = '<div class="ticker-track">' + t + t + t + t + "</div>";
   }
@@ -95,7 +95,7 @@
   /* ---------- 5. Recently filed shelf (horizontal) ---------- */
   var shelf = $("#shelf");
   if (shelf) {
-    shelf.innerHTML = items.slice(0, 10).map(function (it) { return DS.plate(it, { showType: true }); }).join("");
+    shelf.innerHTML = items.slice(0, 10).map(function (it) { return DS.plate(it, { showType: true, fixed: true }); }).join("");
     var counter = $("#shelf-n");
     function upd() {
       var max = shelf.scrollWidth - shelf.clientWidth;
@@ -128,7 +128,7 @@
     }).join("");
     $all("a", cells).forEach(function (a, n) { DS.glyph($(".g", a), sample[n]); });
     function show(n) {
-      var ic = sample[n]; if (!ic) return;
+      var ic = sample[n]; if (!ic || !focus.offsetParent) return;
       $all("a", cells).forEach(function (a, i) { a.classList.toggle("is-on", i === n); });
       DS.glyph($(".glyph", focus), ic);
       $(".nm", focus).textContent = ic.name;
