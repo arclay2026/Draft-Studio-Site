@@ -24,7 +24,15 @@
  *                 { format: "PSD", path: "files/templates/name.psd", size: "24 MB" }
  *               format can be PSD, AI, PDF, SVG, EPS, PNG, ZIP… (size is optional)
  *   date        YYYY-MM-DD (newest items are shown first)
- *   featured    true = show on the home page
+ *   featured    true = show in the Editor's Selection on the home page
+ *   dimensions  (optional) size or format, e.g. "A4 portrait" or "1080 × 1080 px"
+ *   creator     (optional) who made it, e.g. "Jane Doe". Defaults to the site name.
+ *
+ * Every design gets a catalogue number (DS–001, DS–002 …) automatically,
+ * in the order the designs were added (by date).
+ *
+ * TIP: the Archive Desk page (desk.html) fills this in for you. Drop your
+ * files there and it writes the entry to paste into this file.
  *
  * Icons only need: id, name, category, tags, file.
  */
@@ -32,10 +40,12 @@
 window.DRAFT_STUDIO = {
   site: {
     name: "Draft Studio",
-    tagline: "Free design templates, icons and logos",
+    tagline: "An open archive of templates, marks and icons for designers",
     email: "hello@draftstudio.com",           // ← replace with your details
     whatsapp: "",                              // e.g. "27780000000" (leave empty to hide)
     instagram: "",                             // e.g. "https://instagram.com/draftstudio"
+    repo: "arclay2026/Draft-Studio-Site",      // GitHub repository (used by the Archive Desk)
+    branch: "main",
     license:
       "Free for personal and commercial projects. Credit is appreciated but not required. " +
       "You may not resell or redistribute the files as-is."
@@ -44,6 +54,7 @@ window.DRAFT_STUDIO = {
   templates: [
     {
       id: "event-flyer",
+      dimensions: "A4 portrait",
       title: "Live Music Event Flyer",
       category: "Flyers",
       description: "A4 portrait flyer for concerts, parties and live events. Edit the date, venue and call to action.",
@@ -56,6 +67,7 @@ window.DRAFT_STUDIO = {
     },
     {
       id: "social-post-sale",
+      dimensions: "1080 × 1080 px",
       title: "Weekend Sale Social Post",
       category: "Social Media",
       description: "1080×1080 Instagram/Facebook post for sales and promotions.",
@@ -68,6 +80,7 @@ window.DRAFT_STUDIO = {
     },
     {
       id: "business-card-minimal",
+      dimensions: "3.5 × 2 in",
       title: "Minimal Business Card",
       category: "Business Cards",
       description: "Clean two-column business card at 3.5×2 in with a bold brand panel.",
@@ -100,6 +113,7 @@ window.DRAFT_STUDIO = {
   logos: [
     {
       id: "summit-coffee",
+      dimensions: "Vector · any size",
       title: "Summit Coffee Co.",
       category: "Food & Drink",
       description: "Badge-style mountain logo for cafés and coffee brands.",
@@ -110,6 +124,7 @@ window.DRAFT_STUDIO = {
     },
     {
       id: "nova-tech",
+      dimensions: "Vector · any size",
       title: "Nova Tech",
       category: "Technology",
       description: "Geometric hexagon mark for tech startups and IT companies.",
@@ -119,6 +134,7 @@ window.DRAFT_STUDIO = {
     },
     {
       id: "bloom-florist",
+      dimensions: "Vector · any size",
       title: "Bloom Florist",
       category: "Beauty & Lifestyle",
       description: "Elegant flower logo for florists, salons and boutiques.",

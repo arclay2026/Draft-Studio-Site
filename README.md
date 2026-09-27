@@ -8,13 +8,28 @@ It runs on GitHub Pages or any web host.
 
 | Page | What it does |
 |------|--------------|
-| `index.html` | Home: search, category tiles, featured designs, icon preview |
-| `templates.html` | Templates with search, category, format (PSD/AI/PDF/SVG) filters |
-| `logos.html` | Logos, same filters as templates |
-| `icons.html` | SVG icons: pick colour & size, download SVG or PNG, copy SVG code |
+| `index.html` | Front page: a moving wall of your latest previews, a ticker of new records, Editor's Selection, a category index, a "recently filed" shelf, the icon specimen and the studio profile |
+| `templates.html` | Templates browser: search, filter by format and category (as a sentence), sort, and switch between **Plates** (masonry) and **Index** (catalogue list) views |
+| `logos.html` | Logos browser, same as templates |
+| `item.html?id=…` | Full record for one design: large artwork with zoom, spec sheet, downloads, save, share link, previous/next and related designs |
+| `icons.html` | Icon specimen sheet with an inspector: recolour, download SVG/PNG, copy code |
+| `desk.html` | **Archive desk**, for you: drop your files and it writes the catalog entry and links to the right GitHub upload folders |
 
-Clicking a design opens a detail view with one download button per format, plus
-a shareable link (e.g. `templates.html#event-flyer`).
+Across the site: a floating dock for navigation, a full-screen **Index** menu,
+search from anywhere (press `/`), **Quick look** on any design, and
+**Saved** (bookmarks kept in the visitor's browser). Every design gets a
+catalogue number (DS–001, DS–002 …) automatically, in the order it was filed.
+
+Old share links still work: `templates.html#id` and `logos.html#id` open the
+design's record, and `icons.html#id` selects the icon.
+
+## Design system
+
+- Colours: ink `#111111`, paper `#f4f3ef`, blue `#2457ff` (used only as a signal).
+  Dark mode swaps ink and paper. Tokens are at the top of `css/archive.css`.
+- Type: Manrope (brand), Instrument Serif italic (contrast), JetBrains Mono (metadata).
+- Artwork sits on "plates" framed by printer's crop marks. Sharp edges, hairline rules.
+- Motion is subtle and respects the visitor's "reduce motion" setting.
 
 ## Adding content (all you ever edit is `js/catalog.js`)
 
@@ -25,7 +40,8 @@ a shareable link (e.g. `templates.html#event-flyer`).
 2. **Upload a preview image** (JPG/PNG/WEBP, ~1200px wide) to `previews/`.
    Browsers can't display PSD or AI files, so templates and logos need one.
    Items with an SVG file use it as the preview automatically.
-3. **Add an entry** at the top of the right list in `js/catalog.js`. The file's
+3. **Add an entry** at the top of the right list in `js/catalog.js`. The easiest
+   way is to open `desk.html` on your site, drop the files in and copy the entry it writes. The file's
    comments explain every field and include a multi-format example.
 
 On GitHub you can do all of this in the browser: *Add file → Upload files*
@@ -39,7 +55,7 @@ zip them, or host them elsewhere (Google Drive, Dropbox, etc.) and put that link
 
 ## Branding
 
-- Colours: `#2457ff` (blue), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/studio.css`.
+- Colours: `#2457ff` (blue), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/archive.css`.
 - Font: Manrope (Google Fonts).
 - Original logo upload: `assets/brand/draft-studio-logo-original.svg`. The files below are cut from it.
 - Header logo: `assets/logo.svg` (light background) and `assets/logo-dark.svg` (dark mode).

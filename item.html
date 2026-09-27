@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>(function(){var d=document.documentElement;d.className+=" js";try{var t=localStorage.getItem("ds_theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches))d.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<title>Icons — Draft Studio archive</title>
-<meta name="description" content="Free SVG icons. Recolour, export as SVG or PNG, or copy the code.">
-<meta property="og:title" content="Icons — Draft Studio archive">
-<meta property="og:description" content="Free SVG icons. Recolour, export as SVG or PNG, or copy the code.">
+<title>Record — Draft Studio archive</title>
+<meta name="description" content="A design record in the Draft Studio archive.">
+<meta property="og:title" content="Record — Draft Studio archive">
+<meta property="og:description" content="A design record in the Draft Studio archive.">
 <meta name="theme-color" content="#f4f3ef">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/archive.css">
 </head>
-<body data-page="icons">
+<body data-page="item">
 <header class="masthead">
   <a href="index.html" class="brand" aria-label="Draft Studio — front page">
     <img src="assets/logo.svg" alt="Draft Studio" class="logo-light">
@@ -25,48 +25,7 @@
   <div class="masthead-right"><a class="label label-ink" href="desk.html">File a design ↗</a></div>
 </header>
 
-<main>
-  <section class="page-head">
-    <div><p class="label">§ 04 — Specimen sheet</p><h1 class="mega" style="margin-top:14px">Ic<em class="s">ons</em><sup class="count" data-count="icons">00</sup></h1></div>
-    <div class="aside">
-      <p class="lede">Pick an icon to inspect it. Recolour it, export it as SVG or PNG, or copy its code.</p>
-      <nav class="typeswitch" aria-label="Archive sections">
-        <a href="templates.html">Templates <span class="n" data-count="template">00</span></a>
-        <a href="logos.html">Logos <span class="n" data-count="logo">00</span></a>
-        <a href="icons.html" aria-current="page">Icons <span class="n" data-count="icons">00</span></a>
-      </nav>
-    </div>
-  </section>
-  <div class="filterbar">
-    <p class="sentence" style="flex:0 1 auto">Icons in <label class="sr-only" for="f-cat">Category</label><select id="f-cat"><option value="">every category</option></select></p>
-    <label class="find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><span class="sr-only">Search icons</span><input type="search" id="f-q" placeholder="Search icons" autocomplete="off"></label>
-    <div class="icon-tools">
-      <label class="label">Ink <input type="color" id="icon-color" value="#111111"></label>
-      <label class="label">Scale <input type="range" id="icon-size" min="20" max="56" value="32"></label>
-    </div>
-    <span class="label" id="r-count" style="margin-left:auto"></span>
-  </div>
-  <div class="icon-layout">
-    <div class="icon-cells" id="cells"></div>
-    <aside class="inspector" id="inspector" aria-label="Icon inspector">
-      <div style="display:flex;justify-content:space-between;align-items:center"><span class="label" id="m-no"></span><button class="label sheet-close" id="sheet-close">Close ✕</button></div>
-      <div class="stage"><span class="g"></span><span class="crops" aria-hidden="true"></span></div>
-      <h2 id="m-name"></h2>
-      <p class="label" id="m-tags"></p>
-      <div class="controls">
-        <label class="field"><span>Colour</span><span class="swatch"><input type="color" id="m-color" value="#111111"><code id="m-hex"></code></span></label>
-        <label class="field"><span>PNG size (px)</span><select id="m-size"><option>64</option><option>128</option><option selected>256</option><option>512</option><option>1024</option></select></label>
-      </div>
-      <div class="acts">
-        <button class="btn btn-signal" data-act="svg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path class="arrow arrow-down" d="M12 3v14M5 11l7 7 7-7M4 21h16"/></svg> SVG</button>
-        <button class="btn" data-act="png"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path class="arrow arrow-down" d="M12 3v14M5 11l7 7 7-7M4 21h16"/></svg> PNG</button>
-        <button class="btn wide" data-act="copy">Copy SVG code</button>
-      </div>
-      <textarea class="code-box" id="m-code" readonly aria-label="SVG code"></textarea>
-      <p class="label" data-site="license"></p>
-    </aside>
-  </div>
-</main>
+<main id="record-root"></main>
 
 <footer class="colophon">
   <div class="folio"><span class="label label-ink">§ Colophon</span><span class="label">Draft Studio</span><span class="rule"></span><span class="label folio-note">Vol. 01 — <span data-year></span></span></div>
@@ -85,7 +44,7 @@
   <div class="dock-links">
     <a href="templates.html">Templates <span class="n" data-count="template">00</span></a>
     <a href="logos.html">Logos <span class="n" data-count="logo">00</span></a>
-    <a href="icons.html" aria-current="page">Icons <span class="n" data-count="icons">00</span></a>
+    <a href="icons.html">Icons <span class="n" data-count="icons">00</span></a>
   </div>
   <button data-open-search aria-label="Search the archive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><span class="hide-sm">Search</span><kbd class="hide-sm">/</kbd></button>
   <button data-open-saved aria-label="Saved designs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-5-6 5z"/></svg><span class="hide-sm">Saved</span><span class="n saved-n">00</span></button>
@@ -94,6 +53,6 @@
 
 <script src="js/catalog.js"></script>
 <script src="js/core.js"></script>
-<script src="js/icons.js"></script>
+<script src="js/item.js"></script>
 </body>
 </html>

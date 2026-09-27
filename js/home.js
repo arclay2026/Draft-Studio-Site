@@ -1,0 +1,150 @@
+/* Draft Studio — front page */
+(function () {
+  "use strict";
+  var DS = window.DS, $ = DS.$, $all = DS.$all, esc = DS.esc, pad = DS.pad;
+  var items = DS.items, icons = DS.icons;
+
+  /* ---------- 1. Design wall: real previews drifting in columns ---------- */
+  var wall = $("#wall");
+  if (wall) {
+    var withArt = items.filter(function (i) { return i.preview; });
+    var cats = DS.uniq(items.map(function (i) { return i.category; }));
+    var COLS = 4, cols = [];
+    for (var c = 0; c < COLS; c++) cols.push([]);
+
+    function artTile(it) {
+      return '<a class="wall-tile" href="' + it.url + '" data-cursor="Open" tabindex="-1"><span class="tag">' + it.no + '</span><img src="' + esc(it.preview) + '" alt="" decoding="async"></a>';
+    }
+    function typeTile(cat, n, blue) {
+      var count = items.filter(function (i) { return i.category === cat; }).length;
+      var first = items.filter(function (i) { return i.category === cat; })[0];
+      return '<a class="wall-type' + (blue ? " blue-t" : "") + '" href="' + first.page + "?cat=" + encodeURIComponent(cat) + '" tabindex="-1" data-cursor="Browse">' +
+        '<span class="label">Category ' + pad(n + 1, 2) + "</span>" +
+        "<span><b>" + esc(cat) + '</b><br><em class="s">' + pad(count, 2) + " filed</em></span></a>";
+    }
+    function glyphTile(ic) {
+      return '<a class="wall-glyph" href="icons.html#' + esc(ic.id) + '" tabindex="-1" data-cursor="Icon" data-g="' + esc(ic.id) + '"></a>';
+    }
+
+    // Deal artwork, category and icon tiles across the columns, offset per column
+    var pool = [];
+    withArt.forEach(function (it) { pool.push(artTile(it)); });
+    cats.forEach(function (cat, n) { pool.splice(Math.min(pool.length, 2 + n * 3), 0, typeTile(cat, n, n % 2 === 1)); });
+    icons.slice(0, 6).forEach(function (ic, n) { pool.splice(Math.min(pool.length, 4 + n * 4), 0, glyphTile(ic)); });
+    if (pool.length) {
+      var perCol = Math.max(5, Math.ceil(pool.length / COLS) + 2);
+      for (c = 0; c < COLS; c++) {
+        for (var k = 0; k < perCol; k++) cols[c].push(pool[(c * 3 + k) % pool.length]);
+      }
+      wall.innerHTML = cols.map(function (list, n) {
+        var html = list.join("");
+        return '<div class="wall-col" style="--dur:' + (54 + n * 11) + 's">' + html + html + "</div>";
+      }).join("");
+      $all("[data-g]", wall).forEach(function (a) {
+        var ic = icons.filter(function (i) { return i.id === a.getAttribute("data-g"); })[0];
+        if (ic) DS.glyph(a, ic);
+      });
+    }
+  }
+
+  /* Intro details */
+  var last = items[0];
+  var lf = $("#last-filed");
+  if (lf && last) lf.innerHTML = '<span class="label">Last filed</span><span class="label label-ink">' + last.no + '</span><a href="' + last.url + '">' + esc(last.title) + '</a><span class="label">' + esc(DS.ago(last.date)) + "</span>";
+  var searchBtn = $("#intro-search");
+  if (searchBtn) searchBtn.querySelector(".ph").textContent = "Search " + pad(items.length + icons.length, 2) + " resources";
+  DS.build3d($(".seal .logo3d-obj"), { layers: 14, gap: 0.8 });
+
+  /* ---------- 2. Ticker of newest records ---------- */
+  var tick = $("#ticker");
+  if (tick) {
+    var t = items.slice(0, 8).map(function (it) {
+      return '<a href="' + it.url + '"><span class="star">✦</span><span class="label label-ink">' + it.no + '</span><span class="t">' + esc(it.title) + "</span>" + DS.fmts(it.formats) + '<span class="label">' + DS.fmtDate(it.date) + "</span></a>";
+    }).join("");
+    tick.innerHTML = '<div class="ticker-track">' + t + t + t + t + "</div>";
+  }
+
+  /* ---------- 3. Editor's selection spread ---------- */
+  var spread = $("#spread");
+  if (spread) {
+    var picks = items.filter(function (i) { return i.featured; });
+    items.forEach(function (i) { if (picks.length < 3 && picks.indexOf(i) === -1) picks.push(i); });
+    picks = picks.slice(0, 3);
+    spread.innerHTML = picks.map(function (it, n) {
+      return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.plate(it, { showType: true }) + "</div>";
+    }).join("") +
+      '<div class="caption" data-reveal style="--d:.3s"><div class="big-no">' + pad(picks.length, 2) + '</div><p class="label" style="margin-top:14px">Chosen by the studio. Updated as new work is filed.</p></div>';
+  }
+
+  /* ---------- 4. Category index with floating previews ---------- */
+  var catList = $("#cat-list");
+  if (catList) {
+    var groups = {};
+    items.forEach(function (i) {
+      var key = i.type + "|" + i.category;
+      (groups[key] = groups[key] || { cat: i.category, type: i.typeLabel, page: i.page, n: 0, preview: i.preview }).n++;
+    });
+    var rows = Object.keys(groups).map(function (k) { return groups[k]; }).sort(function (a, b) { return b.n - a.n || a.cat.localeCompare(b.cat); });
+    catList.innerHTML = rows.map(function (g, n) {
+      return '<li data-reveal style="--d:' + (n * 0.05) + 's"><a href="' + g.page + "?cat=" + encodeURIComponent(g.cat) + '" data-preview="' + esc(g.preview) + '">' +
+        '<span class="label">' + pad(n + 1, 2) + '</span><span class="name">' + esc(g.cat) + '</span><span class="label ty">' + esc(g.type) + 's</span><span class="c">' + pad(g.n, 2) + "</span></a></li>";
+    }).join("");
+    DS.hoverPreview(catList, "[data-preview]");
+  }
+
+  /* ---------- 5. Recently filed shelf (horizontal) ---------- */
+  var shelf = $("#shelf");
+  if (shelf) {
+    shelf.innerHTML = items.slice(0, 10).map(function (it) { return DS.plate(it, { showType: true }); }).join("");
+    var counter = $("#shelf-n");
+    function upd() {
+      var max = shelf.scrollWidth - shelf.clientWidth;
+      var p = max > 0 ? shelf.scrollLeft / max : 0;
+      var n = Math.min(items.length, Math.round(p * (Math.min(items.length, 10) - 1)) + 1);
+      if (counter) counter.textContent = pad(n, 2) + " / " + pad(Math.min(items.length, 10), 2);
+    }
+    shelf.addEventListener("scroll", upd, { passive: true }); upd();
+    $all("[data-shelf]").forEach(function (b) {
+      b.addEventListener("click", function () { shelf.scrollBy({ left: (b.getAttribute("data-shelf") === "next" ? 1 : -1) * shelf.clientWidth * 0.8, behavior: "smooth" }); });
+    });
+    // Drag to scroll with a mouse
+    var down = false, sx = 0, sl = 0, moved = false;
+    shelf.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; down = true; moved = false; sx = e.clientX; sl = shelf.scrollLeft; });
+    window.addEventListener("pointermove", function (e) {
+      if (!down) return;
+      if (Math.abs(e.clientX - sx) > 5) { moved = true; shelf.classList.add("is-drag"); }
+      shelf.scrollLeft = sl - (e.clientX - sx);
+    });
+    window.addEventListener("pointerup", function () { down = false; setTimeout(function () { shelf.classList.remove("is-drag"); }, 0); });
+    shelf.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  }
+
+  /* ---------- 6. Icon specimen ---------- */
+  var cells = $("#spec-cells"), focus = $("#spec-focus");
+  if (cells && focus) {
+    var sample = icons.slice(0, 12);
+    cells.innerHTML = sample.map(function (ic, n) {
+      return '<a href="icons.html#' + esc(ic.id) + '" data-i="' + n + '" aria-label="' + esc(ic.name) + '"><span class="n">' + pad(n + 1, 2) + '</span><span class="g"></span></a>';
+    }).join("");
+    $all("a", cells).forEach(function (a, n) { DS.glyph($(".g", a), sample[n]); });
+    function show(n) {
+      var ic = sample[n]; if (!ic) return;
+      $all("a", cells).forEach(function (a, i) { a.classList.toggle("is-on", i === n); });
+      DS.glyph($(".glyph", focus), ic);
+      $(".nm", focus).textContent = ic.name;
+      $(".no", focus).textContent = ic.no;
+      $(".ct", focus).textContent = ic.category;
+    }
+    cells.addEventListener("mouseover", function (e) { var a = e.target.closest("[data-i]"); if (a) show(+a.getAttribute("data-i")); });
+    cells.addEventListener("focusin", function (e) { var a = e.target.closest("[data-i]"); if (a) show(+a.getAttribute("data-i")); });
+    show(0);
+  }
+
+  /* ---------- 7. Studio / creator ---------- */
+  var st = $("#creator-stats");
+  if (st) {
+    var mine = items.filter(function (i) { return i.creator === (DS.site.name || "Draft Studio"); });
+    var fmts = DS.uniq([].concat.apply([], mine.map(function (i) { return i.formats; })));
+    st.innerHTML = "<div><b>" + pad(mine.length, 2) + '</b><span class="label">Records</span></div><div><b>' + pad(icons.length, 2) + '</b><span class="label">Icons</span></div><div><b>' + pad(fmts.length, 2) + '</b><span class="label">Formats</span></div>';
+  }
+})();
