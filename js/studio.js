@@ -363,6 +363,40 @@
     if (target) openIcon(target);
   }
 
+  /* ---------- 3D logo ----------
+     Stacks copies of a flat logo image a pixel apart in depth. The back
+     copies are darkened so they read as the logo's solid sides. */
+  function build3dLogo(obj) {
+    if (!obj) return;
+    var src = obj.getAttribute("data-src");
+    var LAYERS = 26, GAP = 1.15; // total thickness ≈ 30px
+    var html = "";
+    for (var n = LAYERS; n >= 0; n--) {
+      var shade = n === 0 ? "" : ' style="transform:translateZ(' + (-n * GAP).toFixed(2) + "px);filter:brightness(" + (0.5 + 0.25 * (1 - n / LAYERS)).toFixed(2) + ')"';
+      html += '<img src="' + esc(src) + '" alt="" draggable="false"' + (n === 0 ? ' class="front"' : "") + shade + ">";
+    }
+    obj.innerHTML = html;
+
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var pointer = null, start = performance.now();
+    window.addEventListener("pointermove", function (e) {
+      pointer = { x: e.clientX / innerWidth - 0.5, y: e.clientY / innerHeight - 0.5, t: performance.now() };
+    }, { passive: true });
+    function frame(now) {
+      var rx, ry;
+      if (pointer && now - pointer.t < 2500) {
+        ry = pointer.x * 50; rx = -pointer.y * 30;
+      } else {
+        var t = (now - start) / 1000;
+        ry = -24 + Math.sin(t * 0.6) * 22; rx = 10 + Math.sin(t * 0.45) * 6;
+      }
+      obj.style.setProperty("--rx", rx.toFixed(2) + "deg");
+      obj.style.setProperty("--ry", ry.toFixed(2) + "deg");
+      requestAnimationFrame(frame);
+    }
+    if (!reduce) requestAnimationFrame(frame);
+  }
+
   /* ---------- home ---------- */
   function homePage() {
     var t = DATA.templates || [], l = DATA.logos || [], i = DATA.icons || [];
@@ -386,18 +420,7 @@
       location.href = "icons.html#" + tile.getAttribute("data-id");
     });
 
-    // Hero collage uses the newest previews
-    var previews = t.concat(l).sort(newestFirst).map(previewOf).filter(Boolean);
-    $all(".hero-art [data-prev]").forEach(function (el, n) {
-      if (previews[n]) el.innerHTML = '<img src="' + esc(previews[n]) + '" alt="">';
-    });
-    var art = $(".hero-art .t3");
-    if (art) {
-      i.slice(0, 4).forEach(function (icon) {
-        var s = document.createElement("span"); s.className = "g"; art.appendChild(s);
-        loadSvg(icon.file).then(function (svg) { s.innerHTML = svg ? fluid(svg) : ""; });
-      });
-    }
+    build3dLogo($(".logo3d-obj"));
 
     var form = $("#hero-search");
     form.addEventListener("submit", function (e) {

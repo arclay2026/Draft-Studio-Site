@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Placeholder logo mark for the 3D hero. Replace with your own logo symbol (keep the name logo-mark.svg). -->
+  <rect x="10" y="10" width="180" height="180" rx="48" fill="#2457ff"/>
+  <path d="M62 52h36a48 48 0 0 1 0 96H62z" fill="none" stroke="#f4f3ef" stroke-width="20" stroke-linejoin="round"/>
+</svg>

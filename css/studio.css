@@ -1,39 +1,45 @@
 /* ===========================================================
    Draft Studio — stylesheet
-   Brand colours live in :root. Change --accent to re-brand.
+   Brand colours: #2457ff (blue), #f4f3ef (paper), #111111 (ink).
+   They live in :root below; dark mode swaps paper and ink.
    =========================================================== */
 
 :root {
-  --accent: #ff5a36;
-  --accent-ink: #ffffff;
-  --accent-soft: #ffe7e0;
+  --brand-blue: #2457ff;
+  --brand-paper: #f4f3ef;
+  --brand-ink: #111111;
 
-  --bg: #f4f2ee;
+  --accent: var(--brand-blue);
+  --accent-ink: #ffffff;
+  --accent-soft: #e3e9ff;
+
+  --bg: var(--brand-paper);
   --surface: #ffffff;
-  --surface-2: #ebe8e2;
-  --ink: #16161a;
-  --ink-2: #5d5d66;
-  --line: #dedad3;
-  --shadow: 0 1px 2px rgba(22, 22, 26, .06), 0 8px 24px rgba(22, 22, 26, .06);
-  --check: #e9e6e0;
+  --surface-2: #e9e8e2;
+  --ink: var(--brand-ink);
+  --ink-2: #5c5c62;
+  --line: #dcdbd4;
+  --shadow: 0 1px 2px rgba(17, 17, 17, .06), 0 8px 24px rgba(17, 17, 17, .06);
+  --check: #e6e5df;
 
   --radius: 16px;
   --radius-sm: 10px;
   --max: 1200px;
-  --font-head: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-head: "Manrope", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
 }
 
 :root[data-theme="dark"] {
-  --accent-soft: #3a1d15;
-  --bg: #111114;
-  --surface: #1b1b20;
-  --surface-2: #25252c;
-  --ink: #f4f2ee;
-  --ink-2: #a3a3ad;
-  --line: #2f2f37;
+  --accent: #4c76ff;
+  --accent-soft: #16214a;
+  --bg: var(--brand-ink);
+  --surface: #1a1a1c;
+  --surface-2: #242427;
+  --ink: var(--brand-paper);
+  --ink-2: #a4a4a8;
+  --line: #2e2e32;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
-  --check: #202026;
+  --check: #1f1f22;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -48,7 +54,7 @@ body {
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; color: inherit; }
-h1, h2, h3 { font-family: var(--font-head); line-height: 1.1; margin: 0; letter-spacing: -.02em; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -.03em; }
 p { margin: 0; }
 .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 20px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -111,14 +117,15 @@ p { margin: 0; }
 }
 
 /* ---------- Hero ---------- */
-.hero { padding: 72px 0 56px; }
+.hero { padding: 72px 0 56px; overflow-x: clip; }
+.hero-inner > * { min-width: 0; }
 .hero-inner { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 6px 12px; border-radius: 999px; background: var(--accent-soft);
   color: var(--accent); font-size: 13px; font-weight: 600; margin-bottom: 20px;
 }
-.hero h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 700; }
+.hero h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .hero p.lead { font-size: 18px; color: var(--ink-2); margin: 20px 0 28px; max-width: 520px; }
 
@@ -133,17 +140,38 @@ p { margin: 0; }
 }
 .format-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 
-.hero-art { position: relative; aspect-ratio: 1; max-width: 440px; justify-self: end; width: 100%; }
-.hero-art .tile {
-  position: absolute; border-radius: 22px; box-shadow: var(--shadow);
-  background: var(--surface); border: 1px solid var(--line); overflow: hidden;
-  display: grid; place-items: center;
+/* 3D logo: JS stacks copies of the logo image in depth to extrude it */
+.logo3d {
+  position: relative; width: 100%; max-width: 460px; aspect-ratio: 1; justify-self: end;
+  display: grid; place-items: center; perspective: 1100px;
 }
-.hero-art .t1 { inset: 0 28% 30% 0; transform: rotate(-4deg); }
-.hero-art .t2 { inset: 22% 0 16% 46%; transform: rotate(5deg); }
-.hero-art .t3 { inset: 62% 38% 0 8%; background: var(--ink); color: var(--bg); transform: rotate(-2deg); gap: 10px; grid-auto-flow: column; }
-.hero-art .t1 img, .hero-art .t2 img { width: 100%; height: 100%; object-fit: cover; }
-.hero-art .t3 svg { width: 30px; height: 30px; }
+.logo3d::before {
+  content: ""; position: absolute; inset: 8%; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent), transparent 68%);
+  filter: blur(20px);
+}
+.logo3d-float { animation: float3d 6s ease-in-out infinite; transform-style: preserve-3d; }
+.logo3d-obj {
+  position: relative; width: min(280px, 62vw); aspect-ratio: 1; transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 12deg)) rotateY(var(--ry, -24deg));
+  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.logo3d-obj img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+  backface-visibility: visible; user-select: none; -webkit-user-drag: none;
+}
+.logo3d-obj img.front { filter: drop-shadow(0 0 1px rgba(255,255,255,.25)); }
+.logo3d-shadow {
+  position: absolute; bottom: 6%; width: 52%; height: 7%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(17,17,17,.28), transparent);
+  animation: shadow3d 6s ease-in-out infinite;
+}
+:root[data-theme="dark"] .logo3d-shadow { background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }
+@keyframes float3d { 0%, 100% { transform: translateY(-10px); } 50% { transform: translateY(10px); } }
+@keyframes shadow3d { 0%, 100% { transform: scale(.85); opacity: .7; } 50% { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .logo3d-float, .logo3d-shadow { animation: none; }
+}
 
 @media (max-width: 560px) {
   .search-box.hero-search { flex-wrap: wrap; border-radius: 20px; padding: 8px 8px 8px 16px; }
@@ -153,7 +181,8 @@ p { margin: 0; }
 @media (max-width: 880px) {
   .hero { padding: 44px 0 32px; }
   .hero-inner { grid-template-columns: 1fr; }
-  .hero-art { display: none; }
+  .logo3d { order: -1; max-width: 300px; justify-self: center; margin-bottom: -10px; }
+  .logo3d-obj { width: min(190px, 50vw); }
 }
 
 /* ---------- Format badges ---------- */
