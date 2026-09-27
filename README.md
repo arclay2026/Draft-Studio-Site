@@ -41,6 +41,7 @@ zip them, or host them elsewhere (Google Drive, Dropbox, etc.) and put that link
 
 - Colours: `#2457ff` (blue), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/studio.css`.
 - Font: Manrope (Google Fonts).
+- Original logo upload: `assets/brand/draft-studio-logo-original.svg`. The files below are cut from it.
 - Header logo: `assets/logo.svg` (light background) and `assets/logo-dark.svg` (dark mode).
 - 3D hero logo: `assets/logo-mark.svg`, the logo symbol on its own. The site
   extrudes it into 3D automatically. Use an SVG, or a PNG with a transparent background.
