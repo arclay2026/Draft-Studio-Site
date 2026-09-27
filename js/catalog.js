@@ -1,4 +1,17 @@
 {
+  id: "poster-cover",
+  title: "Poster Cover",
+  category: "Design",
+  dimensions: "a4",
+  tags: [],
+  preview: "previews/poster-01.jpg",
+  files: [
+    { format: "PSD", path: "files/templates/poster-cover.psd" }
+  ],
+  creator: "Isaac Matovu",
+  date: "2026-09-27",
+  featured: true
+},{
   id: "amg-gt-646",
   title: "AMG GT 646",
   category: "Technology",
