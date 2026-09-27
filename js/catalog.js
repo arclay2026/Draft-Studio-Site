@@ -1,4 +1,18 @@
-/*
+{
+  id: "amg-gt-646",
+  title: "AMG GT 646",
+  category: "Technology",
+  dimensions: "2704x2028",
+  description: "Cars",
+  tags: ["Cars","Tech"],
+  preview: "previews/9626508f71ea8e74a0a4367c0f63c174bfabe6cb-2704x2028.png",
+  files: [
+    { format: "PSD", path: "files/templates/amg-gt-646.psd" }
+  ],
+  creator: "Isaac Matovu",
+  date: "2026-09-27",
+  featured: true
+},/*
  * DRAFT STUDIO — CONTENT CATALOG
  * ==============================
  * This is the only file you need to edit to add, change or remove content.
