@@ -72,7 +72,7 @@ window.DRAFT_STUDIO = {
     name: "Draft Studio",
     tagline: "An open archive of templates, marks and icons for designers",
     email: "thedraftstudio.design@gmail.com",
-    whatsapp: "",                              // e.g. "27780000000" (leave empty to hide)
+    whatsapp: "27736684875",                   // +27 73 668 4875 (South Africa)
     instagram: "",                             // e.g. "https://instagram.com/draftstudio"
     license:
       "Free for personal and commercial projects. Credit is appreciated but not required. " +

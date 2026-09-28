@@ -224,7 +224,7 @@ sup.count { font: 500 var(--fs-label)/1 var(--f-mono); letter-spacing: .04em; ve
    Tablet+: the same links become the floating archive dock.            */
 .dock {
   position: fixed; z-index: 80; left: 0; right: 0; bottom: 0;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
   height: var(--nav-clear); padding-bottom: env(safe-area-inset-bottom, 0px);
   background: var(--dock-bg); color: var(--dock-fg);
   box-shadow: 0 -12px 30px -18px rgba(0, 0, 0, .45);
@@ -1045,3 +1045,83 @@ select { cursor: pointer; }
 .req-text { font-size: var(--fs-small); line-height: 1.5; color: #b9d7f2; margin-top: 4px; }
 .req-inline { color: var(--signal-ink); }
 .dl-note { margin-top: var(--s2); text-transform: none; letter-spacing: .02em; line-height: 1.5; }
+
+/* =====================================================================
+   ABOUT (about.html) — built only from the existing tokens and patterns
+   ===================================================================== */
+.about-head { align-items: center; }
+.about-head h1.display { font-size: clamp(38px, 12.5cqi, 128px); line-height: 1; }
+.about-role { font: 600 var(--fs-lede)/1.4 var(--f-sans); letter-spacing: -.01em; color: var(--mute); max-width: 32ch; }
+.about-head .aside { justify-items: start; }
+
+/* Profile photo: a circular slot inside a crop-marked frame */
+.portrait {
+  position: relative; margin: 0; width: clamp(180px, 56vw, 300px); aspect-ratio: 1; padding: var(--s3);
+  background: var(--plate);
+}
+.portrait::after {
+  content: ""; position: absolute; inset: 6px; pointer-events: none; color: var(--fg);
+  background:
+    linear-gradient(currentColor, currentColor) 0 0 / 14px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 0 / 1px 14px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 0 / 14px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 0 / 1px 14px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 100% / 14px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 100% / 1px 14px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 100% / 14px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 100% 100% / 1px 14px no-repeat;
+}
+.portrait-ph, .portrait img {
+  position: absolute; inset: var(--s3); width: calc(100% - var(--s3) * 2); height: calc(100% - var(--s3) * 2); border-radius: 50%;
+}
+.portrait-ph { display: grid; place-items: center; border: 2px dashed var(--rule-strong); background: var(--bg); }
+.portrait img { object-fit: cover; box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--signal); }
+@media (min-width: 1024px) {
+  .about-head .aside { justify-items: end; }
+  .portrait { width: clamp(240px, 22vw, 340px); }
+}
+
+/* Quick facts: stat cards on one baseline */
+.facts { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule-strong); border-left: 1px solid var(--rule); }
+.fact { display: grid; gap: var(--s2); align-content: start; padding: var(--s4) var(--s3); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.fact b { font: 800 clamp(32px, 20px + 3.4vw, 72px)/1 var(--f-sans); letter-spacing: -.05em; }
+@media (max-width: 599px) {
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fact:nth-child(2) { grid-column: 1 / -1; order: 3; }   /* the long location label gets the full width */
+}
+.fact:nth-child(2) b { color: var(--signal-ink); }
+@media (min-width: 768px) { .fact { padding: var(--s5) var(--s4); } }
+
+/* About me: heading + text column */
+.about-grid { display: grid; gap: var(--s5); margin-top: var(--s6); }
+.about-copy p, .story-text p { font-size: var(--fs-lede); line-height: 1.6; max-width: 60ch; }
+@media (min-width: 1024px) { .about-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap); align-items: start; } }
+
+/* Why I made Draft Studio: framed photo + story */
+.story { display: grid; gap: var(--s6); margin-top: var(--s6); }
+.story-photo { margin: 0; display: grid; gap: var(--s3); max-width: 460px; }
+.story-frame { position: relative; background: var(--plate); padding: clamp(14px, 3vw, 28px); }
+.story-frame img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; box-shadow: var(--shadow-art); }
+.story-frame .crops { opacity: 1; inset: 8px; }
+.story-text { display: grid; gap: var(--s5); align-content: start; }
+@media (min-width: 768px) { .story { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap); align-items: start; } .story-text { padding-top: var(--s6); } }
+
+/* Closing call to action: the ink band used by the icon specimen */
+.about-cta { background: var(--ink); color: var(--paper); margin-top: var(--section); padding: var(--section) var(--pad-x); }
+.about-cta .folio { border-color: rgba(244, 243, 239, .85); }
+.about-cta .label { color: rgba(244, 243, 239, .62); }
+.about-cta .folio .rule { background: rgba(244, 243, 239, .2); }
+.about-cta-body { display: grid; gap: var(--s6); margin-top: var(--s6); }
+.about-cta h2 { max-width: 16ch; }
+.about-cta h2 em.s { color: #8aa4ff; }
+.about-cta-actions { display: grid; gap: var(--s3); justify-items: start; }
+.about-cta-actions .btn { min-height: 56px; font-size: var(--fs-body); }
+.about-cta-alt { border-color: rgba(244, 243, 239, .6); color: var(--paper); }
+.about-cta-alt:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+@media (min-width: 1024px) {
+  .about-cta-body { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); align-items: end; gap: var(--gap); }
+  .about-cta-actions { justify-items: stretch; }
+}
+/* Long contact details (e.g. the email) wrap inside their footer column */
+.colophon-grid > * { min-width: 0; }
+.colophon-grid a { overflow-wrap: break-word; }

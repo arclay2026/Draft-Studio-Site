@@ -252,6 +252,7 @@
         row("02", "templates.html", "Templates", pad(t.length, 2), t[0]) +
         row("03", "logos.html", "Logos", pad(l.length, 2), l[0]) +
         row("04", "icons.html", "Icons", pad(DS.icons.length, 2)) +
+        row("05", "about.html", "About", "") +
       "</ul>" +
       '<div class="index-foot">' +
         '<div><div class="label">Categories</div>' + cats.map(function (c) {
@@ -567,7 +568,10 @@
   /* Site details from the catalog */
   $all("[data-site]").forEach(function (el) {
     var k = el.getAttribute("data-site");
-    if (k === "email") { if (SITE.email) { el.href = "mailto:" + SITE.email; el.textContent = SITE.email; } else el.remove(); }
+    if (k === "email") {
+      if (SITE.email) { el.href = "mailto:" + SITE.email; el.innerHTML = esc(SITE.email).replace("@", "@<wbr>"); }  // wraps after "@" if needed
+      else el.remove();
+    }
     else if (k === "whatsapp") { if (SITE.whatsapp) el.href = "https://wa.me/" + String(SITE.whatsapp).replace(/\D/g, ""); else el.remove(); }
     else if (k === "instagram") { if (SITE.instagram) el.href = SITE.instagram; else el.remove(); }
     else if (k === "commission") { if (SITE.email) el.href = "mailto:" + SITE.email + "?subject=Custom%20design%20enquiry"; else if (SITE.whatsapp) el.href = "https://wa.me/" + String(SITE.whatsapp).replace(/\D/g, ""); else el.remove(); }
