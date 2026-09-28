@@ -66,6 +66,11 @@ someone with access to this GitHub repository can add or change designs.
 With several files for one design, the site shows a **Download ▾** menu with
 every format, and a ZIP file becomes the **Download all** button.
 
+## After changing the stylesheet or scripts
+
+Run `python3 tools/stamp-versions.py`. It updates the `?v=` numbers on every
+page so visitors' browsers load the new files instead of an old saved copy.
+
 ## Branding
 
 - Colours: `#2457ff` (blue), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/archive.css`.
