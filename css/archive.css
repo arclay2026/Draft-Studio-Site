@@ -1044,3 +1044,4 @@ select { cursor: pointer; }
 .req-title { font-weight: 800; letter-spacing: -.02em; font-size: var(--fs-h4); color: #fff; }
 .req-text { font-size: var(--fs-small); line-height: 1.5; color: #b9d7f2; margin-top: 4px; }
 .req-inline { color: var(--signal-ink); }
+.dl-note { margin-top: var(--s2); text-transform: none; letter-spacing: .02em; line-height: 1.5; }

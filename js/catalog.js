@@ -34,6 +34,8 @@
  *   creator     who made it (optional; defaults to the site name)
  *   date        YYYY-MM-DD (newest designs are shown first)
  *   featured    true = show in the Editor's Selection on the front page
+ *               Files too big for GitHub can live on Google Drive: use the share
+ *               link as the path and add name: "file-name.psd" for the label.
  *   requires    (optional) software the file only works in, e.g. "Adobe Photoshop".
  *               Shows a "Photoshop only" badge and a notice above the download.
  *
@@ -88,8 +90,8 @@ window.DRAFT_STUDIO = {
       tags: ["mockup", "t-shirt", "tee", "apparel", "merch", "smart object", "photoshop", "psd"],
       preview: "previews/t-shirt-mockup-one.jpg",
       files: [
-        // Add the PSD once it's uploaded, e.g.
-        // { format: "PSD", path: "files/templates/t-shirt-mockup-one/t-shirt-mockup-one.psd", size: "85 MB" }
+        // Hosted on Google Drive (too big for GitHub). "name" is what the button shows.
+        { format: "PSD", path: "https://drive.google.com/file/d/1HXHTuVA8gntAGUeb1la18R-RaDOHxfpo/view?usp=sharing", name: "t-shirt-mockup-one.psd" }
       ],
       creator: "Isaac Matovu",
       date: "2026-09-28",

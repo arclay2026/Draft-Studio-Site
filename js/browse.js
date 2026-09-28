@@ -62,7 +62,7 @@
             '<span class="fm">' + DS.fmts(it.formats) + "</span>" +
             '<span class="date label">' + DS.fmtDate(it.date) + "</span>" +
             '<span class="acts"><button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + DS.icon.save + "</button>" +
-            (f ? '<a class="dl-sq" href="' + esc(f.path) + '" download data-dl aria-label="Download ' + esc(it.title) + (f.bundle ? " — all formats (ZIP)" : " as " + esc(String(f.format).toUpperCase())) + '">' + DS.icon.down + "</a>" : "") + "</span></div>";
+            (f ? '<a class="dl-sq" href="' + esc(f.path) + '"' + DS.dlAttrs(f.path) + ' data-dl aria-label="Download ' + esc(it.title) + (f.bundle ? " — all formats (ZIP)" : " as " + esc(String(f.format).toUpperCase())) + '">' + DS.icon.down + "</a>" : "") + "</span></div>";
         }).join("") + "</div>";
     }
     meta.textContent = "Showing " + pad(list.length, 2) + " of " + pad(all.length, 2);

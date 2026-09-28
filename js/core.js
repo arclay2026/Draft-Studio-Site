@@ -186,7 +186,7 @@
       '<button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + I.save + "</button>" +
       '<div class="plate-tools">' +
         '<button class="tool" data-quick="' + esc(it.id) + '" aria-label="Quick look: ' + esc(it.title) + '">' + I.eye + "<span>Preview</span></button>" +
-        (first ? '<a class="tool dl" href="' + esc(first.path) + '" download data-dl aria-label="Download ' + esc(it.title) + (first.bundle ? " — all formats (ZIP)" : " as " + esc(String(first.format).toUpperCase())) + '">' + I.down + "<span>" + (first.bundle ? "All · ZIP" : esc(String(first.format).toUpperCase())) + "</span></a>" : "") +
+        (first ? '<a class="tool dl" href="' + esc(first.path) + '"' + DS.dlAttrs(first.path) + ' data-dl aria-label="Download ' + esc(it.title) + (first.bundle ? " — all formats (ZIP)" : " as " + esc(String(first.format).toUpperCase())) + '">' + I.down + "<span>" + (first.bundle ? "All · ZIP" : esc(String(first.format).toUpperCase())) + "</span></a>" : "") +
       "</div>" +
       '<div class="plate-meta">' +
         '<span class="plate-no">' + it.no + "</span>" +
@@ -374,6 +374,11 @@
      Several   → a "Download ▾" menu listing every format, plus a separate
                  "Download all · ZIP" button when the record has a ZIP file. */
   function isZip(f) { return String(f.format).toUpperCase() === "ZIP"; }
+  /* Files hosted elsewhere (e.g. Google Drive for files too big for GitHub)
+     open in a new tab instead of downloading directly.                      */
+  DS.isExternal = function (path) { return /^https?:\/\//i.test(String(path)); };
+  DS.hostName = function (path) { return /drive\.google|docs\.google/i.test(path) ? "Google Drive" : /dropbox/i.test(path) ? "Dropbox" : "external link"; };
+  DS.dlAttrs = function (path) { return DS.isExternal(path) ? ' target="_blank" rel="noopener"' : " download"; };
   DS.quickFile = function (it) {
     var zip = it.files.filter(isZip)[0];
     if (zip) return { path: zip.path, format: "ZIP", bundle: it.files.length > 1 };
@@ -385,11 +390,15 @@
     var zip = it.files.filter(isZip)[0];
     var singles = it.files.filter(function (f) { return !isZip(f); });
     function row(f, cls, attrs) {
-      return '<a class="' + cls + '" href="' + esc(f.path) + '" download data-dl' + (attrs || "") + ">" + DS.fmt(f.format) +
-        '<span class="fn">' + esc(fileName(f.path)) + (f.size ? " · " + esc(f.size) : "") + '</span><span class="go">' + I.down + "</span></a>";
+      var ext = DS.isExternal(f.path);
+      var label = ext ? (f.name || DS.hostName(f.path)) : fileName(f.path);
+      return '<a class="' + cls + '" href="' + esc(f.path) + '"' + DS.dlAttrs(f.path) + " data-dl" + (attrs || "") + ">" + DS.fmt(f.format) +
+        '<span class="fn">' + esc(label) + (f.size ? " · " + esc(f.size) : "") + '</span><span class="go">' + (ext ? "↗" : I.down) + "</span></a>";
     }
     if (it.files.length === 1) {
-      return '<div class="dl-rows">' + row(it.files[0], "dl-row").replace('<span class="go">', '<span class="go">Download ') + "</div>";
+      var only = it.files[0], ext1 = DS.isExternal(only.path);
+      return '<div class="dl-rows">' + row(only, "dl-row").replace('<span class="go">', '<span class="go">' + (ext1 ? "Download from " + DS.hostName(only.path) + " " : "Download ")) + "</div>" +
+        (ext1 ? '<p class="label dl-note">Opens ' + esc(DS.hostName(only.path)) + " in a new tab. Large files may show a “can’t scan for viruses” notice. Click “Download anyway”.</p>" : "");
     }
     var id = "dl-menu-" + (++menuSeq);
     var html = '<div class="dl-box">';
@@ -454,7 +463,8 @@
     var dl = e.target.closest("[data-dl]");
     if (dl) {
       dl.classList.remove("is-done"); void dl.offsetWidth; dl.classList.add("is-done");
-      DS.toast("Downloading " + fileName(dl.getAttribute("href")));
+      var href = dl.getAttribute("href");
+      DS.toast(DS.isExternal(href) ? "Opening " + DS.hostName(href) + " in a new tab" : "Downloading " + fileName(href));
     }
     // Shared-element page transition: tag the clicked plate's image
     var pl = e.target.closest("[data-plate-link]");
