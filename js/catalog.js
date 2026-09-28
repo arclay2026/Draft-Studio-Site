@@ -157,6 +157,26 @@ window.DRAFT_STUDIO = {
 
   logos: [
     {
+      id: "dore-logo",
+      title: "Dore — Letter D Logo",
+      category: "Lettermarks",
+      description: "A letter D built from nested arcs in deep red, paired with a clean geometric DORE wordmark.",
+      dimensions: "Vector · any size (raster 2250 × 2250 px)",
+      tags: ["letter d", "lettermark", "monogram", "wordmark", "red", "arcs"],
+      preview: "previews/dore-logo.jpg",
+      files: [
+        { format: "SVG", path: "files/logos/dore/dore-logo.svg", size: "4 KB" },
+        { format: "AI",  path: "files/logos/dore/dore-logo.ai",  size: "175 KB" },
+        { format: "PDF", path: "files/logos/dore/dore-logo.pdf", size: "43 KB" },
+        { format: "PNG", path: "files/logos/dore/dore-logo.png", size: "64 KB" },
+        { format: "JPG", path: "files/logos/dore/dore-logo.jpg", size: "135 KB" },
+        { format: "ZIP", path: "files/logos/dore/dore-logo.zip", size: "271 KB" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-28",
+      featured: true
+    },
+    {
       id: "summit-coffee",
       dimensions: "Vector · any size",
       title: "Summit Coffee Co.",
