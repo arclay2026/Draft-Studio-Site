@@ -34,6 +34,8 @@
  *   creator     who made it (optional; defaults to the site name)
  *   date        YYYY-MM-DD (newest designs are shown first)
  *   featured    true = show in the Editor's Selection on the front page
+ *   requires    (optional) software the file only works in, e.g. "Adobe Photoshop".
+ *               Shows a "Photoshop only" badge and a notice above the download.
  *
  * EXAMPLE — a template (copy from { to }, and keep the comma after it)
  *
@@ -76,6 +78,23 @@ window.DRAFT_STUDIO = {
   },
 
   templates: [
+    {
+      id: "t-shirt-mockup-one",
+      title: "T-Shirt Mockup — Held Up",
+      category: "Mockups",
+      description: "A ringer T-shirt held up against a clear blue sky. Place your artwork on the chest through the smart object layer.",
+      dimensions: "3328 × 4864 px · portrait",
+      requires: "Adobe Photoshop",
+      tags: ["mockup", "t-shirt", "tee", "apparel", "merch", "smart object", "photoshop", "psd"],
+      preview: "previews/t-shirt-mockup-one.jpg",
+      files: [
+        // Add the PSD once it's uploaded, e.g.
+        // { format: "PSD", path: "files/templates/t-shirt-mockup-one/t-shirt-mockup-one.psd", size: "85 MB" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-28",
+      featured: true
+    },
   ],
 
   logos: [

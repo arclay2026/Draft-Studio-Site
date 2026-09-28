@@ -43,7 +43,7 @@
         '<div class="label">' + it.no + " — " + esc(it.typeLabel) + "</div>" +
         "<h1>" + esc(it.title) + "</h1>" +
         (it.description ? '<p class="lede">' + esc(it.description) + "</p>" : "") +
-        '<div><div class="label" style="margin-bottom:8px">Download — free</div>' + DS.downloads(it) + "</div>" +
+        '<div><div class="label" style="margin-bottom:8px">Download — free</div>' + DS.requiresNotice(it) + DS.downloads(it) + "</div>" +
         '<div class="btn-row">' +
           '<button class="btn btn-sm" data-save="' + esc(it.id) + '" aria-pressed="false" id="save-btn">' + DS.icon.save + ' <span>Save</span></button>' +
           '<button class="btn btn-sm" id="share-btn">' + DS.icon.link + " Copy link</button>" +
@@ -54,6 +54,7 @@
           row("Type", it.typeLabel) +
           row("Category", '<a class="link" href="' + it.page + "?cat=" + encodeURIComponent(it.category) + '">' + esc(it.category) + "</a>", true) +
           (it.dimensions ? row("Size", it.dimensions) : "") +
+          (it.requires ? row("Software", '<strong class="req-inline">' + esc(it.requires) + " only</strong>", true) : "") +
           row("Formats", DS.fmts(it.formats), true) +
           (sizes.length ? row("File size", sizes.join(" · ")) : "") +
           row("Filed", DS.fmtDate(it.date)) +

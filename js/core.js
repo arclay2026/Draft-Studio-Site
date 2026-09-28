@@ -73,6 +73,7 @@
         formats: uniq((raw.files || []).map(function (f) { return String(f.format).toUpperCase(); })),
         preview: previewOf(raw), date: raw.date || "", featured: !!raw.featured,
         dimensions: raw.dimensions || "", creator: raw.creator || SITE.name || "Draft Studio",
+        requires: raw.requires || "",
         type: t[1], typeLabel: t[2], page: t[0] + ".html", order: i,
         url: "item.html?id=" + encodeURIComponent(raw.id)
       });
@@ -191,6 +192,7 @@
         '<span class="plate-no">' + it.no + "</span>" +
         '<h3 class="plate-title"><a href="' + it.url + '" data-plate-link>' + esc(it.title) + "</a></h3>" +
         "<span></span>" +
+        (it.requires ? DS.requiresBadge(it) : "") +
         '<div class="plate-sub"><span class="plate-cat">' + esc(it.category) + (opt.showType ? " · " + it.typeLabel : "") + "</span>" + DS.fmts(it.formats) + "</div>" +
       "</div>" +
     "</article>";
@@ -340,13 +342,33 @@
         '<div class="label">' + it.no + " · " + esc(it.typeLabel) + " · " + esc(it.category) + "</div>" +
         '<h2 class="h2">' + esc(it.title) + "</h2>" +
         (it.description ? '<p class="muted">' + esc(it.description) + "</p>" : "") +
-        DS.downloads(it) +
+        DS.requiresNotice(it) + DS.downloads(it) +
         '<div class="btn-row"><a class="btn" href="' + it.url + '">Open full record <span class="arrow arrow-right">' + "→</span></a>" +
         '<button class="btn" data-save="' + esc(it.id) + '" aria-pressed="false">Save</button></div>' +
       "</div>", true
     );
     DS.open(el); syncSaved();
   };
+  /* Software requirement ("requires" in the catalog), e.g. "Adobe Photoshop".
+     Shown as a badge on plates and a notice above the downloads.            */
+  var APP_MARKS = { photoshop: ["Ps", "#001e36", "#31a8ff"], illustrator: ["Ai", "#330000", "#ff9a00"], indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"] };
+  function appMark(req) {
+    var key = Object.keys(APP_MARKS).filter(function (k) { return String(req).toLowerCase().indexOf(k) !== -1; })[0];
+    var m = key ? APP_MARKS[key] : [String(req).trim().slice(0, 2), "#111111", "#f4f3ef"];
+    return '<span class="app-mark" style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '" aria-hidden="true">' + esc(m[0]) + "</span>";
+  }
+  function appShort(req) { return String(req).replace(/^adobe\s+/i, ""); }
+  DS.requiresBadge = function (it) {
+    return '<span class="req-badge">' + appMark(it.requires) + "<span>" + esc(appShort(it.requires)) + " only</span></span>";
+  };
+  DS.requiresNotice = function (it) {
+    if (!it.requires) return "";
+    return '<div class="req-notice" role="note">' + appMark(it.requires) +
+      '<div><p class="req-title">Works in ' + esc(it.requires) + " only</p>" +
+      '<p class="req-text">This file is built for ' + esc(appShort(it.requires)) + " and won’t open correctly in other apps" +
+      (/photoshop/i.test(it.requires) ? " (such as Photopea, Affinity, GIMP or Canva). Double-click the smart object layer to place your design." : ".") + "</p></div></div>";
+  };
+
   /* Downloads
      One file  → a single download row.
      Several   → a "Download ▾" menu listing every format, plus a separate
