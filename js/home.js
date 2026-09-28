@@ -121,7 +121,9 @@
 
   /* ---------- 6. Icon specimen ---------- */
   var cells = $("#spec-cells"), focus = $("#spec-focus");
-  if (cells && focus) {
+  if (!icons.length) {                       // no icons yet: hide the specimen section
+    var spec = cells && cells.closest(".specimen"); if (spec) spec.hidden = true;
+  } else if (cells && focus) {
     var sample = icons.slice(0, 12);
     cells.innerHTML = sample.map(function (ic, n) {
       return '<a href="icons.html#' + esc(ic.id) + '" data-i="' + n + '" aria-label="' + esc(ic.name) + '"><span class="n">' + pad(n + 1, 2) + '</span><span class="g"></span></a>';

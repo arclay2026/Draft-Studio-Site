@@ -18,7 +18,7 @@
    6  Controls (buttons, fields, format marks)
    7  Plates (artwork frames)
    8  Overlays, toast, cursor, reveal
-   9  Pages: home · browse · record · icons · desk · colophon
+   9  Pages: home · browse · record · icons · colophon
    10 Motion preferences
 
    BREAKPOINTS (mobile first)
@@ -543,7 +543,7 @@ select { cursor: pointer; }
    9 · PAGES
    ===================================================================== */
 
-/* ---------- Page head (browse, icons, desk) ---------- */
+/* ---------- Page head (browse, icons) ---------- */
 .page-head { display: grid; gap: var(--s5); padding: var(--s7) var(--pad-x) var(--s6); }
 .page-head .title-wrap { container-type: inline-size; display: grid; gap: var(--s3); }
 .page-head h1 { font-weight: 800; letter-spacing: -.055em; line-height: .95; font-size: clamp(46px, 18cqi, 176px); }
@@ -935,53 +935,6 @@ select { cursor: pointer; }
   .inspector .sheet-close { display: none; }
 }
 
-/* ---------- Desk ---------- */
-.desk { display: grid; gap: var(--s7); padding-inline: var(--pad-x); align-items: start; }
-.drop { position: relative; display: grid; place-items: center; min-height: 240px; padding: var(--s7) var(--s5); background: var(--plate); text-align: center; cursor: pointer; transition: background .25s; }
-.drop .crops { opacity: 1; inset: var(--s4); transition: inset .4s var(--ease); }
-.drop:hover, .drop.is-over { background: var(--plate-2); }
-.drop.is-over .crops { inset: var(--s2); color: var(--signal-ink); }
-.drop .big { display: block; margin: var(--s3) 0; font-weight: 800; letter-spacing: -.05em; line-height: .98; font-size: clamp(28px, 16px + 2.6vw, 56px); }
-.drop input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-.drop:focus-within { outline: 2px solid var(--signal-ink); outline-offset: 3px; }
-.filelist { margin-top: var(--s4); }
-.filelist:not(:empty) { border-top: 1px solid var(--rule-strong); }
-.filelist .row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "fmt fn size" "role role rm"; gap: var(--s2) var(--s3); align-items: center; padding: var(--s3) 0; border-bottom: 1px solid var(--rule); }
-.filelist .row > :nth-child(1) { grid-area: fmt; }
-.filelist .row .fn { grid-area: fn; font: 500 13px/1.3 var(--f-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.filelist .row .size { grid-area: size; }
-.filelist .row .role-slot { grid-area: role; justify-self: start; }
-.filelist .row .rm { grid-area: rm; }
-.filelist .row button { min-height: var(--touch); padding: 0 var(--s2); font: 500 var(--fs-label)/1 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mute); }
-.filelist .row button:hover { color: var(--signal-ink); }
-.filelist .role { font: 500 var(--fs-label)/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--signal-ink); }
-.form-grid { display: grid; gap: var(--s4); margin-top: var(--s6); }
-.kind { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--rule-strong); }
-.kind label { display: grid; place-items: center; min-height: 48px; font-weight: 700; cursor: pointer; border-right: 1px solid var(--rule-strong); }
-.kind label:last-child { border-right: 0; }
-.kind input { position: absolute; opacity: 0; pointer-events: none; }
-.kind label:has(input:checked) { background: var(--fg); color: var(--bg); }
-.kind label:has(input:focus-visible) { outline: 2px solid var(--signal-ink); outline-offset: -4px; }
-.check { display: flex; gap: var(--s3); align-items: center; min-height: var(--touch); font-weight: 600; cursor: pointer; }
-.check input { width: 20px; height: 20px; accent-color: var(--signal); }
-.desk-side { display: grid; gap: var(--s5); }
-.steps { list-style: none; border-top: 1px solid var(--rule-strong); counter-reset: step; }
-.steps li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s3); padding: var(--s4) 0; border-bottom: 1px solid var(--rule); counter-increment: step; }
-.steps li::before { content: counter(step, decimal-leading-zero); font: 800 24px/1 var(--f-sans); letter-spacing: -.04em; color: var(--signal-ink); }
-.steps .files { font: 500 13px/1.6 var(--f-mono); color: var(--mute); overflow-wrap: anywhere; margin: var(--s1) 0 var(--s3); }
-.warn { font: 500 13px/1.45 var(--f-mono); color: #b93b0a; }
-:root[data-theme="dark"] .warn { color: #ff9a6b; }
-.warn:empty { display: none; }
-@media (min-width: 768px) {
-  .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .form-grid .full { grid-column: 1 / -1; }
-  .filelist .row { grid-template-columns: auto minmax(0, 1fr) auto auto auto; grid-template-areas: "fmt fn size role rm"; }
-}
-@media (min-width: 1024px) {
-  .desk { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: calc(var(--gap) * 2); }
-  .desk-side { position: sticky; top: var(--s5); }
-}
-
 /* ---------- Colophon ---------- */
 .colophon { margin-top: var(--section); padding: var(--s5) var(--pad-x) 0; border-top: 1px solid var(--rule-strong); container-type: inline-size; }
 .colophon-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s6) var(--gap); margin-top: var(--s5); }
@@ -1005,7 +958,7 @@ select { cursor: pointer; }
 
 /* ---------- Refinements from the responsive audit ---------- */
 /* Grid children may shrink below their content width (prevents overflow) */
-.intro-text > *, .stack > *, .spec > *, .quick-info > *, .desk > *, .desk-side > * { min-width: 0; }
+.intro-text > *, .stack > *, .spec > *, .quick-info > * { min-width: 0; }
 .search-box { min-width: 0; max-width: 100%; }
 
 /* Breathing room between labels and oversized headings */
@@ -1067,3 +1020,7 @@ select { cursor: pointer; }
   .dl-list { position: absolute; left: 0; right: 0; top: 100%; z-index: 30; box-shadow: 0 24px 40px -24px rgba(0, 0, 0, .45); animation: menu-in .2s var(--ease); }
   @keyframes menu-in { from { opacity: 0; transform: translateY(-6px); } }
 }
+/* Empty states */
+.specimen[hidden], .inspector[hidden] { display: none !important; }
+.icon-cells.is-empty { border: 0; display: block; }
+.crumbs a { min-width: var(--touch); justify-content: center; }

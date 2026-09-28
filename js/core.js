@@ -257,7 +257,7 @@
           return '<a href="' + it.page + "?cat=" + encodeURIComponent(c) + '">' + esc(c) + "</a>";
         }).join("") + "</div>" +
         '<div><div class="label">Your archive</div><a href="#" data-open-search>Search the archive</a><a href="#" data-open-saved><span>Saved designs (<span class="saved-n">00</span>)</span></a></div>' +
-        '<div><div class="label">Contributors</div><a href="desk.html">Archive desk — upload a design</a>' + (SITE.email ? '<a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + "</a>" : "") + "</div>" +
+        (SITE.email ? '<div><div class="label">Contact</div><a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + "</a></div>" : "") +
       "</div>"
     );
     function row(n, href, name, count, it) {

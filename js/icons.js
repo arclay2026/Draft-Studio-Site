@@ -33,7 +33,10 @@
     grid.innerHTML = list.length ? list.map(function (ic, n) {
       return '<button class="icon-cell" style="--i:' + n + '" data-id="' + esc(ic.id) + '" aria-pressed="false" aria-label="' + esc(ic.name) + '">' +
         '<span class="n">' + ic.no.replace("IC–", "") + '</span><span class="g"></span><span class="nm">' + esc(ic.name) + "</span></button>";
-    }).join("") : '<div class="empty" style="grid-column:1/-1"><p class="h2">No icons match. <em class="s">Try another word.</em></p></div>';
+    }).join("") : '<div class="empty" style="grid-column:1/-1"><p class="label">' + (all.length ? "No results" : "Coming soon") + '</p><p class="h2">' +
+      (all.length ? 'No icons match. <em class="s">Try another word.</em>' : 'Icons are <em class="s">on the way.</em>') + "</p></div>";
+    insp.hidden = !all.length;
+    grid.classList.toggle("is-empty", !list.length);
     $all(".icon-cell", grid).forEach(function (b) {
       var ic = all.filter(function (i) { return i.id === b.getAttribute("data-id"); })[0];
       DS.glyph($(".g", b), ic);

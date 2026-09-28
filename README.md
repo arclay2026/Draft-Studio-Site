@@ -13,7 +13,6 @@ It runs on GitHub Pages or any web host.
 | `logos.html` | Logos browser, same as templates |
 | `item.html?id=…` | Full record for one design: large artwork with zoom, spec sheet, downloads, save, share link, previous/next and related designs |
 | `icons.html` | Icon specimen sheet with an inspector: recolour, download SVG/PNG, copy code |
-| `desk.html` | **Archive desk**, for you: drop your files and it writes the catalog entry and links to the right GitHub upload folders |
 
 Across the site: a floating dock for navigation, a full-screen **Index** menu,
 search from anywhere (press `/`), **Quick look** on any design, and
@@ -42,33 +41,30 @@ All tokens live at the top of `css/archive.css`:
 - **Breakpoints:** mobile below 768px, tablet 768px, desktop 1024px, large 1440px (mobile first).
 - **Navigation:** a labelled tab bar at the bottom of the screen on phones (Templates, Logos, Icons,
   Search, Saved), which becomes the floating dock on tablet and desktop, where it also opens the Index.
-  Upload ("File a design") and the theme switch sit top right on every page.
+  The theme switch (and the menu on phones) sits top right on every page.
 - **Touch:** every control is at least 44×44px. On touch screens a design's Save, Preview and
   Download buttons sit under the artwork; with a mouse on desktop they appear over it on hover.
 - **Accessibility:** skip link, landmarks, labelled controls, visible focus, keyboard support
   (`/` opens search, Esc closes), and "reduce motion" stops all movement.
 
-## Adding content (all you ever edit is `js/catalog.js`)
+## Adding content (only you can do this)
 
-1. **Upload the file(s)**
-   - Templates → `files/templates/` (e.g. `wedding-invite.psd`, `wedding-invite.ai`, `wedding-invite.pdf`)
-   - Logos → `files/logos/`
-   - Icons → `files/icons/` (SVG only)
-2. **Upload a preview image** (JPG/PNG/WEBP, ~1200px wide) to `previews/`.
-   Browsers can't display PSD or AI files, so templates and logos need one.
-   Items with an SVG file use it as the preview automatically.
-3. **Add an entry** at the top of the right list in `js/catalog.js`. The easiest
-   way is to open `desk.html` on your site, drop the files in and copy the entry it writes. The file's
-   comments explain every field and include a multi-format example.
+The site has no upload form. Visitors can browse and download, but only
+someone with access to this GitHub repository can add or change designs.
 
-On GitHub you can do all of this in the browser: *Add file → Upload files*
-into the folder, then edit `js/catalog.js` with the pencil icon.
+1. **Upload the files** on GitHub: open the folder (`files/templates/`,
+   `files/logos/` or `files/icons/`), click *Add file → Upload files*, drag the
+   files in from File Explorer and click **Commit changes**.
+   Give each design its own folder, e.g. `files/logos/dore/`.
+   The website uploader takes files up to 25 MB; use GitHub Desktop for files
+   up to 100 MB, and zip or link anything bigger.
+2. **Upload a preview image** (JPG/PNG, about 1200px wide) to `previews/`.
+3. **Add an entry** in `js/catalog.js` (pencil icon to edit). Paste it
+   *inside* the right list, just below `templates: [`, `logos: [` or `icons: [`.
+   The file's comments explain every field and include examples to copy.
 
-**Icon tips:** use `stroke="currentColor"` / `fill="currentColor"` in your SVG
-icons so the colour picker can recolour them, and keep a `viewBox`.
-
-**Large files:** GitHub rejects files over 100 MB and warns above 50 MB. For big PSDs,
-zip them, or host them elsewhere (Google Drive, Dropbox, etc.) and put that link in `path`.
+With several files for one design, the site shows a **Download ▾** menu with
+every format, and a ZIP file becomes the **Download all** button.
 
 ## Branding
 
