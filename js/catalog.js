@@ -1,31 +1,4 @@
-{
-  id: "poster-cover",
-  title: "Poster Cover",
-  category: "Design",
-  dimensions: "a4",
-  tags: [],
-  preview: "previews/poster-01.jpg",
-  files: [
-    { format: "PSD", path: "files/templates/poster-cover.psd" }
-  ],
-  creator: "Isaac Matovu",
-  date: "2026-09-27",
-  featured: true
-},{
-  id: "amg-gt-646",
-  title: "AMG GT 646",
-  category: "Technology",
-  dimensions: "2704x2028",
-  description: "Cars",
-  tags: ["Cars","Tech"],
-  preview: "previews/9626508f71ea8e74a0a4367c0f63c174bfabe6cb-2704x2028.png",
-  files: [
-    { format: "PSD", path: "files/templates/amg-gt-646.psd" }
-  ],
-  creator: "Isaac Matovu",
-  date: "2026-09-27",
-  featured: true
-},/*
+/*
  * DRAFT STUDIO — CONTENT CATALOG
  * ==============================
  * This is the only file you need to edit to add, change or remove content.
@@ -79,6 +52,51 @@ window.DRAFT_STUDIO = {
   },
 
   templates: [
+    {
+      id: "the-start-poster",
+      title: "The Start — Magazine Cover",
+      category: "Posters",
+      description: "Editorial cover with an oversized headline, a date bar and a full-bleed photo that breaks through the type.",
+      dimensions: "3:4 portrait · 2700 × 3600 px",
+      tags: ["poster", "magazine", "cover", "editorial", "photo"],
+      preview: "previews/the-start-poster.jpg",
+      files: [
+        { format: "JPG", path: "files/templates/the-start-poster.jpg", size: "0.7 MB" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-27",
+      featured: true
+    },
+    {
+      id: "amg-gt-646",
+      title: "AMG GT 646",
+      category: "Automotive",
+      description: "Night car poster with outlined display type layered over the photo.",
+      dimensions: "4:3 landscape · 1866 × 1400 px",
+      tags: ["cars", "tech", "automotive", "poster", "night"],
+      preview: "previews/amg-cle-646.jpg",
+      files: [
+        { format: "PNG", path: "files/templates/amg-cle-646.png", size: "2.7 MB" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-27",
+      featured: true
+    },
+    {
+      id: "mercedes-amg-gt-coupe",
+      title: "Mercedes-AMG GT Coupé Post",
+      category: "Social Media",
+      description: "Square social post: aerial car shot, bold headline top left, legal line and logo along the bottom.",
+      dimensions: "1:1 square · 2113 × 2113 px",
+      tags: ["cars", "automotive", "instagram", "social", "square"],
+      preview: "previews/mercedes-amg-gt-coupe.jpg",
+      files: [
+        { format: "PNG", path: "files/templates/mercedes-amg-gt-coupe.png", size: "1.4 MB" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-27",
+      featured: false
+    },
     {
       id: "event-flyer",
       dimensions: "A4 portrait",
