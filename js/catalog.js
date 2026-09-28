@@ -71,7 +71,7 @@ window.DRAFT_STUDIO = {
   site: {
     name: "Draft Studio",
     tagline: "An open archive of templates, marks and icons for designers",
-    email: "hello@draftstudio.com",           // ← replace with your details
+    email: "thedraftstudio.design@gmail.com",
     whatsapp: "",                              // e.g. "27780000000" (leave empty to hide)
     instagram: "",                             // e.g. "https://instagram.com/draftstudio"
     license:
