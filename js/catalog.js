@@ -80,6 +80,26 @@ window.DRAFT_STUDIO = {
 
   logos: [
     {
+      id: "mato-logo",
+      title: "Mato — Letter M Logo",
+      category: "Lettermarks",
+      description: "A bold geometric M in coral red, paired with a crisp Mato wordmark whose t is capped with a matching red square.",
+      dimensions: "Vector · any size (raster 2250 × 2250 px)",
+      tags: ["letter m", "lettermark", "monogram", "wordmark", "geometric", "red"],
+      preview: "previews/mato-logo.jpg",
+      files: [
+        { format: "SVG", path: "files/logos/mato/mato-logo.svg", size: "3 KB" },
+        { format: "AI",  path: "files/logos/mato/mato-logo.ai",  size: "165 KB" },
+        { format: "PDF", path: "files/logos/mato/mato-logo.pdf", size: "44 KB" },
+        { format: "PNG", path: "files/logos/mato/mato-logo.png", size: "42 KB" },
+        { format: "JPG", path: "files/logos/mato/mato-logo.jpg", size: "104 KB" },
+        { format: "ZIP", path: "files/logos/mato/mato-logo.zip", size: "206 KB" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-28",
+      featured: true
+    },
+    {
       id: "dore-logo",
       title: "Dore — Letter D Logo",
       category: "Lettermarks",
