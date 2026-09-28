@@ -176,7 +176,7 @@
   /* ---------- plate (the artwork frame used everywhere) ---------- */
   DS.plate = function (it, opt) {
     opt = opt || {};
-    var first = it.files[0];
+    var first = DS.quickFile(it);
     return '<article class="plate' + (opt.fixed ? " is-fixed" : "") + '" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + (opt.reveal ? " data-reveal" : "") + ">" +
       '<a class="plate-media" href="' + it.url + '" data-cursor="View" data-plate-link tabindex="-1" aria-hidden="true">' +
         (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + esc(it.title) + '" loading="lazy" decoding="async">' : '<span class="label">No preview</span>') +
@@ -185,7 +185,7 @@
       '<button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + I.save + "</button>" +
       '<div class="plate-tools">' +
         '<button class="tool" data-quick="' + esc(it.id) + '" aria-label="Quick look: ' + esc(it.title) + '">' + I.eye + "<span>Preview</span></button>" +
-        (first ? '<a class="tool dl" href="' + esc(first.path) + '" download data-dl aria-label="Download ' + esc(it.title) + " as " + esc(String(first.format).toUpperCase()) + '">' + I.down + "<span>" + esc(String(first.format).toUpperCase()) + "</span></a>" : "") +
+        (first ? '<a class="tool dl" href="' + esc(first.path) + '" download data-dl aria-label="Download ' + esc(it.title) + (first.bundle ? " — all formats (ZIP)" : " as " + esc(String(first.format).toUpperCase())) + '">' + I.down + "<span>" + (first.bundle ? "All · ZIP" : esc(String(first.format).toUpperCase())) + "</span></a>" : "") +
       "</div>" +
       '<div class="plate-meta">' +
         '<span class="plate-no">' + it.no + "</span>" +
@@ -347,13 +347,72 @@
     );
     DS.open(el); syncSaved();
   };
+  /* Downloads
+     One file  → a single download row.
+     Several   → a "Download ▾" menu listing every format, plus a separate
+                 "Download all · ZIP" button when the record has a ZIP file. */
+  function isZip(f) { return String(f.format).toUpperCase() === "ZIP"; }
+  DS.quickFile = function (it) {
+    var zip = it.files.filter(isZip)[0];
+    if (zip) return { path: zip.path, format: "ZIP", bundle: it.files.length > 1 };
+    return it.files[0];
+  };
+  var menuSeq = 0;
   DS.downloads = function (it) {
     if (!it.files.length) return '<p class="muted">Files coming soon.</p>';
-    return '<div class="dl-rows">' + it.files.map(function (f) {
-      return '<a class="dl-row" href="' + esc(f.path) + '" download data-dl>' + DS.fmt(f.format) +
-        '<span class="fn">' + esc(fileName(f.path)) + (f.size ? " · " + esc(f.size) : "") + '</span><span class="go">Download ' + I.down + "</span></a>";
-    }).join("") + "</div>";
+    var zip = it.files.filter(isZip)[0];
+    var singles = it.files.filter(function (f) { return !isZip(f); });
+    function row(f, cls, attrs) {
+      return '<a class="' + cls + '" href="' + esc(f.path) + '" download data-dl' + (attrs || "") + ">" + DS.fmt(f.format) +
+        '<span class="fn">' + esc(fileName(f.path)) + (f.size ? " · " + esc(f.size) : "") + '</span><span class="go">' + I.down + "</span></a>";
+    }
+    if (it.files.length === 1) {
+      return '<div class="dl-rows">' + row(it.files[0], "dl-row").replace('<span class="go">', '<span class="go">Download ') + "</div>";
+    }
+    var id = "dl-menu-" + (++menuSeq);
+    var html = '<div class="dl-box">';
+    if (singles.length) {
+      html += '<div class="dl-menu" data-dl-menu>' +
+        '<button class="btn btn-signal dl-trigger" aria-expanded="false" aria-controls="' + id + '" aria-haspopup="true">' + I.down +
+          "<span>Download</span>" + '<span class="dl-count">' + singles.length + " format" + (singles.length > 1 ? "s" : "") + "</span>" +
+          '<svg class="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>' +
+        '<div class="dl-list" id="' + id + '" role="menu" aria-label="Choose a format" hidden>' +
+          singles.map(function (f) { return row(f, "dl-item", ' role="menuitem"'); }).join("") +
+        "</div></div>";
+    }
+    if (zip) {
+      html += '<a class="btn dl-zip" href="' + esc(zip.path) + '" download data-dl>' + I.down +
+        "<span>Download all" + '</span><span class="dl-count">ZIP' + (zip.size ? " · " + esc(zip.size) : "") + "</span></a>";
+    }
+    return html + "</div>";
   };
+  function closeMenus(except) {
+    $all("[data-dl-menu]").forEach(function (m) {
+      if (m === except) return;
+      var t = $(".dl-trigger", m), l = $(".dl-list", m);
+      if (t) t.setAttribute("aria-expanded", "false");
+      if (l) l.hidden = true;
+    });
+  }
+  document.addEventListener("click", function (e) {
+    var trig = e.target.closest(".dl-trigger");
+    var menu = e.target.closest("[data-dl-menu]");
+    if (e.target.closest(".dl-item")) { setTimeout(function () { closeMenus(); }, 0); return; }  // picked a file: close
+    closeMenus(menu);
+    if (!trig) return;
+    var list = $(".dl-list", menu), open = trig.getAttribute("aria-expanded") !== "true";
+    trig.setAttribute("aria-expanded", open);
+    list.hidden = !open;
+    if (open && e.detail === 0) { var first = $(".dl-item", list); if (first) first.focus(); }
+  });
+  document.addEventListener("keydown", function (e) {
+    var menu = e.target.closest && e.target.closest("[data-dl-menu]");
+    if (!menu) return;
+    var items = $all(".dl-item", menu), i = items.indexOf(document.activeElement);
+    if (e.key === "Escape") { e.stopPropagation(); closeMenus(); $(".dl-trigger", menu).focus(); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); if ($(".dl-list", menu).hidden) $(".dl-trigger", menu).click(); (items[i + 1] || items[0]).focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); (items[i - 1] || items[items.length - 1]).focus(); }
+  }, true);
 
   /* ---------- global interactions ---------- */
   document.addEventListener("click", function (e) {

@@ -53,7 +53,7 @@
       out.innerHTML = '<div class="index-table" role="table">' +
         '<div class="index-row head label" role="row"><span class="no">No.</span><span></span><span>Title</span><span class="cat">Category</span><span class="fm">Formats</span><span class="date">Filed</span><span>Actions</span></div>' +
         list.map(function (it, n) {
-          var f = it.files[0];
+          var f = DS.quickFile(it);
           return '<div class="index-row" role="row" style="--i:' + n + '" data-preview="' + esc(it.preview) + '">' +
             '<span class="no label label-ink">' + it.no + "</span>" +
             '<a class="thumb" href="' + it.url + '" data-plate-link tabindex="-1">' + (it.preview ? '<img src="' + esc(it.preview) + '" alt="" loading="lazy">' : "") + "</a>" +
@@ -62,7 +62,7 @@
             '<span class="fm">' + DS.fmts(it.formats) + "</span>" +
             '<span class="date label">' + DS.fmtDate(it.date) + "</span>" +
             '<span class="acts"><button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + DS.icon.save + "</button>" +
-            (f ? '<a class="dl-sq" href="' + esc(f.path) + '" download data-dl aria-label="Download ' + esc(String(f.format).toUpperCase()) + '">' + DS.icon.down + "</a>" : "") + "</span></div>";
+            (f ? '<a class="dl-sq" href="' + esc(f.path) + '" download data-dl aria-label="Download ' + esc(it.title) + (f.bundle ? " — all formats (ZIP)" : " as " + esc(String(f.format).toUpperCase())) + '">' + DS.icon.down + "</a>" : "") + "</span></div>";
         }).join("") + "</div>";
     }
     meta.textContent = "Showing " + pad(list.length, 2) + " of " + pad(all.length, 2);

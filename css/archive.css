@@ -1037,3 +1037,33 @@ select { cursor: pointer; }
 @media (min-width: 768px) { #ov-search .overlay-panel { bottom: auto; } }
 .inspector { grid-template-columns: minmax(0, 1fr); }
 .inspector > * { min-width: 0; }
+
+/* ---------- Download menu (records with several formats) ----------
+   Mobile: the list opens in place under the button (pushes content down).
+   Desktop: it drops down over the page like a standard menu.            */
+.dl-box { display: grid; gap: var(--s2); }
+.dl-menu { position: relative; }
+.dl-box .btn { width: 100%; justify-content: flex-start; min-height: 52px; }
+.dl-box .btn > span:first-of-type { flex: 1; text-align: left; }
+.dl-count { font: 500 var(--fs-label)/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+.dl-trigger .caret { width: 12px; height: 8px; transition: transform .25s var(--ease); }
+.dl-trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
+.dl-list { border: 1px solid var(--rule-strong); border-top: 0; background: var(--bg); }
+.dl-list[hidden] { display: none; }
+.dl-item {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: var(--s3); align-items: center;
+  min-height: 52px; padding: 0 var(--s4); border-top: 1px solid var(--rule); transition: background .2s, color .2s;
+}
+.dl-item:first-child { border-top: 0; }
+.dl-item .fmt { justify-self: start; }
+.dl-item .fn { font: 500 13px/1.3 var(--f-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dl-item .go { color: var(--signal-ink); display: grid; }
+.dl-item .go svg { width: 16px; height: 16px; transition: transform .3s var(--ease); }
+.dl-item:hover, .dl-item:focus-visible { background: var(--signal); color: #fff; outline: none; }
+.dl-item:hover .go, .dl-item:focus-visible .go { color: #fff; }
+.dl-item:hover .go svg { transform: translateY(3px); }
+.dl-item:hover .fmt, .dl-item:focus-visible .fmt { border-color: rgba(255, 255, 255, .5); color: #fff; }
+@media (min-width: 1024px) {
+  .dl-list { position: absolute; left: 0; right: 0; top: 100%; z-index: 30; box-shadow: 0 24px 40px -24px rgba(0, 0, 0, .45); animation: menu-in .2s var(--ease); }
+  @keyframes menu-in { from { opacity: 0; transform: translateY(-6px); } }
+}
