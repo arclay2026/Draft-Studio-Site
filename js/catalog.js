@@ -81,6 +81,23 @@ window.DRAFT_STUDIO = {
 
   templates: [
     {
+      id: "hoodie-mockup-one",
+      title: "Hoodie Mockup — Flat Lay",
+      category: "Mockups",
+      description: "A two-tone hoodie laid flat on concrete, styled with a branded coffee cup and burger wrapper on a tray. Place your artwork through the smart object layers.",
+      dimensions: "3456 × 4608 px · portrait",
+      requires: "Adobe Photoshop",
+      tags: ["mockup", "hoodie", "sweatshirt", "apparel", "merch", "flat lay", "cup", "packaging", "smart object", "photoshop", "psd"],
+      preview: "previews/hoodie-mockup-one.jpg",
+      files: [
+        // Waiting for the Google Drive link, then:
+        // { format: "PSD", path: "https://drive.google.com/file/d/…/view?usp=sharing", name: "hoodie-mockup-one.psd" }
+      ],
+      creator: "Isaac Matovu",
+      date: "2026-09-29",
+      featured: true
+    },
+    {
       id: "t-shirt-mockup-one",
       title: "T-Shirt Mockup — Held Up",
       category: "Mockups",
