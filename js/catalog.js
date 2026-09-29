@@ -90,8 +90,8 @@ window.DRAFT_STUDIO = {
       tags: ["mockup", "hoodie", "sweatshirt", "apparel", "merch", "flat lay", "cup", "packaging", "smart object", "photoshop", "psd"],
       preview: "previews/hoodie-mockup-one.jpg",
       files: [
-        // Waiting for the Google Drive link, then:
-        // { format: "PSD", path: "https://drive.google.com/file/d/…/view?usp=sharing", name: "hoodie-mockup-one.psd" }
+        // Hosted on Google Drive (too big for GitHub). "name" is what the button shows.
+        { format: "PSD", path: "https://drive.google.com/file/d/16XtB5is0IBh-21NNVC92bz6gr_rTmDUT/view?usp=sharing", name: "hoodie-mockup-one.psd" }
       ],
       creator: "Isaac Matovu",
       date: "2026-09-29",
