@@ -48,6 +48,17 @@
   --on-signal: #ffffff;
   --dock-bg: #111111;
   --dock-fg: #f4f3ef;
+
+  /* glass (frosted panels over artwork) */
+  --glass-bg: rgba(244, 243, 239, .68);          /* light frosted paper */
+  --glass-bg-strong: rgba(244, 243, 239, .86);   /* large panels with lots of text */
+  --glass-solid: #eeede8;                        /* fallback when blur is unavailable */
+  --glass-fg: #111111;
+  --glass-border: rgba(255, 255, 255, .58);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, .75);
+  --glass-shadow: 0 20px 44px -22px rgba(17, 17, 17, .38);
+  --glass-blur: blur(20px) saturate(140%);
+  --glass-radius: 20px;
   --shadow-art: 0 1px 0 rgba(0, 0, 0, .04), 0 22px 40px -24px rgba(0, 0, 0, .45);
 
   /* type families */
@@ -101,6 +112,13 @@
   --signal-ink: #8aa4ff;           /* 7:1 on ink */
   --dock-bg: #f4f3ef;
   --dock-fg: #111111;
+  --glass-bg: rgba(40, 42, 48, .72);             /* dark slate glass */
+  --glass-bg-strong: rgba(34, 36, 41, .86);
+  --glass-solid: #2a2c31;
+  --glass-fg: #f4f3ef;
+  --glass-border: rgba(255, 255, 255, .15);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, .22);
+  --glass-shadow: 0 22px 48px -20px rgba(0, 0, 0, .75);
   --shadow-art: 0 1px 0 rgba(0, 0, 0, .2), 0 22px 40px -22px rgba(0, 0, 0, .9);
 }
 
@@ -1125,3 +1143,107 @@ select { cursor: pointer; }
 /* Long contact details (e.g. the email) wrap inside their footer column */
 .colophon-grid > * { min-width: 0; }
 .colophon-grid a { overflow-wrap: break-word; }
+
+
+/* =====================================================================
+   GLASS LAYER
+   Frosted, rounded glass only where content shows through behind it:
+   the dock / tab bar, hover tools on artwork, the sticky filter bar,
+   the overlays, and the labels on the home page wall.
+   Default = solid fallback; blur is added only when supported, and
+   removed again for "reduce transparency".
+   ===================================================================== */
+
+/* -- surfaces: shared look ---------------------------------------- */
+.dock,
+#ov-search .overlay-panel, #ov-saved .overlay-panel, #ov-quick .overlay-panel,
+.wall-caption, .seal-core {
+  background: var(--glass-solid); color: var(--glass-fg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+#ov-search .overlay-panel, #ov-saved .overlay-panel, #ov-quick .overlay-panel { background: var(--glass-solid); }
+#ov-index .overlay-panel { background: #151517; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12); }
+
+/* dock: text and dividers follow the glass */
+.dock { --dock-fg: var(--glass-fg); overflow: hidden; border-radius: var(--glass-radius) var(--glass-radius) 0 0; border-bottom: 0; }
+.dock-item:hover { background: color-mix(in srgb, var(--glass-fg) 9%, transparent); }
+@media (min-width: 768px) {
+  .dock { border-radius: var(--glass-radius); border-bottom: 1px solid var(--glass-border); }
+  .dock-item + .dock-item { border-left-color: color-mix(in srgb, var(--glass-fg) 14%, transparent); }
+}
+
+/* overlays: rounded where they don't touch every edge */
+.overlay { background: color-mix(in srgb, var(--ink) 40%, transparent); }
+#ov-search .overlay-panel { border-top: 0; border-radius: 0; }
+#ov-saved .overlay-panel { border-right: 0; }
+#ov-quick .overlay-panel { border-radius: var(--glass-radius) var(--glass-radius) 0 0; border-bottom: 0; overflow: hidden; }
+@media (min-width: 768px) {
+  #ov-search .overlay-panel { border-radius: 0 0 var(--glass-radius) var(--glass-radius); border-left: 0; border-right: 0; }
+  #ov-saved .overlay-panel { border-radius: var(--glass-radius) 0 0 var(--glass-radius); }
+}
+@media (min-width: 1024px) { #ov-quick .overlay-panel { border-radius: var(--glass-radius); border-bottom: 1px solid var(--glass-border); } }
+.quick-art { background: color-mix(in srgb, var(--plate) 70%, transparent); }
+
+/* pill buttons that sit on glass */
+.overlay-close {
+  border: 1px solid var(--glass-border); border-radius: 999px; padding: 0 var(--s4); margin-right: 0;
+  box-shadow: var(--glass-highlight); background: color-mix(in srgb, var(--glass-fg) 6%, transparent);
+}
+#ov-index .overlay-close { border-color: rgba(255, 255, 255, .18); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .06); }
+
+/* home page wall: caption as a vertical glass pill, seal core as a glass disc */
+.wall-caption { border-radius: 999px; padding: var(--s4) 7px; }
+.seal-core { border-radius: 50%; }
+
+/* sticky filter bar (desktop): a full-width glass band */
+@media (min-width: 1024px) {
+  .filterbar { background: var(--glass-solid); box-shadow: var(--glass-highlight); border-bottom-color: var(--glass-border); }
+}
+
+/* hover tools on artwork (mouse, desktop): glass pills and a glass disc */
+@media (hover: hover) and (min-width: 1024px) {
+  .plate-tools .tool {
+    border-radius: 999px; padding: 0 var(--s4); border: 1px solid var(--glass-border);
+    background: var(--glass-solid); color: var(--glass-fg); box-shadow: var(--glass-highlight), var(--glass-shadow);
+  }
+  .plate-tools .tool:hover { background: var(--glass-fg); color: var(--bg); }
+  .plate-tools .tool.dl { background: rgba(36, 87, 255, .92); border-color: rgba(255, 255, 255, .35); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), var(--glass-shadow); }
+  .plate-tools .tool.dl:hover { background: var(--ink); color: #fff; }
+  .save {
+    border-radius: 50%; border: 1px solid var(--glass-border);
+    background: var(--glass-solid); color: var(--glass-fg); box-shadow: var(--glass-highlight), var(--glass-shadow);
+  }
+  .save[aria-pressed="true"] { background: rgba(36, 87, 255, .92); color: #fff; border-color: rgba(255, 255, 255, .35); }
+}
+
+/* -- the frost itself: only where the browser supports it ---------- */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .dock, .wall-caption, .seal-core { background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  #ov-search .overlay-panel, #ov-saved .overlay-panel, #ov-quick .overlay-panel {
+    background: var(--glass-bg-strong); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  }
+  #ov-index .overlay-panel { background: rgba(17, 17, 17, .84); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  @media (min-width: 1024px) {
+    .filterbar { background: var(--glass-bg-strong); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  }
+  @media (hover: hover) and (min-width: 1024px) {
+    .plate-tools .tool:not(.dl), .save:not([aria-pressed="true"]) { background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+    .plate-tools .tool.dl, .save[aria-pressed="true"] { -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  }
+}
+
+/* -- "reduce transparency": back to solid ------------------------- */
+@media (prefers-reduced-transparency: reduce) {
+  .dock, .wall-caption, .seal-core, .filterbar,
+  #ov-search .overlay-panel, #ov-saved .overlay-panel, #ov-quick .overlay-panel,
+  .plate-tools .tool:not(.dl), .save:not([aria-pressed="true"]) {
+    background: var(--glass-solid) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  #ov-index .overlay-panel { background: #151517 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+}
+
+/* pill buttons and chips inside glass overlays */
+#ov-quick .btn-row .btn, #ov-search .chiplist a, #ov-search .chiplist button,
+#ov-saved .saved-row button { border-radius: 999px; }
+#ov-quick .btn-row .btn { box-shadow: var(--glass-highlight); }
