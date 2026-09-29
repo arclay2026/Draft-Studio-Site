@@ -145,7 +145,7 @@
   /* ---------- 7. Studio / creator ---------- */
   var st = $("#creator-stats");
   if (st) {
-    var mine = items.filter(function (i) { return i.creator === (DS.site.name || "Draft Studio"); });
+    var mine = items; // every design in the archive is the studio's own
     var fmts = DS.uniq([].concat.apply([], mine.map(function (i) { return i.formats; })));
     st.innerHTML = "<div><b>" + pad(mine.length, 2) + '</b><span class="label">Records</span></div><div><b>' + pad(icons.length, 2) + '</b><span class="label">Icons</span></div><div><b>' + pad(fmts.length, 2) + '</b><span class="label">Formats</span></div>';
   }
