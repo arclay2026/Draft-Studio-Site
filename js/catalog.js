@@ -41,6 +41,15 @@
  *   howTo       (optional) your own "How to use" steps, replacing the automatic ones:
  *               howTo: [{ title: "Open it", text: "Open the file in Photoshop." }, …]
  *
+ * SELLING A LOGO (instead of a free download)
+ *   price          e.g. "R350": shows the price and a "Buy on WhatsApp" button
+ *   priceWithName  (optional) e.g. "R500": second option, customised with the buyer's name
+ *   sold           true = shows "Sold" and stops new orders
+ *   includes       the formats the buyer gets, e.g. ["SVG", "AI", "PDF", "PNG", "JPG"]
+ *   art            (optional) transparent PNG of the logo for the Colour test
+ *   Don't upload the real files of a logo you sell: everything on GitHub can be
+ *   downloaded. Keep them on your computer and send them to the buyer.
+ *
  * EXAMPLE — a template (copy from { to }, and keep the comma after it)
  *
  *   {
@@ -159,14 +168,12 @@ window.DRAFT_STUDIO = {
       dimensions: "Vector · any size (raster 2250 × 2250 px)",
       tags: ["letter m", "lettermark", "monogram", "wordmark", "geometric", "red"],
       preview: "previews/mato-logo.jpg",
-      files: [
-        { format: "SVG", path: "files/logos/mato/mato-logo.svg", size: "3 KB" },
-        { format: "AI",  path: "files/logos/mato/mato-logo.ai",  size: "165 KB" },
-        { format: "PDF", path: "files/logos/mato/mato-logo.pdf", size: "44 KB" },
-        { format: "PNG", path: "files/logos/mato/mato-logo.png", size: "42 KB" },
-        { format: "JPG", path: "files/logos/mato/mato-logo.jpg", size: "104 KB" },
-        { format: "ZIP", path: "files/logos/mato/mato-logo.zip", size: "206 KB" }
-      ],
+      // FOR SALE — exclusive, sold once. Set sold: true after someone buys it.
+      price: "R350",
+      priceWithName: "R500",
+      sold: false,
+      includes: ["SVG", "AI", "PDF", "PNG", "JPG"],
+      art: "previews/mato-logo-art.png",
       creator: "Isaac Matovu",
       date: "2026-09-28",
       featured: true
@@ -179,14 +186,12 @@ window.DRAFT_STUDIO = {
       dimensions: "Vector · any size (raster 2250 × 2250 px)",
       tags: ["letter d", "lettermark", "monogram", "wordmark", "red", "arcs"],
       preview: "previews/dore-logo.jpg",
-      files: [
-        { format: "SVG", path: "files/logos/dore/dore-logo.svg", size: "4 KB" },
-        { format: "AI",  path: "files/logos/dore/dore-logo.ai",  size: "175 KB" },
-        { format: "PDF", path: "files/logos/dore/dore-logo.pdf", size: "43 KB" },
-        { format: "PNG", path: "files/logos/dore/dore-logo.png", size: "64 KB" },
-        { format: "JPG", path: "files/logos/dore/dore-logo.jpg", size: "135 KB" },
-        { format: "ZIP", path: "files/logos/dore/dore-logo.zip", size: "271 KB" }
-      ],
+      // FOR SALE — exclusive, sold once. Set sold: true after someone buys it.
+      price: "R350",
+      priceWithName: "R500",
+      sold: false,
+      includes: ["SVG", "AI", "PDF", "PNG", "JPG"],
+      art: "previews/dore-logo-art.png",
       creator: "Isaac Matovu",
       date: "2026-09-28",
       featured: true

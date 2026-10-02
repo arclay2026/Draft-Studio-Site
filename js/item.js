@@ -30,6 +30,7 @@
   // Logos with a local SVG file get the colour tester
   var lcFile = it.type === "logo" && it.files.filter(function (f) { return String(f.format).toUpperCase() === "SVG" && !DS.isExternal(f.path); })[0];
   var lcSvg = lcFile ? lcFile.path : "";
+  var lcArt = it.type === "logo" && !lcSvg ? it.art : "";   // logos for sale: a transparent PNG preview instead
   var LC_PRESETS = [
     ["Original on paper", "#f4f3ef", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""],
     ["Ink on paper", "#f4f3ef", "#111111"], ["White on ink", "#111111", "#ffffff"], ["White on blue", "#2457ff", "#ffffff"]
@@ -51,7 +52,7 @@
         '<div class="label">' + it.no + " — " + esc(it.typeLabel) + "</div>" +
         "<h1>" + esc(it.title) + "</h1>" +
         (it.description ? '<p class="lede">' + esc(it.description) + "</p>" : "") +
-        '<div><div class="label" style="margin-bottom:8px">Download — free</div>' + DS.requiresNotice(it) + DS.downloads(it) + '<a class="howto-jump" href="#how-to-use">How to use this file <span aria-hidden="true">↓</span></a></div>' +
+        '<div><div class="label" style="margin-bottom:8px">' + (it.price ? (it.sold ? "Sold" : "Buy — exclusive") : "Download — free") + "</div>" + DS.requiresNotice(it) + (it.price ? DS.buyBox(it) : DS.downloads(it)) + (it.sold ? "" : '<a class="howto-jump" href="#how-to-use">How to use this file <span aria-hidden="true">↓</span></a>') + "</div>" +
         '<div class="btn-row">' +
           '<button class="btn btn-sm" data-save="' + esc(it.id) + '" aria-pressed="false" id="save-btn">' + DS.icon.save + ' <span>Save</span></button>' +
           '<button class="btn btn-sm" id="share-btn">' + DS.icon.link + " Copy link</button>" +
@@ -67,15 +68,17 @@
           (sizes.length ? row("File size", sizes.join(" · ")) : "") +
           row("Filed", DS.fmtDate(it.date)) +
           row("Creator", it.creator) +
-          (DS.site.license ? row("Licence", DS.site.license) : "") +
+          (it.price ? row("Price", it.price + (it.priceWithName ? " · " + it.priceWithName + " with your brand name" : "")) : "") +
+          (it.price ? row("Licence", "Exclusive. Sold to one buyer only, who gets full rights to use it as their brand.")
+                    : DS.site.license ? row("Licence", DS.site.license) : "") +
         "</dl>" +
         (it.tags.length ? '<div class="tags">' + it.tags.map(function (t) { return '<a href="' + it.page + "?q=" + encodeURIComponent(t) + '">#' + esc(t) + "</a>"; }).join("") + "</div>" : "") +
       "</aside>" +
     "</section>" +
 
-    howToHtml() +
+    (it.sold ? "" : howToHtml()) +
 
-    (lcSvg ? colourTestHtml() : "") +
+    (lcSvg || lcArt ? colourTestHtml() : "") +
 
     '<nav class="pager" aria-label="Neighbouring records">' +
       (prev ? '<a href="' + prev.url + '"><span class="label">← Previous · ' + prev.no + '</span><span class="t">' + esc(prev.title) + "</span></a>" : "<span></span>") +
@@ -93,6 +96,12 @@
     var has = function (fmt) { return it.formats.indexOf(fmt) !== -1; };
     var dl = ext ? ["Download", "Click “Download from Google Drive”. If Drive says it can’t scan the file for viruses, click “Download anyway”: the file is simply too big to scan."]
                  : ["Download", it.files.length > 1 ? "Pick one format from the Download menu, or take everything at once with “Download all · ZIP”." : "Click the download button to save the file to your computer."];
+    if (it.price) return [
+      ["Choose an option", "Buy the logo as it is (" + it.price + ")" + (it.priceWithName ? ", or have it customised with your own brand name (" + it.priceWithName + ")" : "") + "."],
+      ["Message on WhatsApp", "Tap the Buy button. A message is written for you: just send it, and I’ll confirm the logo is still available."],
+      ["Pay", "Pay by EFT or instant payment. The details are shared in the chat."],
+      ["Get your files", "You receive the " + it.formats.join(", ") + " files on WhatsApp or by email. The logo is then marked “Sold”, so it’s yours alone."]
+    ];
     if (it.type === "logo") return [
       ["Choose a format", "Not sure which one? See “Which file should I use?”: SVG for screens, PDF for print, AI for editing."],
       dl,
@@ -160,8 +169,9 @@
               '<label class="lc-pick" id="lc-ink-pick" hidden><span class="sr-only">Logo</span><input type="color" id="lc-ink" value="#111111"></label>' +
             "</div></div>" +
           "</div>" +
-          '<div class="btn-row"><button type="button" class="btn btn-sm" id="lc-png">' + DS.icon.down + ' Save PNG</button><button type="button" class="btn btn-sm" id="lc-svgdl">' + DS.icon.down + " Save SVG</button></div>" +
-          '<p class="lc-note">Check how the mark holds up on light, dark and brand colours before you use it. Saved files use the colours shown here.</p>' +
+          (lcSvg ? '<div class="btn-row"><button type="button" class="btn btn-sm" id="lc-png">' + DS.icon.down + ' Save PNG</button><button type="button" class="btn btn-sm" id="lc-svgdl">' + DS.icon.down + " Save SVG</button></div>" +
+            '<p class="lc-note">Check how the mark holds up on light, dark and brand colours before you use it. Saved files use the colours shown here.</p>'
+            : '<p class="lc-note">Check how the mark holds up on light, dark and brand colours before you buy. The files you receive are full-quality vectors.</p>') +
         "</div>" +
       "</div></section>";
   }
@@ -180,7 +190,7 @@
   if (img) img.addEventListener("click", toggleZoom);
   if (zb) zb.addEventListener("click", function (e) { e.stopPropagation(); toggleZoom(); });
 
-  if (lcSvg) colourTest();
+  if (lcSvg || lcArt) colourTest();
   function colourTest() {
     var stage = $("#lc-stage"), art = $("#lc-art"), bgIn = $("#lc-bg"), inkIn = $("#lc-ink"), out = $("#lc-contrast");
     var st = { bg: "#f4f3ef", ink: "", raw: "", svg: null, colours: [] };
@@ -191,7 +201,32 @@
     var ratio = function (a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
     var full = function (h) { h = h.toLowerCase(); return h.length === 4 ? "#" + h.slice(1).replace(/./g, "$&$&") : h; };
 
-    DS.loadSvg(lcSvg).then(function (txt) {
+    function showColours() {   // the "Original" chips show the logo's own colours
+      DS.$all(".lc-chip:not(:empty)").forEach(function (ch) {
+        ch.innerHTML = st.colours.slice(0, 3).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
+      });
+    }
+    if (lcArt) {   // PNG preview: recolour through a mask, read its colours from the pixels
+      art.innerHTML = '<img class="lc-img" src="' + esc(lcArt) + '" alt=""><span class="lc-mask" style="-webkit-mask-image:url(' + esc(lcArt) + ");mask-image:url(" + esc(lcArt) + ')"></span>';
+      var im = $(".lc-img", art);
+      var read = function () {
+        try {
+          var w = 160, h = Math.max(1, Math.round(w * im.naturalHeight / im.naturalWidth)), c = document.createElement("canvas"); c.width = w; c.height = h;
+          var g = c.getContext("2d"); g.drawImage(im, 0, 0, w, h);
+          var d = g.getImageData(0, 0, w, h).data, buckets = {}, total = 0;
+          for (var i = 0; i < d.length; i += 4) {
+            if (d[i + 3] < 230) continue; total++;
+            var k = (d[i] >> 4) + "," + (d[i + 1] >> 4) + "," + (d[i + 2] >> 4), b = buckets[k] || (buckets[k] = [0, 0, 0, 0]);
+            b[0] += d[i]; b[1] += d[i + 1]; b[2] += d[i + 2]; b[3]++;
+          }
+          st.colours = Object.keys(buckets).map(function (k) { return buckets[k]; }).filter(function (b) { return b[3] / total > .06; })
+            .sort(function (a, b) { return b[3] - a[3]; })
+            .map(function (b) { return "#" + [0, 1, 2].map(function (j) { return ("0" + Math.round(b[j] / b[3]).toString(16)).slice(-2); }).join(""); });
+        } catch (e) { st.colours = []; }
+        showColours(); paint();
+      };
+      if (im.complete && im.naturalWidth) read(); else im.addEventListener("load", read);
+    } else DS.loadSvg(lcSvg).then(function (txt) {
       if (!txt) { art.innerHTML = '<p class="label">Preview unavailable</p>'; return; }
       // keep the logo's class names from clashing with anything else on the page
       txt = txt.replace(/<\?xml[^>]*>/, "").replace(/\bcls-/g, "lc-cls-").replace(/\sid="[^"]*"/g, "");
@@ -203,11 +238,7 @@
         if (bb.width && bb.height) svg.setAttribute("viewBox", [bb.x - pad, bb.y - pad, bb.width + pad * 2, bb.height + pad * 2].map(function (v) { return +v.toFixed(2); }).join(" "));
       } catch (e) {}
       st.colours = DS.uniq((txt.match(/#[0-9a-f]{6}\b|#[0-9a-f]{3}\b/gi) || []).map(full));
-      // the "Original" chips show the logo's own colours
-      DS.$all(".lc-chip:not(:empty)").forEach(function (ch) {
-        ch.innerHTML = st.colours.slice(0, 3).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
-      });
-      paint();
+      showColours(); paint();
     });
 
     function paint() {
@@ -252,8 +283,8 @@
       l.href = u; l.download = it.id + (st.ink ? "-" + st.ink.slice(1) : "") + "." + ext; document.body.appendChild(l); l.click(); l.remove();
       setTimeout(function () { URL.revokeObjectURL(u); }, 4000); DS.toast("Saved " + ext.toUpperCase());
     }
-    $("#lc-svgdl").addEventListener("click", function () { if (st.svg) save(new Blob([currentSvg()], { type: "image/svg+xml" }), "svg"); });
-    $("#lc-png").addEventListener("click", function () {
+    if (lcSvg) $("#lc-svgdl").addEventListener("click", function () { if (st.svg) save(new Blob([currentSvg()], { type: "image/svg+xml" }), "svg"); });
+    if (lcSvg) $("#lc-png").addEventListener("click", function () {
       if (!st.svg) return;
       var vb = st.svg.viewBox.baseVal, W = 2000, H = Math.round(W * vb.height / vb.width);
       var img = new Image(), u = URL.createObjectURL(new Blob([currentSvg()], { type: "image/svg+xml" }));

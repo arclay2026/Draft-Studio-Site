@@ -1419,3 +1419,27 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
 }
 .howto-jump { display: inline-flex; align-items: center; gap: 6px; min-height: var(--touch); margin-top: var(--s1); font-weight: 700; font-size: var(--fs-small); color: var(--signal-ink); }
 .howto-jump:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ==========================================================================
+   LOGOS FOR SALE — price badge, buy buttons, sold state
+   ========================================================================== */
+.sale-badge { justify-self: start; display: inline-flex; align-items: center; gap: var(--s2); margin-top: 6px; font: 600 var(--fs-label)/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+.sale-badge b { font: 800 var(--fs-body)/1 var(--f-sans); letter-spacing: -.02em; text-transform: none; color: var(--fg); background: var(--plate); padding: 5px 8px; }
+.sale-badge.is-sold { padding: 5px 8px; background: var(--fg); color: var(--bg); }
+.tool.dl .wa-icon { width: 16px; height: 16px; }
+.tool.dl.is-sold, .dl-sq.is-sold { background: var(--plate); border-color: var(--rule-strong); color: var(--mute); font: 600 var(--fs-label)/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; cursor: default; }
+.dl-sq .wa-icon { width: 18px; height: 18px; }
+.buy-box { display: grid; gap: var(--s2); }
+.buy-btn { justify-content: flex-start; width: 100%; gap: var(--s3); }
+.buy-btn .wa-icon { width: 18px; height: 18px; }
+.buy-btn b { margin-left: auto; font-weight: 800; font-size: var(--fs-body); letter-spacing: -.02em; }
+.buy-notes { list-style: none; display: grid; gap: 6px; margin-top: var(--s2); font-size: var(--fs-small); line-height: 1.5; color: var(--mute); }
+.buy-notes b { color: var(--fg); }
+.buy-box.is-sold { padding: var(--s4); border: 1px solid var(--rule-strong); gap: var(--s3); }
+.buy-sold { justify-self: start; padding: 6px 10px; background: var(--fg); color: var(--bg); font: 600 var(--fs-label)/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; }
+.lc-img, .lc-mask { grid-area: 1 / 1; max-width: 100%; max-height: 100%; }
+.lc-art:has(.lc-img) { display: grid; place-items: center; }
+.lc-img { width: 100%; height: 100%; object-fit: contain; }
+.lc-mask { display: none; width: 100%; height: 100%; background: var(--lc-ink); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; }
+.lc-art.is-one .lc-img { visibility: hidden; }
+.lc-art.is-one .lc-mask { display: block; }

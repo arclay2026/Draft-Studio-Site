@@ -61,6 +61,7 @@
             '<span class="fm">' + DS.fmts(it.formats) + "</span>" +
             '<span class="date label">' + DS.fmtDate(it.date) + "</span>" +
             '<span class="acts"><button class="save" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + esc(it.title) + '">' + DS.icon.save + "</button>" +
+            (it.price ? (it.sold ? '<span class="dl-sq is-sold" aria-label="Sold">Sold</span>' : '<a class="dl-sq" href="' + esc(DS.buyUrl(it)) + '" target="_blank" rel="noopener" aria-label="Buy ' + esc(it.title) + " for " + esc(it.price) + ' on WhatsApp">' + DS.icon.wa + "</a>") : "") +
             (f ? '<a class="dl-sq" href="' + esc(f.path) + '"' + DS.dlAttrs(f.path) + ' data-dl aria-label="Download ' + esc(it.title) + (f.bundle ? " — all formats (ZIP)" : " as " + esc(String(f.format).toUpperCase())) + '">' + DS.icon.down + "</a>" : "") + "</span></div>";
         }).join("") + "</div>";
     }
