@@ -1424,7 +1424,7 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
    LOGOS FOR SALE — price badge, buy buttons, sold state
    ========================================================================== */
 .sale-badge { justify-self: start; display: inline-flex; align-items: center; gap: var(--s2); margin-top: 6px; font: 600 var(--fs-label)/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
-.sale-badge b { font: 800 var(--fs-body)/1 var(--f-sans); letter-spacing: -.02em; text-transform: none; color: var(--fg); background: var(--plate); padding: 5px 8px; }
+.sale-badge b { font: 800 var(--fs-body)/1 var(--f-sans); letter-spacing: -.02em; text-transform: none; color: #fff; background: #15803d; padding: 5px 8px; }   /* white on green: 5.0:1 */
 .sale-badge.is-sold { padding: 5px 8px; background: var(--fg); color: var(--bg); }
 .tool.dl .wa-icon { width: 16px; height: 16px; }
 .tool.dl.is-sold, .dl-sq.is-sold { background: var(--plate); border-color: var(--rule-strong); color: var(--mute); font: 600 var(--fs-label)/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; cursor: default; }
