@@ -352,19 +352,27 @@
   };
   /* Software requirement ("requires" in the catalog), e.g. "Adobe Photoshop".
      Shown as a badge on plates and a notice above the downloads.            */
-  var APP_MARKS = { photoshop: ["Ps", "#001e36", "#31a8ff"], illustrator: ["Ai", "#330000", "#ff9a00"], indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"] };
+  // [letters, background, colour, official logo in assets/apps/ (if uploaded)]
+  var APP_MARKS = {
+    photoshop: ["Ps", "#001e36", "#31a8ff", "photoshop"], illustrator: ["Ai", "#330000", "#ff9a00", "illustrator"],
+    lightroom: ["Lr", "#001e36", "#31a8ff", "lightroom"], premiere: ["Pr", "#00005b", "#9999ff", "premiere"],
+    indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"]
+  };
+  function appKey(req) { return Object.keys(APP_MARKS).filter(function (k) { return String(req).toLowerCase().indexOf(k) !== -1; })[0]; }
+  function appTheme(req) { var m = APP_MARKS[appKey(req)]; return m ? ' style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '"' : ""; }
   function appMark(req) {
-    var key = Object.keys(APP_MARKS).filter(function (k) { return String(req).toLowerCase().indexOf(k) !== -1; })[0];
+    var key = appKey(req);
     var m = key ? APP_MARKS[key] : [String(req).trim().slice(0, 2), "#111111", "#f4f3ef"];
+    if (m[3]) return '<img class="app-mark app-logo" src="assets/apps/' + m[3] + '.svg" alt="" width="22" height="22">';
     return '<span class="app-mark" style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '" aria-hidden="true">' + esc(m[0]) + "</span>";
   }
   function appShort(req) { return String(req).replace(/^adobe\s+/i, ""); }
   DS.requiresBadge = function (it) {
-    return '<span class="req-badge">' + appMark(it.requires) + "<span>" + esc(appShort(it.requires)) + " only</span></span>";
+    return '<span class="req-badge"' + appTheme(it.requires) + ">" + appMark(it.requires) + "<span>" + esc(appShort(it.requires)) + " only</span></span>";
   };
   DS.requiresNotice = function (it) {
     if (!it.requires) return "";
-    return '<div class="req-notice" role="note">' + appMark(it.requires) +
+    return '<div class="req-notice" role="note"' + appTheme(it.requires) + ">" + appMark(it.requires) +
       '<div><p class="req-title">Works in ' + esc(it.requires) + " only</p>" +
       '<p class="req-text">This file is built for ' + esc(appShort(it.requires)) + " and won’t open correctly in other apps" +
       (/photoshop/i.test(it.requires) ? " (such as Photopea, Affinity, GIMP or Canva). Double-click the smart object layer to place your design." : ".") + "</p></div></div>";

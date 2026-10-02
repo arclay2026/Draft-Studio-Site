@@ -1033,14 +1033,17 @@ select { cursor: pointer; }
 }
 .req-badge {
   grid-column: 2; justify-self: start; display: inline-flex; align-items: center; gap: var(--s2);
-  margin-top: 6px; padding: 4px 10px 4px 4px; background: #001e36; color: #cfe8ff;
+  margin-top: 6px; padding: 4px 10px 4px 4px; background: color-mix(in srgb, var(--app-bg, #001e36) 84%, #fff); color: #fff;
   font: 600 var(--fs-label)/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase;
 }
 .req-notice {
   display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s3); align-items: start;
-  padding: var(--s4); margin-bottom: var(--s3); background: #001e36; color: #e6f3ff;
+  padding: var(--s4); margin-bottom: var(--s3); background: color-mix(in srgb, var(--app-bg, #001e36) 84%, #fff); color: #e6f3ff;
 }
 .req-notice .app-mark { width: 40px; height: 40px; font-size: 18px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--app-fg); }
+/* official app logos: the artwork has its own rounded tile, so no frame */
+.app-mark.app-logo { background: none; box-shadow: none; border-radius: 0; width: 24px; height: 24px; margin: -1px; }
+.req-notice .app-mark.app-logo { width: 44px; height: 44px; margin: -2px; box-shadow: none; }
 .req-title { font-weight: 800; letter-spacing: -.02em; font-size: var(--fs-h4); color: #fff; }
 .req-text { font-size: var(--fs-small); line-height: 1.5; color: #b9d7f2; margin-top: 4px; }
 .req-inline { color: var(--signal-ink); }
