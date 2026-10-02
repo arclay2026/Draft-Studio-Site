@@ -38,10 +38,6 @@
  *               link as the path and add name: "file-name.psd" for the label.
  *   requires    (optional) software the file only works in, e.g. "Adobe Photoshop".
  *               Shows a "Photoshop only" badge and a notice above the download.
- *   tryOn       (optional, mockups) turns on "Try it with your logo" on the design page.
- *               image: the mockup with an EMPTY print area (no design on it)
- *               area:  where the print goes, in % of that image: [left, top, width, height]
- *               e.g. tryOn: { image: "previews/hoodie-blank.jpg", area: [32, 37.5, 36, 25] }
  *
  * EXAMPLE — a template (copy from { to }, and keep the comma after it)
  *
@@ -97,7 +93,6 @@ window.DRAFT_STUDIO = {
         // Hosted on Google Drive (too big for GitHub). "name" is what the button shows.
         { format: "PSD", path: "https://drive.google.com/file/d/16XtB5is0IBh-21NNVC92bz6gr_rTmDUT/view?usp=sharing", name: "hoodie-mockup-one.psd" }
       ],
-      tryOn: { image: "previews/hoodie-mockup-one-blank.jpg", area: [31.7, 37.5, 36.7, 25] },
       creator: "Isaac Matovu",
       date: "2026-09-29",
       featured: true
@@ -115,7 +110,6 @@ window.DRAFT_STUDIO = {
         // Hosted on Google Drive (too big for GitHub). "name" is what the button shows.
         { format: "PSD", path: "https://drive.google.com/file/d/1HXHTuVA8gntAGUeb1la18R-RaDOHxfpo/view?usp=sharing", name: "t-shirt-mockup-one.psd" }
       ],
-      tryOn: { image: "previews/t-shirt-mockup-one-blank.jpg", area: [30.8, 36.5, 35, 29.1] },
       creator: "Isaac Matovu",
       date: "2026-09-28",
       featured: true
