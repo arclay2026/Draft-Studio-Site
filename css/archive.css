@@ -1391,3 +1391,31 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
   .lc-panel { position: sticky; top: var(--s8); }
 }
 @media (prefers-reduced-motion: reduce) { .lc-stage, .lc-art svg * { transition: none; } }
+
+/* ==========================================================================
+   HOW TO USE — step-by-step guide on design pages
+   ========================================================================== */
+.howto { scroll-margin-top: var(--s5); }
+.howto-grid { display: grid; gap: var(--s6); }
+.howto-steps { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--rule-strong); }
+.howto-steps li { display: grid; grid-template-columns: 48px minmax(0, 1fr); column-gap: var(--s3); row-gap: var(--s1); padding: var(--s4) 0; border-bottom: 1px solid var(--rule); align-content: start; }
+.howto-n { grid-row: span 2; font: 800 28px/1 var(--f-sans); letter-spacing: -.05em; color: var(--signal-ink); }
+.howto-steps h3 { font-weight: 800; font-size: var(--fs-h4); letter-spacing: -.02em; line-height: 1.25; }
+.howto-steps p { font-size: var(--fs-small); line-height: 1.55; color: var(--mute); max-width: 52ch; }
+.howto-formats { border: 1px solid var(--rule-strong); padding: var(--s4); align-self: start; }
+.howto-formats h3 { margin-bottom: var(--s3); }
+.howto-formats dl > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--s3); align-items: baseline; padding: var(--s3) 0; border-top: 1px solid var(--rule); }
+.howto-formats dd { font-size: var(--fs-small); line-height: 1.5; }
+@media (min-width: 768px) {
+  .howto-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s6); }
+  .howto-steps li { grid-template-columns: minmax(0, 1fr); padding: var(--s5) 0; }
+  .howto-n { grid-row: auto; font-size: 40px; margin-bottom: var(--s2); }
+}
+@media (min-width: 1024px) {
+  .howto-steps.is-long { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .howto-grid.has-formats { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); align-items: start; }
+  .howto-grid.has-formats .howto-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .howto-formats { position: sticky; top: var(--s8); }
+}
+.howto-jump { display: inline-flex; align-items: center; gap: 6px; min-height: var(--touch); margin-top: var(--s1); font-weight: 700; font-size: var(--fs-small); color: var(--signal-ink); }
+.howto-jump:hover { text-decoration: underline; text-underline-offset: 3px; }

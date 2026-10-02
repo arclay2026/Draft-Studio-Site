@@ -51,7 +51,7 @@
         '<div class="label">' + it.no + " — " + esc(it.typeLabel) + "</div>" +
         "<h1>" + esc(it.title) + "</h1>" +
         (it.description ? '<p class="lede">' + esc(it.description) + "</p>" : "") +
-        '<div><div class="label" style="margin-bottom:8px">Download — free</div>' + DS.requiresNotice(it) + DS.downloads(it) + "</div>" +
+        '<div><div class="label" style="margin-bottom:8px">Download — free</div>' + DS.requiresNotice(it) + DS.downloads(it) + '<a class="howto-jump" href="#how-to-use">How to use this file <span aria-hidden="true">↓</span></a></div>' +
         '<div class="btn-row">' +
           '<button class="btn btn-sm" data-save="' + esc(it.id) + '" aria-pressed="false" id="save-btn">' + DS.icon.save + ' <span>Save</span></button>' +
           '<button class="btn btn-sm" id="share-btn">' + DS.icon.link + " Copy link</button>" +
@@ -73,6 +73,8 @@
       "</aside>" +
     "</section>" +
 
+    howToHtml() +
+
     (lcSvg ? colourTestHtml() : "") +
 
     '<nav class="pager" aria-label="Neighbouring records">' +
@@ -83,6 +85,59 @@
     (related.length ? '<section class="section"><div class="folio"><span class="label label-ink">§ Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
       '<div class="sect-head"><h2 class="h2">Also filed <em class="s">nearby</em></h2></div>' +
       '<div class="shelf" tabindex="0" aria-label="Related designs">' + related.map(function (r) { return DS.plate(r, { showType: true, fixed: true }); }).join("") + "</div></section>" : "");
+
+  /* ---------- How to use: steps picked for the kind of file ---------- */
+  function howToSteps() {
+    if (it.howTo && it.howTo.length) return it.howTo.map(function (x) { return typeof x === "string" ? ["", x] : [x.title || "", x.text || ""]; });
+    var ext = it.files.some(function (f) { return DS.isExternal(f.path); });
+    var has = function (fmt) { return it.formats.indexOf(fmt) !== -1; };
+    var dl = ext ? ["Download", "Click “Download from Google Drive”. If Drive says it can’t scan the file for viruses, click “Download anyway”: the file is simply too big to scan."]
+                 : ["Download", it.files.length > 1 ? "Pick one format from the Download menu, or take everything at once with “Download all · ZIP”." : "Click the download button to save the file to your computer."];
+    if (it.type === "logo") return [
+      ["Choose a format", "Not sure which one? See “Which file should I use?”: SVG for screens, PDF for print, AI for editing."],
+      dl,
+      ["Make it yours", "Open the SVG or AI file in Illustrator, Figma, Affinity Designer or Inkscape (free) to change the name, colours or shape." + (lcSvg ? " Try colours first in the Colour test below." : "")],
+      ["Use it", "Use it for your brand, client work or products. Credit is appreciated, but please don’t resell the files as they are."]
+    ];
+    if (/photoshop/i.test(it.requires) || has("PSD")) return [
+      dl,
+      ["Open it in Photoshop", "Open the .psd file in Adobe Photoshop. Other apps (Photopea, GIMP, Canva) don’t keep the smart objects working."],
+      ["Open the smart object", "In the Layers panel, find the smart object layer (its thumbnail has a small page icon in the corner) and double-click the thumbnail. It opens in a new tab."],
+      ["Place your design", "Drag your logo or artwork into that tab. Press Ctrl + T (⌘ + T on Mac) to resize it, and hide the sample design."],
+      ["Save and close", "Press Ctrl + S (⌘ + S), then close the tab. Back in the mockup, your design now sits on the product, with the folds and shadows."],
+      ["Export", "Go to File → Export → Export As…, choose JPG or PNG, and save your finished mockup."]
+    ];
+    var app = has("AI") ? "Adobe Illustrator" : has("PSD") ? "Adobe Photoshop" : has("FIG") ? "Figma" : "your design app";
+    return [dl,
+      ["Open it", "Open the file in " + app + (has("PDF") ? ", or use the PDF to print straight away" : "") + "."],
+      ["Edit the text and images", "Replace the sample text, photos and colours with your own. Fonts used are listed in the file."],
+      ["Export", "Save a copy as PDF for print or PNG/JPG for screens and social media."]
+    ];
+  }
+  function howToHtml() {
+    var FORMAT_USE = {
+      SVG: "Websites, apps and any size on screen. Stays sharp at every size.",
+      PNG: "Documents, slides and social posts. Transparent background.",
+      JPG: "Quick sharing and photos. White background, no transparency.",
+      PDF: "Printing, and sending to a print shop.",
+      AI: "Editing the logo in Adobe Illustrator.",
+      EPS: "Older print and sign-making software.",
+      ZIP: "Every format at once, in one download."
+    };
+    var steps = howToSteps();
+    if (!steps.length) return "";
+    var fmts = it.type === "logo" ? it.formats.filter(function (f) { return FORMAT_USE[f]; }) : [];
+    return '<section class="section howto" id="how-to-use" aria-labelledby="ht-title">' +
+      '<div class="folio"><span class="label label-ink">§ How to use</span><span class="label">Step by step</span><span class="rule"></span><span class="label folio-note">' + DS.pad(steps.length, 2) + " steps</span></div>" +
+      '<div class="sect-head"><h2 class="h2" id="ht-title">How to use <em class="s">this file.</em></h2></div>' +
+      '<div class="howto-grid' + (fmts.length ? " has-formats" : "") + '">' +
+        '<ol class="howto-steps' + (steps.length > 4 ? " is-long" : "") + '">' + steps.map(function (x, n) {
+          return '<li><span class="howto-n" aria-hidden="true">' + DS.pad(n + 1, 2) + "</span>" + (x[0] ? "<h3>" + esc(x[0]) + "</h3>" : "") + "<p>" + esc(x[1]) + "</p></li>";
+        }).join("") + "</ol>" +
+        (fmts.length ? '<aside class="howto-formats" aria-labelledby="ht-f"><h3 class="label" id="ht-f">Which file should I use?</h3><dl>' +
+          fmts.map(function (f) { return "<div><dt>" + DS.fmts([f]) + "</dt><dd>" + esc(FORMAT_USE[f]) + "</dd></div>"; }).join("") + "</dl></aside>" : "") +
+      "</div></section>";
+  }
 
   function colourTestHtml() {
     return '<section class="section lc" id="colour-test" aria-labelledby="lc-title">' +

@@ -38,6 +38,8 @@
  *               link as the path and add name: "file-name.psd" for the label.
  *   requires    (optional) software the file only works in, e.g. "Adobe Photoshop".
  *               Shows a "Photoshop only" badge and a notice above the download.
+ *   howTo       (optional) your own "How to use" steps, replacing the automatic ones:
+ *               howTo: [{ title: "Open it", text: "Open the file in Photoshop." }, …]
  *
  * EXAMPLE — a template (copy from { to }, and keep the comma after it)
  *

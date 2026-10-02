@@ -73,7 +73,7 @@
         formats: uniq((raw.files || []).map(function (f) { return String(f.format).toUpperCase(); })),
         preview: previewOf(raw), date: raw.date || "", featured: !!raw.featured,
         dimensions: raw.dimensions || "", creator: raw.creator || SITE.name || "Draft Studio",
-        requires: raw.requires || "",
+        requires: raw.requires || "", howTo: raw.howTo || null,
         type: t[1], typeLabel: t[2], page: t[0] + ".html", order: i,
         url: "item.html?id=" + encodeURIComponent(raw.id)
       });
