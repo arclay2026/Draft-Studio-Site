@@ -193,8 +193,8 @@
       "</div>" +
       '<div class="plate-meta">' +
         '<h3 class="plate-title"><a href="' + it.url + '" data-plate-link>' + esc(it.title) + "</a></h3>" +
-        (it.requires ? DS.requiresBadge(it) : "") +
-        (it.price ? DS.saleBadge(it) : "") +
+        '<div class="plate-badges">' + (it.requires ? DS.requiresBadge(it) : "") +
+          (it.price ? DS.saleBadge(it) : '<span class="free-badge">Free</span>') + "</div>" +
         '<div class="plate-sub"><span class="plate-cat">' + esc(it.category) + (opt.showType ? " · " + it.typeLabel : "") + "</span>" + DS.fmts(it.formats) + "</div>" +
       "</div>" +
     "</article>";
