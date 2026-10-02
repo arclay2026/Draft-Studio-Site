@@ -51,13 +51,12 @@
       out.innerHTML = '<div class="masonry">' + list.map(function (it, n) { return DS.plate(it, { i: n }); }).join("") + "</div>";
     } else {
       out.innerHTML = '<div class="index-table" role="table">' +
-        '<div class="index-row head label" role="row"><span class="no">No.</span><span></span><span>Title</span><span class="cat">Category</span><span class="fm">Formats</span><span class="date">Filed</span><span>Actions</span></div>' +
+        '<div class="index-row head label" role="row"><span></span><span>Title</span><span class="cat">Category</span><span class="fm">Formats</span><span class="date">Filed</span><span>Actions</span></div>' +
         list.map(function (it, n) {
           var f = DS.quickFile(it);
           return '<div class="index-row" role="row" style="--i:' + n + '" data-preview="' + esc(it.preview) + '">' +
-            '<span class="no label label-ink">' + it.no + "</span>" +
             '<a class="thumb" href="' + it.url + '" data-plate-link tabindex="-1">' + (it.preview ? '<img src="' + esc(it.preview) + '" alt="" loading="lazy">' : "") + "</a>" +
-            '<span><a class="t" href="' + it.url + '" data-plate-link>' + esc(it.title) + '</a><span class="sub label">' + it.no + " · " + esc(it.category) + "</span></span>" +
+            '<span><a class="t" href="' + it.url + '" data-plate-link>' + esc(it.title) + '</a><span class="sub label">' + esc(it.category) + "</span></span>" +
             '<span class="cat muted">' + esc(it.category) + "</span>" +
             '<span class="fm">' + DS.fmts(it.formats) + "</span>" +
             '<span class="date label">' + DS.fmtDate(it.date) + "</span>" +

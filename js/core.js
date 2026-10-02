@@ -189,9 +189,7 @@
         (first ? '<a class="tool dl" href="' + esc(first.path) + '"' + DS.dlAttrs(first.path) + ' data-dl aria-label="Download ' + esc(it.title) + (first.bundle ? " — all formats (ZIP)" : " as " + esc(String(first.format).toUpperCase())) + '">' + I.down + "<span>" + (first.bundle ? "All · ZIP" : esc(String(first.format).toUpperCase())) + "</span></a>" : "") +
       "</div>" +
       '<div class="plate-meta">' +
-        '<span class="plate-no">' + it.no + "</span>" +
         '<h3 class="plate-title"><a href="' + it.url + '" data-plate-link>' + esc(it.title) + "</a></h3>" +
-        "<span></span>" +
         (it.requires ? DS.requiresBadge(it) : "") +
         '<div class="plate-sub"><span class="plate-cat">' + esc(it.category) + (opt.showType ? " · " + it.typeLabel : "") + "</span>" + DS.fmts(it.formats) + "</div>" +
       "</div>" +
