@@ -1383,8 +1383,8 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
 .lc-pick[hidden] { display: none; }
 .lc-pick code { font: 500 13px/1 var(--f-mono); }
 .lc-ink { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
-.lc-ink button { min-height: var(--touch); padding: 0 var(--s4); border: 1px solid var(--rule-strong); font: 600 var(--fs-small)/1 var(--f-sans); }
-.lc-ink button[aria-checked="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.lc-ink > button { min-height: var(--touch); padding: 0 var(--s4); border: 1px solid var(--rule-strong); font: 600 var(--fs-small)/1 var(--f-sans); }
+.lc-ink > button[aria-checked="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .lc-note { font-size: var(--fs-small); color: var(--mute); line-height: 1.55; max-width: 46ch; }
 @media (min-width: 1024px) {
   .lc-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; }
