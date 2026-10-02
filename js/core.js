@@ -584,6 +584,108 @@
     el.textContent = pad(n, 2);
   });
 
+  /* ---------- Custom dropdowns ----------
+     Each <select> stays in the page (hidden) and remains the source of truth,
+     so page scripts keep reading .value and listening for "change". */
+  var csN = 0;
+  DS.customSelect = function (sel) {
+    if (sel.hasAttribute("data-cs")) return;
+    sel.setAttribute("data-cs", ""); sel.setAttribute("tabindex", "-1"); sel.setAttribute("aria-hidden", "true");
+    var id = "cs" + (++csN), host = sel.closest("label");
+    var nameEl = host && host.querySelector(".k, span:first-child");
+    if (nameEl && !nameEl.id) nameEl.id = id + "-k";
+    var wrap = document.createElement("span"); wrap.className = "cs";
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "cs-btn"; btn.id = id + "-b";
+    btn.setAttribute("aria-haspopup", "listbox"); btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-labelledby", (nameEl ? nameEl.id + " " : "") + btn.id);
+    btn.innerHTML = '<span class="cs-v"></span><svg class="cs-chev" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+    var list = document.createElement("ul"); list.className = "cs-list"; list.id = id + "-l"; list.setAttribute("role", "listbox"); list.tabIndex = -1; list.hidden = true;
+    if (nameEl) list.setAttribute("aria-labelledby", nameEl.id);
+    btn.setAttribute("aria-controls", list.id);
+    sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(btn); wrap.appendChild(sel); document.body.appendChild(list);
+    // Clicks on the label text would otherwise be forwarded to the button as a second click.
+    if (host) host.addEventListener("click", function (e) { if (!btn.contains(e.target)) e.preventDefault(); });
+
+    var active = 0, typed = "", typedAt = 0;
+    function opts() { return [].slice.call(sel.options); }
+    function sync() {
+      $(".cs-v", btn).textContent = sel.selectedIndex >= 0 ? sel.options[sel.selectedIndex].text : "";
+      if (!list.hidden) build();
+    }
+    function build() {
+      list.innerHTML = opts().map(function (o, i) {
+        return '<li role="option" id="' + id + "-o" + i + '" data-i="' + i + '" aria-selected="' + (i === sel.selectedIndex) + '"' + (i === active ? ' class="is-active"' : "") + ">" +
+          '<span class="cs-t">' + esc(o.text) + '</span><svg class="cs-tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></li>';
+      }).join("");
+      list.setAttribute("aria-activedescendant", id + "-o" + active);
+    }
+    function place() {
+      var r = btn.getBoundingClientRect(), vw = document.documentElement.clientWidth, vh = window.innerHeight;
+      list.style.minWidth = Math.max(r.width, 200) + "px";
+      var w = list.offsetWidth, h = list.offsetHeight, gap = 6;
+      var below = vh - r.bottom, up = below < h + gap + 8 && r.top > below;
+      list.style.left = Math.min(Math.max(8, r.left), vw - w - 8) + "px";
+      list.style.top = (up ? r.top - h - gap : r.bottom + gap) + "px";
+      list.classList.toggle("is-up", up);
+    }
+    function move(i) {
+      var n = sel.options.length; active = (i + n) % n;
+      $all("li", list).forEach(function (li, k) { li.classList.toggle("is-active", k === active); });
+      list.setAttribute("aria-activedescendant", id + "-o" + active);
+      var li = list.children[active]; if (li) li.scrollIntoView({ block: "nearest" });
+    }
+    function open() {
+      if (!list.hidden) return;
+      $all(".cs-list:not([hidden])").forEach(function (l) { l.dispatchEvent(new Event("cs-close")); });
+      active = Math.max(0, sel.selectedIndex); build();
+      list.hidden = false; btn.setAttribute("aria-expanded", "true"); wrap.classList.add("is-open");
+      place(); list.focus({ preventScroll: true });
+      window.addEventListener("scroll", place, true); window.addEventListener("resize", place);
+    }
+    function close(refocus) {
+      if (list.hidden) return;
+      list.hidden = true; btn.setAttribute("aria-expanded", "false"); wrap.classList.remove("is-open");
+      window.removeEventListener("scroll", place, true); window.removeEventListener("resize", place);
+      if (refocus) btn.focus({ preventScroll: true });
+    }
+    function choose(i) {
+      if (i !== sel.selectedIndex) { sel.selectedIndex = i; sel.dispatchEvent(new Event("change", { bubbles: true })); }
+      close(true);
+    }
+    list.addEventListener("cs-close", function () { close(false); });
+    btn.addEventListener("click", function () { list.hidden ? open() : close(true); });
+    btn.addEventListener("keydown", function (e) {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].indexOf(e.key) !== -1) { e.preventDefault(); open(); }
+    });
+    list.addEventListener("click", function (e) { var li = e.target.closest("li"); if (li) choose(+li.getAttribute("data-i")); });
+    list.addEventListener("mousemove", function (e) { var li = e.target.closest("li"); if (li && +li.getAttribute("data-i") !== active) move(+li.getAttribute("data-i")); });
+    list.addEventListener("keydown", function (e) {
+      var k = e.key;
+      if (k === "ArrowDown") move(active + 1);
+      else if (k === "ArrowUp") move(active - 1);
+      else if (k === "Home") move(0);
+      else if (k === "End") move(sel.options.length - 1);
+      else if (k === "Enter" || k === " ") choose(active);
+      else if (k === "Escape") close(true);
+      else if (k === "Tab") { close(false); btn.focus({ preventScroll: true }); return; }
+      else if (k.length === 1) {   // jump to the option that starts with what was typed
+        var now = Date.now(); typed = (now - typedAt > 700 ? "" : typed) + k.toLowerCase(); typedAt = now;
+        var hit = opts().findIndex(function (o) { return o.text.toLowerCase().indexOf(typed) === 0; });
+        if (hit !== -1) move(hit); return;
+      } else return;
+      e.preventDefault();
+    });
+    document.addEventListener("pointerdown", function (e) { if (!list.hidden && !list.contains(e.target) && !btn.contains(e.target)) close(false); });
+
+    // Keep the button in step when a page script sets .value or adds options.
+    ["value", "selectedIndex"].forEach(function (p) {
+      var d = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, p);
+      Object.defineProperty(sel, p, { configurable: true, get: function () { return d.get.call(sel); }, set: function (v) { d.set.call(sel, v); sync(); } });
+    });
+    new MutationObserver(sync).observe(sel, { childList: true, subtree: true, attributes: true, attributeFilter: ["selected"] });
+    sync();
+  };
+
   // Page scripts run after this file; finish shared setup once they have rendered.
-  document.addEventListener("DOMContentLoaded", function () { syncSaved(); DS.reveal(); });
+  document.addEventListener("DOMContentLoaded", function () { syncSaved(); DS.reveal(); $all("select").forEach(DS.customSelect); });
 })();
