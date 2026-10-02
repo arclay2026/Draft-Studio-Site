@@ -27,6 +27,14 @@
     .concat(DS.items.filter(function (i) { return i !== it && i.type !== it.type; }))
     .slice(0, 8);
 
+  // Logos with a local SVG file get the colour tester
+  var lcFile = it.type === "logo" && it.files.filter(function (f) { return String(f.format).toUpperCase() === "SVG" && !DS.isExternal(f.path); })[0];
+  var lcSvg = lcFile ? lcFile.path : "";
+  var LC_PRESETS = [
+    ["Original on paper", "#f4f3ef", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""],
+    ["Ink on paper", "#f4f3ef", "#111111"], ["White on ink", "#111111", "#ffffff"], ["White on blue", "#2457ff", "#ffffff"]
+  ];
+
   var sizes = it.files.filter(function (f) { return f.size; }).map(function (f) { return String(f.format).toUpperCase() + " " + f.size; });
 
   root.innerHTML =
@@ -65,6 +73,8 @@
       "</aside>" +
     "</section>" +
 
+    (lcSvg ? colourTestHtml() : "") +
+
     '<nav class="pager" aria-label="Neighbouring records">' +
       (prev ? '<a href="' + prev.url + '"><span class="label">← Previous · ' + prev.no + '</span><span class="t">' + esc(prev.title) + "</span></a>" : "<span></span>") +
       (next ? '<a href="' + next.url + '"><span class="label">Next · ' + next.no + ' →</span><span class="t">' + esc(next.title) + "</span></a>" : "<span></span>") +
@@ -73,6 +83,33 @@
     (related.length ? '<section class="section"><div class="folio"><span class="label label-ink">§ Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
       '<div class="sect-head"><h2 class="h2">Also filed <em class="s">nearby</em></h2></div>' +
       '<div class="shelf" tabindex="0" aria-label="Related designs">' + related.map(function (r) { return DS.plate(r, { showType: true, fixed: true }); }).join("") + "</div></section>" : "");
+
+  function colourTestHtml() {
+    return '<section class="section lc" id="colour-test" aria-labelledby="lc-title">' +
+      '<div class="folio"><span class="label label-ink">§ Colour test</span><span class="label">Try the mark</span><span class="rule"></span><span class="label folio-note">Live · from the SVG</span></div>' +
+      '<div class="sect-head"><h2 class="h2" id="lc-title">See it in <em class="s">any colour.</em></h2></div>' +
+      '<div class="lc-grid">' +
+        '<div class="lc-stage" id="lc-stage"><div class="lc-art" id="lc-art" role="img" aria-label="' + esc(it.title) + ' in the chosen colours"><p class="label">Loading…</p></div>' +
+          '<p class="label lc-contrast" id="lc-contrast" aria-live="polite"></p></div>' +
+        '<div class="lc-panel">' +
+          '<div class="field"><span id="lc-pk">Quick looks</span><div class="lc-presets" role="group" aria-labelledby="lc-pk">' +
+            LC_PRESETS.map(function (p, i) {
+              return '<button type="button" data-p="' + i + '" aria-pressed="' + (i === 0) + '"><span class="lc-chip" style="background:' + p[1] + ";color:" + (p[2] || "#ff4e3b") + '" aria-hidden="true">' +
+                (p[2] ? "" : '<i style="background:#ff4e3b"></i><i style="background:#2457ff"></i>') + "</span>" + p[0] + "</button>";
+            }).join("") + "</div></div>" +
+          '<div class="lc-pickers">' +
+            '<div class="field"><span>Background</span><label class="lc-pick"><span class="sr-only">Background</span><input type="color" id="lc-bg" value="#f4f3ef"><code id="lc-bg-hex"></code></label></div>' +
+            '<div class="field"><span id="lc-ik">Logo colour</span><div class="lc-ink" role="radiogroup" aria-labelledby="lc-ik">' +
+              '<button type="button" role="radio" aria-checked="true" data-ink="orig">Original</button>' +
+              '<button type="button" role="radio" aria-checked="false" data-ink="one">One colour</button>' +
+              '<label class="lc-pick" id="lc-ink-pick" hidden><span class="sr-only">Logo</span><input type="color" id="lc-ink" value="#111111"></label>' +
+            "</div></div>" +
+          "</div>" +
+          '<div class="btn-row"><button type="button" class="btn btn-sm" id="lc-png">' + DS.icon.down + ' Save PNG</button><button type="button" class="btn btn-sm" id="lc-svgdl">' + DS.icon.down + " Save SVG</button></div>" +
+          '<p class="lc-note">Check how the mark holds up on light, dark and brand colours before you use it. Saved files use the colours shown here.</p>' +
+        "</div>" +
+      "</div></section>";
+  }
 
   function row(k, v, raw) { return "<div><dt>" + k + "</dt><dd>" + (raw ? v : esc(v)) + "</dd></div>"; }
 
@@ -87,6 +124,93 @@
   }
   if (img) img.addEventListener("click", toggleZoom);
   if (zb) zb.addEventListener("click", function (e) { e.stopPropagation(); toggleZoom(); });
+
+  if (lcSvg) colourTest();
+  function colourTest() {
+    var stage = $("#lc-stage"), art = $("#lc-art"), bgIn = $("#lc-bg"), inkIn = $("#lc-ink"), out = $("#lc-contrast");
+    var st = { bg: "#f4f3ef", ink: "", raw: "", svg: null, colours: [] };
+    var lum = function (hex) {
+      var n = parseInt(hex.slice(1), 16), c = [n >> 16 & 255, n >> 8 & 255, n & 255].map(function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+      return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+    };
+    var ratio = function (a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+    var full = function (h) { h = h.toLowerCase(); return h.length === 4 ? "#" + h.slice(1).replace(/./g, "$&$&") : h; };
+
+    DS.loadSvg(lcSvg).then(function (txt) {
+      if (!txt) { art.innerHTML = '<p class="label">Preview unavailable</p>'; return; }
+      // keep the logo's class names from clashing with anything else on the page
+      txt = txt.replace(/<\?xml[^>]*>/, "").replace(/\bcls-/g, "lc-cls-").replace(/\sid="[^"]*"/g, "");
+      art.innerHTML = txt;
+      var svg = $("svg", art); st.svg = svg;
+      svg.removeAttribute("width"); svg.removeAttribute("height"); svg.setAttribute("aria-hidden", "true"); svg.setAttribute("focusable", "false");
+      try {   // crop the artboard to the artwork, with a little breathing room
+        var bb = svg.getBBox(), pad = Math.max(bb.width, bb.height) * .08;
+        if (bb.width && bb.height) svg.setAttribute("viewBox", [bb.x - pad, bb.y - pad, bb.width + pad * 2, bb.height + pad * 2].map(function (v) { return +v.toFixed(2); }).join(" "));
+      } catch (e) {}
+      st.colours = DS.uniq((txt.match(/#[0-9a-f]{6}\b|#[0-9a-f]{3}\b/gi) || []).map(full));
+      // the "Original" chips show the logo's own colours
+      DS.$all(".lc-chip:not(:empty)").forEach(function (ch) {
+        ch.innerHTML = st.colours.slice(0, 3).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
+      });
+      paint();
+    });
+
+    function paint() {
+      stage.style.setProperty("--lc-bg", st.bg);
+      art.classList.toggle("is-one", !!st.ink);
+      art.style.setProperty("--lc-ink", st.ink || "currentColor");
+      $("#lc-bg-hex").textContent = st.bg.toUpperCase();
+      var inks = st.ink ? [st.ink] : st.colours, low = inks.length ? Math.min.apply(null, inks.map(function (c) { return ratio(c, st.bg); })) : 0;
+      var r = Math.round(low * 10) / 10, verdict = r >= 4.5 ? "Strong contrast" : r >= 3 ? "Reads well" : r >= 2 ? "Borderline, use with care" : "Hard to see";
+      out.textContent = inks.length ? (st.ink ? "Contrast " : "Lowest contrast ") + r.toFixed(1) + ":1 · " + verdict : "";
+      out.classList.toggle("is-low", !!inks.length && r < 3);
+      out.style.color = lum(st.bg) > .4 ? "#111111" : "#f4f3ef";
+      DS.$all(".lc-presets button").forEach(function (b) { var p = LC_PRESETS[+b.getAttribute("data-p")]; b.setAttribute("aria-pressed", p[1] === st.bg && (p[2] || "") === st.ink); });
+      DS.$all(".lc-ink button").forEach(function (b) { b.setAttribute("aria-checked", (b.getAttribute("data-ink") === "one") === !!st.ink); });
+      $("#lc-ink-pick").hidden = !st.ink;
+    }
+    DS.$all(".lc-presets button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var p = LC_PRESETS[+b.getAttribute("data-p")];
+        st.bg = p[1]; st.ink = p[2]; bgIn.value = p[1]; if (p[2]) inkIn.value = p[2]; paint();
+      });
+    });
+    bgIn.addEventListener("input", function () { st.bg = bgIn.value; paint(); });
+    inkIn.addEventListener("input", function () { st.ink = inkIn.value; paint(); });
+    DS.$all(".lc-ink button").forEach(function (b) {
+      b.addEventListener("click", function () { st.ink = b.getAttribute("data-ink") === "one" ? inkIn.value : ""; paint(); });
+    });
+
+    // The SVG exactly as shown (cropped, and recoloured when "One colour" is on)
+    function currentSvg() {
+      var c = st.svg.cloneNode(true);
+      c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.removeAttribute("aria-hidden"); c.removeAttribute("focusable");
+      if (st.ink) {
+        var css = document.createElementNS("http://www.w3.org/2000/svg", "style");
+        css.textContent = "*:not([fill=none]){fill:" + st.ink + "!important}[stroke]:not([stroke=none]){stroke:" + st.ink + "!important}";
+        c.appendChild(css);
+      }
+      return new XMLSerializer().serializeToString(c).replace(/\blc-cls-/g, "cls-");
+    }
+    function save(blob, ext) {
+      var u = URL.createObjectURL(blob), l = document.createElement("a");
+      l.href = u; l.download = it.id + (st.ink ? "-" + st.ink.slice(1) : "") + "." + ext; document.body.appendChild(l); l.click(); l.remove();
+      setTimeout(function () { URL.revokeObjectURL(u); }, 4000); DS.toast("Saved " + ext.toUpperCase());
+    }
+    $("#lc-svgdl").addEventListener("click", function () { if (st.svg) save(new Blob([currentSvg()], { type: "image/svg+xml" }), "svg"); });
+    $("#lc-png").addEventListener("click", function () {
+      if (!st.svg) return;
+      var vb = st.svg.viewBox.baseVal, W = 2000, H = Math.round(W * vb.height / vb.width);
+      var img = new Image(), u = URL.createObjectURL(new Blob([currentSvg()], { type: "image/svg+xml" }));
+      img.onload = function () {
+        var c = document.createElement("canvas"); c.width = W; c.height = H; var g = c.getContext("2d");
+        g.fillStyle = st.bg; g.fillRect(0, 0, W, H); g.drawImage(img, 0, 0, W, H); URL.revokeObjectURL(u);
+        c.toBlob(function (b) { save(b, "png"); }, "image/png");
+      };
+      img.src = u;
+    });
+    paint();
+  }
 
   $("#share-btn").addEventListener("click", function () { DS.copy(location.href, "Link copied"); });
   var sb = $("#save-btn");

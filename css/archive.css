@@ -1350,3 +1350,44 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
 
 /* official WhatsApp logo (Simple Icons, CC0) */
 .btn .wa-icon { width: 18px; height: 18px; }
+
+/* ==========================================================================
+   LOGO COLOUR TEST — on logo design pages
+   ========================================================================== */
+.lc { scroll-margin-top: var(--s5); }
+.lc-grid { display: grid; gap: var(--s6); }
+.lc-stage {
+  position: relative; display: grid; place-items: center; aspect-ratio: 4 / 3; padding: 8%;
+  background: var(--lc-bg, #f4f3ef); border: 1px solid var(--rule); transition: background .3s var(--ease);
+}
+.lc-art { width: 100%; height: 100%; display: grid; place-items: center; }
+.lc-art svg { width: 100%; height: 100%; max-height: 100%; }
+.lc-art.is-one svg *:not([fill="none"]) { fill: var(--lc-ink) !important; }
+.lc-art.is-one svg [stroke]:not([stroke="none"]) { stroke: var(--lc-ink) !important; }
+.lc-art svg * { transition: fill .3s var(--ease); }
+.lc-contrast { position: absolute; left: var(--s4); bottom: var(--s3); opacity: .8; }
+.lc-contrast.is-low { opacity: 1; font-weight: 700; }
+.lc-panel { display: grid; gap: var(--s5); align-content: start; }
+.lc-presets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2); }
+.lc-presets button {
+  display: flex; align-items: center; gap: var(--s3); min-height: var(--touch); padding: 6px var(--s3) 6px 6px;
+  border: 1px solid var(--rule-strong); font: 600 var(--fs-small)/1.2 var(--f-sans); text-align: left;
+}
+.lc-presets button:hover { border-color: var(--signal-ink); }
+.lc-presets button[aria-pressed="true"] { border: 2px solid var(--signal-ink); padding: 5px calc(var(--s3) - 1px) 5px 5px; }
+.lc-chip { position: relative; display: grid; place-items: center; grid-auto-flow: column; gap: 2px; flex: none; width: 32px; height: 32px; box-shadow: inset 0 0 0 1px var(--rule); }
+.lc-chip:empty::after { content: "A"; font: 800 16px/1 var(--f-sans); color: inherit; }
+.lc-chip i { width: 8px; height: 8px; }
+.lc-pickers { display: grid; gap: var(--s4); }
+.lc-pick { display: inline-flex; align-items: center; gap: var(--s2); min-height: var(--touch); }
+.lc-pick[hidden] { display: none; }
+.lc-pick code { font: 500 13px/1 var(--f-mono); }
+.lc-ink { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+.lc-ink button { min-height: var(--touch); padding: 0 var(--s4); border: 1px solid var(--rule-strong); font: 600 var(--fs-small)/1 var(--f-sans); }
+.lc-ink button[aria-checked="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.lc-note { font-size: var(--fs-small); color: var(--mute); line-height: 1.55; max-width: 46ch; }
+@media (min-width: 1024px) {
+  .lc-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; }
+  .lc-panel { position: sticky; top: var(--s8); }
+}
+@media (prefers-reduced-motion: reduce) { .lc-stage, .lc-art svg * { transition: none; } }
