@@ -1320,3 +1320,30 @@ input[type="range"]:focus-visible { outline: none; }
 input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--signal-ink); outline-offset: 3px; }
 input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--signal-ink); outline-offset: 3px; }
 .range-v { min-width: 4ch; font: 500 var(--fs-label)/1 var(--f-mono); letter-spacing: .04em; color: var(--fg); text-transform: none; }
+
+/* ==========================================================================
+   SERVICES & PRICES — "Work with the studio" on the home page
+   ========================================================================== */
+.services { scroll-margin-top: var(--s5); }
+.svc-grid { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--rule-strong); border-left: 1px solid var(--rule-strong); }
+.svc { display: flex; flex-direction: column; gap: var(--s4); padding: var(--s5); border-right: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); min-width: 0; }
+.svc.is-featured { background: var(--fg); color: var(--bg); }
+.svc.is-featured .label, .svc.is-featured .svc-inc { color: color-mix(in srgb, var(--bg) 72%, transparent); }
+.svc-top { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); min-height: 24px; }
+.svc.is-featured .svc-tag { background: var(--signal); color: #fff; padding: 6px 8px; line-height: 1; }
+.svc-name { font-weight: 800; letter-spacing: -.035em; font-size: var(--fs-h3); line-height: 1.1; }
+.svc-price { font: 800 clamp(34px, 22px + 2vw, 52px)/1 var(--f-sans); letter-spacing: -.05em; display: flex; align-items: baseline; gap: var(--s2); }
+.svc-price .label { letter-spacing: .08em; }
+.svc-text { font-size: var(--fs-body); line-height: 1.5; }
+.svc-inc { list-style: none; display: grid; gap: var(--s2); padding-top: var(--s4); border-top: 1px solid var(--rule); font-size: var(--fs-small); color: var(--mute); }
+.svc.is-featured .svc-inc { border-top-color: color-mix(in srgb, var(--bg) 22%, transparent); }
+.svc-inc li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: var(--s2); }
+.svc-inc li::before { content: ""; width: 10px; height: 6px; margin-top: .45em; border-left: 2px solid var(--signal-ink); border-bottom: 2px solid var(--signal-ink); transform: rotate(-45deg); }
+.svc.is-featured .svc-inc li::before { border-color: #8aa4ff; }
+.svc-btn { margin-top: auto; width: 100%; }
+.svc-btn svg { width: 18px; height: 18px; flex: none; }
+.svc.is-featured .svc-btn:not(.btn-signal) { border-color: var(--bg); }
+.svc.is-featured .btn-signal:hover { background: var(--bg); color: var(--fg); border-color: var(--bg); }
+.svc-note { margin-top: var(--s4); color: var(--mute); }
+@media (min-width: 768px) { .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .svc-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

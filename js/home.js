@@ -142,7 +142,27 @@
     show(0);
   }
 
-  /* ---------- 7. Studio / creator ---------- */
+  /* ---------- 7. Services & prices ---------- */
+  var svc = $("#svc-grid"), services = (DS.site.services || []).filter(function (x) { return x && x.name; });
+  if (svc && services.length) {
+    var wa = String(DS.site.whatsapp || "").replace(/\D/g, "");
+    svc.innerHTML = services.map(function (x, n) {
+      var msg = "Hi Draft Studio, I'd like to order a " + x.name.toLowerCase() + (x.price ? " (from " + x.price + ")" : "") + ". Here's a bit about my project: ";
+      var href = wa ? "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg) : (DS.site.email ? "mailto:" + DS.site.email + "?subject=" + encodeURIComponent(x.name) : "");
+      return '<article class="svc' + (x.featured ? " is-featured" : "") + '" data-reveal>' +
+        '<div class="svc-top"><span class="label">' + pad(n + 1, 2) + "</span>" + (x.featured ? '<span class="label svc-tag">Most complete</span>' : "") + "</div>" +
+        '<h3 class="svc-name">' + esc(x.name) + "</h3>" +
+        (x.price ? '<p class="svc-price"><span class="label">From</span> ' + esc(x.price) + "</p>" : '<p class="svc-price"><span class="label">Price</span> On request</p>') +
+        (x.text ? '<p class="svc-text">' + esc(x.text) + "</p>" : "") +
+        (x.includes && x.includes.length ? '<ul class="svc-inc">' + x.includes.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul>" : "") +
+        (href ? '<a class="btn' + (x.featured ? " btn-signal" : "") + ' svc-btn" href="' + esc(href) + '" target="_blank" rel="noopener" aria-label="Order ' + esc(x.name) + ' on WhatsApp">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.8-2.3-1-1 1a4.8 4.8 0 0 1-2.4-2.4l1-1-1-2.3z"/></svg>Order on WhatsApp</a>' : "") +
+        "</article>";
+    }).join("");
+    $("#services").hidden = false;
+  }
+
+  /* ---------- 8. Studio / creator ---------- */
   var st = $("#creator-stats");
   if (st) {
     var mine = items; // every design in the archive is the studio's own

@@ -76,7 +76,39 @@ window.DRAFT_STUDIO = {
     instagram: "",                             // e.g. "https://instagram.com/draftstudio"
     license:
       "Free for personal and commercial projects. Credit is appreciated but not required. " +
-      "You may not resell or redistribute the files as-is."
+      "You may not resell or redistribute the files as-is.",
+
+    // SERVICES & PRICES — shown in "Work with the studio" on the home page.
+    // Edit the text and prices freely; each card gets a WhatsApp button with
+    // a ready-made message. featured: true highlights a card. Delete a {…}
+    // block to remove a service; an empty list hides the whole section.
+    services: [
+      {
+        name: "Logo design",
+        price: "R800",
+        text: "A custom logo built around your name, your story and your audience.",
+        includes: ["3 first concepts to choose from", "2 rounds of changes", "SVG, AI, PDF, PNG and JPG files"]
+      },
+      {
+        name: "Custom mockup",
+        price: "R350",
+        text: "Your brand placed on a realistic product, ready to post or pitch.",
+        includes: ["Hoodie, T-shirt, cup or packaging", "High-resolution JPG and PNG", "1 round of changes"]
+      },
+      {
+        name: "Social media pack",
+        price: "R600",
+        text: "Matching post and story designs in your brand style.",
+        includes: ["6 posts and 3 stories", "Editable files you can reuse", "1 round of changes"]
+      },
+      {
+        name: "Full brand kit",
+        price: "R2,500",
+        featured: true,
+        text: "Everything a new brand needs to launch with confidence.",
+        includes: ["Logo design (as above)", "Colour palette and font pairing", "Brand guide PDF", "Business card and 3 social posts", "2 mockups of your brand"]
+      }
+    ]
   },
 
   templates: [
