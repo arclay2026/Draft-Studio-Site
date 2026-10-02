@@ -47,6 +47,7 @@
   /* ---------- icons used by the UI ---------- */
   var I = DS.icon = {
     down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path class="arrow arrow-down" d="M12 3v14M5 11l7 7 7-7M4 21h16"/></svg>',
+    up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M12 17V4M5 10l7-7 7 7M4 21h16"/></svg>',
     right: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 12h17M14 5l7 7-7 7"/></svg>',
     left: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M21 12H4M10 5l-7 7 7 7"/></svg>',
     save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-5-6 5z" fill="none"/></svg>',
@@ -73,7 +74,7 @@
         formats: uniq((raw.files || []).map(function (f) { return String(f.format).toUpperCase(); })),
         preview: previewOf(raw), date: raw.date || "", featured: !!raw.featured,
         dimensions: raw.dimensions || "", creator: raw.creator || SITE.name || "Draft Studio",
-        requires: raw.requires || "",
+        requires: raw.requires || "", tryOn: raw.tryOn && raw.tryOn.image ? raw.tryOn : null,
         type: t[1], typeLabel: t[2], page: t[0] + ".html", order: i,
         url: "item.html?id=" + encodeURIComponent(raw.id)
       });
