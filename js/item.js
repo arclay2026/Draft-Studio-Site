@@ -32,7 +32,7 @@
   var lcSvg = lcFile ? lcFile.path : "";
   var lcArt = it.type === "logo" && !lcSvg ? it.art : "";   // logos for sale: a transparent PNG preview instead
   var LC_PRESETS = [
-    ["Original on paper", "#f4f3ef", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""],
+    ["Original on paper", "#f4f3ef", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""], ["Reversed on ink", "#111111", "rev"],
     ["Ink on paper", "#f4f3ef", "#111111"], ["White on ink", "#111111", "#ffffff"], ["White on blue", "#2457ff", "#ffffff"]
   ];
 
@@ -158,13 +158,14 @@
         '<div class="lc-panel">' +
           '<div class="field"><span id="lc-pk">Quick looks</span><div class="lc-presets" role="group" aria-labelledby="lc-pk">' +
             LC_PRESETS.map(function (p, i) {
-              return '<button type="button" data-p="' + i + '" aria-pressed="' + (i === 0) + '"><span class="lc-chip" style="background:' + p[1] + ";color:" + (p[2] || "#ff4e3b") + '" aria-hidden="true">' +
-                (p[2] ? "" : '<i style="background:#ff4e3b"></i><i style="background:#2457ff"></i>') + "</span>" + p[0] + "</button>";
+              return '<button type="button" data-p="' + i + '" aria-pressed="' + (i === 0) + '"><span class="lc-chip"' + (p[2] === "rev" ? " data-rev" : "") + ' style="background:' + p[1] + ";color:" + (p[2] && p[2] !== "rev" ? p[2] : "#ff4e3b") + '" aria-hidden="true">' +
+                (p[2] && p[2] !== "rev" ? "" : '<i style="background:#ff4e3b"></i><i style="background:#2457ff"></i>') + "</span>" + p[0] + "</button>";
             }).join("") + "</div></div>" +
           '<div class="lc-pickers">' +
             '<div class="field"><span>Background</span><label class="lc-pick"><span class="sr-only">Background</span><input type="color" id="lc-bg" value="#f4f3ef"><code id="lc-bg-hex"></code></label></div>' +
             '<div class="field"><span id="lc-ik">Logo colour</span><div class="lc-ink" role="radiogroup" aria-labelledby="lc-ik">' +
               '<button type="button" role="radio" aria-checked="true" data-ink="orig">Original</button>' +
+              '<button type="button" role="radio" aria-checked="false" data-ink="rev">Reversed</button>' +
               '<button type="button" role="radio" aria-checked="false" data-ink="one">One colour</button>' +
               '<label class="lc-pick" id="lc-ink-pick" hidden><span class="sr-only">Logo</span><input type="color" id="lc-ink" value="#111111"></label>' +
             "</div></div>" +
@@ -201,9 +202,36 @@
     var ratio = function (a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
     var full = function (h) { h = h.toLowerCase(); return h.length === 4 ? "#" + h.slice(1).replace(/./g, "$&$&") : h; };
 
-    function showColours() {   // the "Original" chips show the logo's own colours
+    // "Reversed": the logo's near-black parts turn white, brand colours stay as they are
+    var isDark = function (r, g, b) { return Math.max(r, g, b) < 80 && Math.max(r, g, b) - Math.min(r, g, b) < 40; };
+    var hexRgb = function (h) { var n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    var revHex = function (h) { var c = hexRgb(h); return isDark(c[0], c[1], c[2]) ? "#ffffff" : h; };
+    var mode = function () { return !st.ink ? "orig" : st.ink === "rev" ? "rev" : "one"; };
+    function showColours() {   // the "Original" and "Reversed" chips show the logo's own colours
       DS.$all(".lc-chip:not(:empty)").forEach(function (ch) {
-        ch.innerHTML = st.colours.slice(0, 3).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
+        ch.innerHTML = st.colours.slice(0, 3).map(function (c) { return '<i style="background:' + (ch.hasAttribute("data-rev") ? revHex(c) : c) + '"></i>'; }).join("");
+      });
+    }
+    var revUrl = "";
+    function reversedArt() {   // PNG preview with its dark pixels turned white (made once)
+      if (revUrl) return revUrl;
+      try {
+        var c = document.createElement("canvas"); c.width = im.naturalWidth; c.height = im.naturalHeight;
+        var g = c.getContext("2d"); g.drawImage(im, 0, 0);
+        var data = g.getImageData(0, 0, c.width, c.height), d = data.data;
+        for (var i = 0; i < d.length; i += 4) if (d[i + 3] && isDark(d[i], d[i + 1], d[i + 2])) { d[i] = d[i + 1] = d[i + 2] = 255; }
+        g.putImageData(data, 0, 0); revUrl = c.toDataURL("image/png");
+      } catch (e) { revUrl = lcArt; }
+      return revUrl;
+    }
+    function reverseSvg(on) {   // SVG: swap near-black fills/strokes for white
+      if (!st.svg) return;
+      DS.$all("path, rect, circle, ellipse, polygon, polyline, line, text", st.svg).forEach(function (el) {
+        if (!el.hasAttribute("data-f")) { var cs = getComputedStyle(el); el.setAttribute("data-f", cs.fill); el.setAttribute("data-s", cs.stroke); }
+        ["f", "s"].forEach(function (k) {
+          var m = (el.getAttribute("data-" + k) || "").match(/\d+/g), prop = k === "f" ? "fill" : "stroke";
+          el.style[prop] = on && m && m.length >= 3 && isDark(+m[0], +m[1], +m[2]) ? "#ffffff" : "";
+        });
       });
     }
     if (lcArt) {   // PNG preview: recolour through a mask, read its colours from the pixels
@@ -225,7 +253,7 @@
         } catch (e) { st.colours = []; }
         showColours(); paint();
       };
-      if (im.complete && im.naturalWidth) read(); else im.addEventListener("load", read);
+      if (im.complete && im.naturalWidth) read(); else im.addEventListener("load", read, { once: true });
     } else DS.loadSvg(lcSvg).then(function (txt) {
       if (!txt) { art.innerHTML = '<p class="label">Preview unavailable</p>'; return; }
       // keep the logo's class names from clashing with anything else on the page
@@ -243,35 +271,38 @@
 
     function paint() {
       stage.style.setProperty("--lc-bg", st.bg);
-      art.classList.toggle("is-one", !!st.ink);
-      art.style.setProperty("--lc-ink", st.ink || "currentColor");
+      var md = mode();
+      art.classList.toggle("is-one", md === "one");
+      art.style.setProperty("--lc-ink", md === "one" ? st.ink : "currentColor");
+      if (lcArt && im && im.naturalWidth) { var want = md === "rev" ? reversedArt() : lcArt; if (im.getAttribute("src") !== want) im.setAttribute("src", want); }
+      if (lcSvg) reverseSvg(md === "rev");
       $("#lc-bg-hex").textContent = st.bg.toUpperCase();
-      var inks = st.ink ? [st.ink] : st.colours, low = inks.length ? Math.min.apply(null, inks.map(function (c) { return ratio(c, st.bg); })) : 0;
+      var inks = md === "one" ? [st.ink] : md === "rev" ? DS.uniq(st.colours.map(revHex)) : st.colours, low = inks.length ? Math.min.apply(null, inks.map(function (c) { return ratio(c, st.bg); })) : 0;
       var r = Math.round(low * 10) / 10, verdict = r >= 4.5 ? "Strong contrast" : r >= 3 ? "Reads well" : r >= 2 ? "Borderline, use with care" : "Hard to see";
-      out.textContent = inks.length ? (st.ink ? "Contrast " : "Lowest contrast ") + r.toFixed(1) + ":1 · " + verdict : "";
+      out.textContent = inks.length ? (md === "one" ? "Contrast " : "Lowest contrast ") + r.toFixed(1) + ":1 · " + verdict : "";
       out.classList.toggle("is-low", !!inks.length && r < 3);
       out.style.color = lum(st.bg) > .4 ? "#111111" : "#f4f3ef";
       DS.$all(".lc-presets button").forEach(function (b) { var p = LC_PRESETS[+b.getAttribute("data-p")]; b.setAttribute("aria-pressed", p[1] === st.bg && (p[2] || "") === st.ink); });
-      DS.$all(".lc-ink button").forEach(function (b) { b.setAttribute("aria-checked", (b.getAttribute("data-ink") === "one") === !!st.ink); });
-      $("#lc-ink-pick").hidden = !st.ink;
+      DS.$all(".lc-ink button").forEach(function (b) { b.setAttribute("aria-checked", b.getAttribute("data-ink") === md); });
+      $("#lc-ink-pick").hidden = md !== "one";
     }
     DS.$all(".lc-presets button").forEach(function (b) {
       b.addEventListener("click", function () {
         var p = LC_PRESETS[+b.getAttribute("data-p")];
-        st.bg = p[1]; st.ink = p[2]; bgIn.value = p[1]; if (p[2]) inkIn.value = p[2]; paint();
+        st.bg = p[1]; st.ink = p[2]; bgIn.value = p[1]; if (p[2] && p[2] !== "rev") inkIn.value = p[2]; paint();
       });
     });
     bgIn.addEventListener("input", function () { st.bg = bgIn.value; paint(); });
     inkIn.addEventListener("input", function () { st.ink = inkIn.value; paint(); });
     DS.$all(".lc-ink button").forEach(function (b) {
-      b.addEventListener("click", function () { st.ink = b.getAttribute("data-ink") === "one" ? inkIn.value : ""; paint(); });
+      b.addEventListener("click", function () { var m = b.getAttribute("data-ink"); st.ink = m === "one" ? inkIn.value : m === "rev" ? "rev" : ""; paint(); });
     });
 
     // The SVG exactly as shown (cropped, and recoloured when "One colour" is on)
     function currentSvg() {
       var c = st.svg.cloneNode(true);
       c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.removeAttribute("aria-hidden"); c.removeAttribute("focusable");
-      if (st.ink) {
+      if (mode() === "one") {
         var css = document.createElementNS("http://www.w3.org/2000/svg", "style");
         css.textContent = "*:not([fill=none]){fill:" + st.ink + "!important}[stroke]:not([stroke=none]){stroke:" + st.ink + "!important}";
         c.appendChild(css);
@@ -280,7 +311,7 @@
     }
     function save(blob, ext) {
       var u = URL.createObjectURL(blob), l = document.createElement("a");
-      l.href = u; l.download = it.id + (st.ink ? "-" + st.ink.slice(1) : "") + "." + ext; document.body.appendChild(l); l.click(); l.remove();
+      l.href = u; l.download = it.id + (mode() === "rev" ? "-reversed" : st.ink ? "-" + st.ink.slice(1) : "") + "." + ext; document.body.appendChild(l); l.click(); l.remove();
       setTimeout(function () { URL.revokeObjectURL(u); }, 4000); DS.toast("Saved " + ext.toUpperCase());
     }
     if (lcSvg) $("#lc-svgdl").addEventListener("click", function () { if (st.svg) save(new Blob([currentSvg()], { type: "image/svg+xml" }), "svg"); });
