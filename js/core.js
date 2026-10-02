@@ -686,6 +686,165 @@
     sync();
   };
 
+  /* ---------- Custom colour picker ----------
+     Like the dropdowns: the native <input type="color"> stays hidden as the
+     source of truth; picking a colour sets its value and fires "input". */
+  var SWATCHES = [["#111111", "Ink"], ["#f4f3ef", "Paper"], ["#2457ff", "Draft blue"], ["#ffffff", "White"], ["#8e4ec6", "Purple"],
+    ["#e5484d", "Red"], ["#f76b15", "Orange"], ["#ffc53d", "Yellow"], ["#30a46c", "Green"], ["#12a594", "Teal"]];
+  var RECENT_KEY = "ds_recent_colors";
+  function getRecent() { try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (e) { return []; } }
+  function addRecent(hex) {
+    var r = getRecent().filter(function (c) { return c !== hex; }); r.unshift(hex);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(r.slice(0, 5))); } catch (e) {}
+  }
+  function normHex(v) {
+    v = String(v || "").trim().replace(/^#/, "").toLowerCase();
+    if (/^[0-9a-f]{3}$/.test(v)) v = v.replace(/./g, "$&$&");
+    return /^[0-9a-f]{6}$/.test(v) ? "#" + v : null;
+  }
+  function hexToHsv(hex) {
+    var n = parseInt(hex.slice(1), 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+    var max = Math.max(r, g, b), d = max - Math.min(r, g, b), h = 0;
+    if (d) h = max === r ? ((g - b) / d + 6) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    return { h: h * 60, s: max ? d / max : 0, v: max };
+  }
+  function hsvToHex(h, s, v) {
+    var f = function (n) { var k = (n + h / 60) % 6; return Math.round((v - v * s * Math.max(0, Math.min(k, 4 - k, 1))) * 255); };
+    return "#" + [f(5), f(3), f(1)].map(function (x) { return ("0" + x.toString(16)).slice(-2); }).join("");
+  }
+  var cpN = 0;
+  DS.colorPicker = function (inp) {
+    if (inp.hasAttribute("data-cp")) return;
+    inp.setAttribute("data-cp", ""); inp.setAttribute("tabindex", "-1"); inp.setAttribute("aria-hidden", "true");
+    var id = "cp" + (++cpN), host = inp.closest("label");
+    var name = host ? (host.querySelector("span:not(.swatch)") || host).firstChild.textContent.trim() : "Colour";
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "cp-btn";
+    btn.setAttribute("aria-haspopup", "dialog"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", id);
+    btn.innerHTML = '<span class="cp-dot"></span>';
+    inp.parentNode.insertBefore(btn, inp);
+
+    var pop = document.createElement("div"); pop.className = "cp"; pop.id = id; pop.hidden = true;
+    pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", name + " colour");
+    pop.innerHTML =
+      '<div class="cp-head"><span class="label">' + esc(name) + ' colour</span><button type="button" class="cp-done">Done</button></div>' +
+      '<div class="cp-sw" role="group" aria-label="Swatches">' + SWATCHES.map(function (s) {
+        return '<button type="button" data-hex="' + s[0] + '" aria-label="' + s[1] + " " + s[0].toUpperCase() + '" aria-pressed="false"><span style="background:' + s[0] + '"></span></button>';
+      }).join("") + "</div>" +
+      '<div class="cp-sv" tabindex="0" role="slider" aria-label="Shade (arrow keys: left/right saturation, up/down brightness)"><span class="cp-h"></span></div>' +
+      '<div class="cp-hue" tabindex="0" role="slider" aria-label="Hue" aria-valuemin="0" aria-valuemax="360"><span class="cp-h"></span></div>' +
+      '<div class="cp-row"><span class="cp-chip" aria-hidden="true"></span><label class="cp-hex"><span class="sr-only">Hex code</span><span aria-hidden="true">#</span>' +
+      '<input type="text" maxlength="7" spellcheck="false" autocomplete="off" autocapitalize="off" inputmode="text"></label><button type="button" class="cp-copy">Copy</button></div>' +
+      '<div class="cp-recent-wrap"><p class="label">Recent</p><div class="cp-sw cp-recent" role="group" aria-label="Recent colours"></div></div>';
+    document.body.appendChild(pop);
+    var sv = $(".cp-sv", pop), hue = $(".cp-hue", pop), hexIn = $(".cp-hex input", pop), copyBtn = $(".cp-copy", pop);
+    var hsv = hexToHsv(normHex(inp.value) || "#111111"), startHex = null;
+
+    var proto = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value");
+    function val() { return proto.get.call(inp); }
+    function paint(skipHex) {
+      var hex = val();
+      btn.style.setProperty("--c", hex); btn.setAttribute("aria-label", name + " colour: " + hex.toUpperCase());
+      if (pop.hidden) return;
+      sv.style.setProperty("--hue", "hsl(" + hsv.h + ",100%,50%)");
+      $(".cp-h", sv).style.cssText = "left:" + (hsv.s * 100) + "%;top:" + ((1 - hsv.v) * 100) + "%;background:" + hex;
+      $(".cp-h", hue).style.cssText = "left:" + (hsv.h / 360 * 100) + "%;background:hsl(" + hsv.h + ",100%,50%)";
+      sv.setAttribute("aria-valuetext", "saturation " + Math.round(hsv.s * 100) + "%, brightness " + Math.round(hsv.v * 100) + "%");
+      hue.setAttribute("aria-valuenow", Math.round(hsv.h));
+      $(".cp-chip", pop).style.background = hex;
+      if (!skipHex) hexIn.value = hex.slice(1).toUpperCase();
+      $all(".cp-sw button", pop).forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-hex") === hex); });
+    }
+    function commit(hex, fromHsv, skipHex) {
+      if (!fromHsv) hsv = hexToHsv(hex);
+      if (hex !== val()) { proto.set.call(inp, hex); inp.dispatchEvent(new Event("input", { bubbles: true })); inp.dispatchEvent(new Event("change", { bubbles: true })); }
+      paint(skipHex);
+    }
+    function fromHsv() { commit(hsvToHex(hsv.h, hsv.s, hsv.v), true); }
+    function renderRecent() {
+      var r = getRecent();
+      $(".cp-recent-wrap", pop).hidden = !r.length;
+      $(".cp-recent", pop).innerHTML = r.map(function (c) { return '<button type="button" data-hex="' + c + '" aria-label="Recent ' + c.toUpperCase() + '" aria-pressed="false"><span style="background:' + c + '"></span></button>'; }).join("");
+    }
+    function place() {
+      if (window.innerWidth < 768) { pop.style.left = pop.style.top = ""; return; }   // bottom sheet on phones (CSS)
+      var r = btn.getBoundingClientRect(), vw = document.documentElement.clientWidth, vh = window.innerHeight;
+      var w = pop.offsetWidth, h = pop.offsetHeight, gap = 8, up = vh - r.bottom < h + gap + 8 && r.top > vh - r.bottom;
+      pop.style.left = Math.min(Math.max(8, r.left), vw - w - 8) + "px";
+      pop.style.top = Math.max(8, Math.min(up ? r.top - h - gap : r.bottom + gap, vh - h - 8)) + "px";   // never past the screen edge
+      pop.classList.toggle("is-up", up);
+    }
+    function open() {
+      if (!pop.hidden) return;
+      $all(".cp:not([hidden])").forEach(function (p) { p.dispatchEvent(new Event("cp-close")); });
+      hsv = hexToHsv(normHex(val()) || "#111111"); startHex = val();
+      renderRecent(); pop.hidden = false; btn.setAttribute("aria-expanded", "true"); paint(); place();
+      ($(".cp-sw button[aria-pressed=true]", pop) || sv).focus({ preventScroll: true });
+      window.addEventListener("scroll", place, true); window.addEventListener("resize", place);
+    }
+    function close(refocus) {
+      if (pop.hidden) return;
+      pop.hidden = true; btn.setAttribute("aria-expanded", "false");
+      window.removeEventListener("scroll", place, true); window.removeEventListener("resize", place);
+      if (val() !== startHex) addRecent(val());
+      if (refocus) btn.focus({ preventScroll: true });
+    }
+    pop.addEventListener("cp-close", function () { close(false); });
+    btn.addEventListener("click", function (e) { e.preventDefault(); pop.hidden ? open() : close(true); });
+    $(".cp-done", pop).addEventListener("click", function () { close(true); });
+    pop.addEventListener("keydown", function (e) { if (e.key === "Escape") { e.preventDefault(); close(true); } });
+    pop.addEventListener("click", function (e) { var s = e.target.closest(".cp-sw button"); if (s) commit(s.getAttribute("data-hex")); });
+    document.addEventListener("pointerdown", function (e) { if (!pop.hidden && !pop.contains(e.target) && !btn.contains(e.target)) close(false); });
+    pop.addEventListener("focusout", function (e) { if (e.relatedTarget && !pop.contains(e.relatedTarget) && e.relatedTarget !== btn) close(false); });
+
+    function drag(el, set) {
+      el.addEventListener("pointerdown", function (e) {
+        e.preventDefault(); el.focus({ preventScroll: true }); el.setPointerCapture(e.pointerId);
+        var go = function (ev) { var r = el.getBoundingClientRect(); set(Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (ev.clientY - r.top) / r.height))); fromHsv(); };
+        go(e); el.onpointermove = go;
+        el.onpointerup = el.onpointercancel = function () { el.onpointermove = null; };
+      });
+    }
+    drag(sv, function (x, y) { hsv.s = x; hsv.v = 1 - y; });
+    drag(hue, function (x) { hsv.h = Math.min(359.9, x * 360); });
+    sv.addEventListener("keydown", function (e) {
+      var st = e.shiftKey ? .1 : .02, k = e.key;
+      if (k === "ArrowLeft") hsv.s = Math.max(0, hsv.s - st); else if (k === "ArrowRight") hsv.s = Math.min(1, hsv.s + st);
+      else if (k === "ArrowUp") hsv.v = Math.min(1, hsv.v + st); else if (k === "ArrowDown") hsv.v = Math.max(0, hsv.v - st); else return;
+      e.preventDefault(); fromHsv();
+    });
+    hue.addEventListener("keydown", function (e) {
+      var st = e.shiftKey ? 30 : 4, k = e.key;
+      if (k === "ArrowLeft" || k === "ArrowDown") hsv.h = Math.max(0, hsv.h - st); else if (k === "ArrowRight" || k === "ArrowUp") hsv.h = Math.min(359.9, hsv.h + st);
+      else if (k === "Home") hsv.h = 0; else if (k === "End") hsv.h = 359.9; else return;
+      e.preventDefault(); fromHsv();
+    });
+    hexIn.addEventListener("input", function () { var h = normHex(hexIn.value); if (h && hexIn.value.replace("#", "").length === 6) commit(h, false, true); });
+    hexIn.addEventListener("blur", function () { var h = normHex(hexIn.value); if (h) commit(h); else paint(); });
+    hexIn.addEventListener("keydown", function (e) { if (e.key === "Enter") { var h = normHex(hexIn.value); if (h) commit(h); } });
+    copyBtn.addEventListener("click", function () {
+      var t = val().toUpperCase(), done = function () { copyBtn.textContent = "Copied"; setTimeout(function () { copyBtn.textContent = "Copy"; }, 1200); };
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function () {}); else { hexIn.select(); document.execCommand("copy"); done(); }
+    });
+
+    // Keep the swatch in step when a page script sets .value.
+    Object.defineProperty(inp, "value", { configurable: true, get: val, set: function (v) { proto.set.call(inp, v); hsv = hexToHsv(normHex(val()) || "#111111"); paint(); } });
+    paint();
+  };
+
+  /* Range sliders: blue fill up to the handle, and the value shown beside it */
+  DS.rangeSlider = function (r) {
+    var out = document.createElement("output"); out.className = "range-v"; out.setAttribute("aria-hidden", "true");
+    r.insertAdjacentElement("afterend", out);
+    var unit = r.getAttribute("data-unit") || "";
+    var upd = function () { var min = +r.min || 0, max = +r.max || 100; r.style.setProperty("--p", ((r.value - min) / (max - min) * 100) + "%"); out.textContent = r.value + unit; };
+    r.addEventListener("input", upd); upd();
+  };
+
   // Page scripts run after this file; finish shared setup once they have rendered.
-  document.addEventListener("DOMContentLoaded", function () { syncSaved(); DS.reveal(); $all("select").forEach(DS.customSelect); });
+  document.addEventListener("DOMContentLoaded", function () {
+    syncSaved(); DS.reveal();
+    $all("select").forEach(DS.customSelect);
+    $all('input[type="color"]').forEach(DS.colorPicker);
+    $all('input[type="range"]').forEach(DS.rangeSlider);
+  });
 })();
