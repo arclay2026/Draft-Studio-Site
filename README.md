@@ -94,3 +94,12 @@ https://arclay2026.github.io/Draft-Studio-Site/
 
 (Opening the HTML file directly works, but icon recolouring and the PNG and code
 tools need a web server.)
+
+## Publishing and link previews
+
+The site is published by the **Publish site** workflow (`.github/workflows/pages.yml`)
+on every change to `main` (Settings → Pages → Source: **GitHub Actions**). While
+publishing, `tools/build-share-pages.js` writes `d/<id>.html` for every design in
+`js/catalog.js`: small pages whose preview card (image, title, price or "Free")
+shows when a design is shared on WhatsApp, Instagram, Facebook or X. They open
+the design page straight away. New designs get one automatically.

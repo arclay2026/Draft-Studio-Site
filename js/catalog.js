@@ -81,6 +81,7 @@
 window.DRAFT_STUDIO = {
   site: {
     name: "Draft Studio",
+    url: "https://arclay2026.github.io/Draft-Studio-Site/",   // the site's address (change it if you get your own domain)
     tagline: "An open archive of templates, marks and icons for designers",
     email: "thedraftstudio.design@gmail.com",
     whatsapp: "27736684875",                   // +27 73 668 4875 (South Africa)

@@ -58,6 +58,11 @@
           '<button class="btn btn-sm" id="share-btn">' + DS.icon.link + " Copy link</button>" +
           '<button class="btn btn-sm" data-quick="' + esc(it.id) + '">Quick look</button>' +
         "</div>" +
+        '<div class="share-row" role="group" aria-labelledby="share-k"><span class="label" id="share-k">Share</span>' +
+          '<a class="share-btn" id="sh-wa" href="#" target="_blank" rel="noopener">' + DS.icon.wa + "<span>WhatsApp</span></a>" +
+          '<button type="button" class="share-btn" id="sh-ig">' + DS.icon.ig + "<span>Instagram</span></button>" +
+          '<button type="button" class="share-btn" id="sh-more" hidden>' + DS.icon.share + "<span>More</span></button>" +
+        "</div>" +
         '<dl class="spec-table">' +
           row("Catalogue", it.no) +
           row("Type", it.typeLabel) +
@@ -329,7 +334,27 @@
     paint();
   }
 
-  $("#share-btn").addEventListener("click", function () { DS.copy(location.href, "Link copied"); });
+  /* ---------- Sharing ----------
+     Links point at d/<id>.html when it exists (built when the site is published):
+     that page carries the preview card (image, title, price) for WhatsApp,
+     Instagram and other apps, then opens this page. */
+  var shareUrl = location.href.split("#")[0];
+  var offer = it.price ? (it.sold ? "Sold" : it.price + ", exclusive logo") : "free download";
+  function shareText() { return it.title + " (" + offer + ") on Draft Studio"; }
+  function updateShare() { $("#sh-wa").href = "https://wa.me/?text=" + encodeURIComponent(shareText() + "\n" + shareUrl); }
+  updateShare();
+  if (window.fetch && location.protocol !== "file:") {
+    var card = "d/" + encodeURIComponent(it.id) + ".html";
+    fetch(card, { method: "HEAD" }).then(function (r) { if (r.ok) { shareUrl = new URL(card, location.href).href; updateShare(); } }).catch(function () {});
+  }
+  $("#sh-ig").addEventListener("click", function () {
+    DS.copy(shareUrl, "Link copied: paste it in your Instagram story (link sticker), bio or a DM");
+  });
+  if (navigator.share) {
+    var more = $("#sh-more"); more.hidden = false;
+    more.addEventListener("click", function () { navigator.share({ title: it.title, text: shareText(), url: shareUrl }).catch(function () {}); });
+  }
+  $("#share-btn").addEventListener("click", function () { DS.copy(shareUrl, "Link copied"); });
   var sb = $("#save-btn");
   function saveLabel() { sb.querySelector("span").textContent = DS.saved.has(it.id) ? "Saved" : "Save"; }
   sb.addEventListener("click", function () { setTimeout(saveLabel, 0); });

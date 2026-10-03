@@ -1447,3 +1447,15 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
 .plate-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin-top: 6px; }
 .plate-badges > * { margin-top: 0; }
 .free-badge { display: inline-flex; align-items: center; padding: 5px 8px; background: #ffc53d; color: #111111; font: 700 var(--fs-label)/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; }   /* 11.9:1 */
+
+/* Share row on design pages */
+.share-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+.share-row > .label { margin-right: var(--s2); }
+.share-btn { display: inline-flex; align-items: center; gap: var(--s2); min-height: var(--touch); padding: 0 var(--s3); border: 1px solid var(--rule-strong); font: 600 var(--fs-small)/1 var(--f-sans); cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.share-btn svg { width: 18px; height: 18px; flex: none; }
+.share-btn[hidden] { display: none; }
+@media (hover: hover) {
+  #sh-wa:hover { background: #25d366; border-color: #25d366; color: #111; }
+  #sh-ig:hover { background: #d62976; border-color: #d62976; color: #fff; }
+  #sh-more:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+}
