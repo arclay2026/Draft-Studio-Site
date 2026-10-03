@@ -1459,3 +1459,49 @@ input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--s
   #sh-ig:hover { background: #d62976; border-color: #d62976; color: #fff; }
   #sh-more:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
 }
+
+/* ==========================================================================
+   SOFT CORNERS — a light rounding on controls, cards and tags
+   --r-sm for small labels and chips, --r for buttons, fields and cards.
+   ========================================================================== */
+:root { --r-sm: 4px; --r: 6px; }
+
+/* buttons and controls */
+.btn, .util-btn, .tool, .save, .dl-sq, .shelf-ctrl button, .share-btn, .chiplist a, .chiplist button,
+.cs-btn, .cp-btn, .cp-copy, .cp-hex, .cp-sw button, .cp-chip, .lc-presets button, .lc-ink > button,
+.zoom-btn, .overlay-close, .reset, .find, .search-box, .input, .field input[type="text"], .field select,
+.field textarea, .code-box, .swatch, .buy-btn { border-radius: var(--r); }
+.cp-sw button span, .lc-chip, .cp-btn .cp-dot, .swatch .cp-btn .cp-dot { border-radius: var(--r-sm); }
+.icon-tools .cp-btn { border-radius: var(--r); }
+input[type="range"]::-webkit-slider-thumb { border-radius: var(--r-sm); }
+input[type="range"]::-moz-range-thumb { border-radius: var(--r-sm); }
+input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
+
+/* segmented controls: round the outside, keep the inside straight */
+.viewtoggle, .typeswitch { border-radius: var(--r); overflow: hidden; }
+
+/* tags, chips and badges */
+.fmt, .req-badge, .sale-badge b, .sale-badge.is-sold, .free-badge, .svc-tag, .buy-sold, .app-mark:not(.app-logo) { border-radius: var(--r-sm); }
+
+/* cards, panels and frames */
+.plate-media, .lc-stage, .creator, .howto-formats, .buy-box.is-sold, .req-notice,
+.spec-focus, .tryon-stage, .inspector .stage, .saved-row .thumb, .index-row .thumb, .wall-caption, .toast,
+.cs-list, .cp, .portrait-ph, .dl-list, .icon-cells.is-empty { border-radius: var(--r); }
+.plate-media, .creator, .inspector .stage, .saved-row .thumb, .index-row .thumb { overflow: hidden; }
+.plate-media img, .quick-art img, .lighttable img, .saved-row .thumb img { border-radius: var(--r-sm); }
+.cs-list li, .dl-item { border-radius: var(--r-sm); }
+.dl-list { padding: 4px; }
+.dl-item { border-top: 0; }
+.dl-menu:has(.dl-list:not([hidden])) > .btn { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.dl-list { border-top-left-radius: 0; border-top-right-radius: 0; }
+@media (min-width: 768px) { .dock { border-radius: var(--r); overflow: hidden; } }
+@media (max-width: 767px) { .cp { border-radius: var(--r) var(--r) 0 0; } }
+
+/* grids of cards that share borders: draw the lines with a 1px gap instead,
+   so the outside can be rounded cleanly */
+.svc-grid { gap: 1px; background: var(--rule-strong); border: 1px solid var(--rule-strong); border-radius: var(--r); overflow: hidden; }
+.svc { border: 0; background: var(--bg); }
+.svc.is-featured { background: var(--fg); }
+.facts { gap: 1px; background: var(--rule); border: 1px solid var(--rule-strong); border-radius: var(--r); overflow: hidden; }
+.fact { border: 0; background: var(--bg); }
+@media (min-width: 1024px) { .ctrl .cs-btn { border-radius: 0; } }   /* inline filter words keep a straight underline */
