@@ -732,7 +732,7 @@
   /* ---------- Custom colour picker ----------
      Like the dropdowns: the native <input type="color"> stays hidden as the
      source of truth; picking a colour sets its value and fires "input". */
-  var SWATCHES = [["#111111", "Ink"], ["#f4f3ef", "Paper"], ["#2457ff", "Draft blue"], ["#ffffff", "White"], ["#8e4ec6", "Purple"],
+  var SWATCHES = [["#111111", "Ink"], ["#f4f3ef", "Paper"], ["#86de4e", "Draft green"], ["#ffffff", "White"], ["#8e4ec6", "Purple"],
     ["#e5484d", "Red"], ["#f76b15", "Orange"], ["#ffc53d", "Yellow"], ["#30a46c", "Green"], ["#12a594", "Teal"]];
   var RECENT_KEY = "ds_recent_colors";
   function getRecent() { try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (e) { return []; } }

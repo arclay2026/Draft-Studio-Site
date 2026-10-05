@@ -33,7 +33,7 @@
   var lcArt = it.type === "logo" && !lcSvg ? it.art : "";   // logos for sale: a transparent PNG preview instead
   var LC_PRESETS = [
     ["Original on paper", "#f4f3ef", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""], ["Reversed on ink", "#111111", "rev"],
-    ["Ink on paper", "#f4f3ef", "#111111"], ["White on ink", "#111111", "#ffffff"], ["White on blue", "#2457ff", "#ffffff"]
+    ["Ink on paper", "#f4f3ef", "#111111"], ["White on ink", "#111111", "#ffffff"], ["Ink on green", "#86de4e", "#111111"]
   ];
 
   var sizes = it.files.filter(function (f) { return f.size; }).map(function (f) { return String(f.format).toUpperCase() + " " + f.size; });
@@ -164,7 +164,7 @@
           '<div class="field"><span id="lc-pk">Quick looks</span><div class="lc-presets" role="group" aria-labelledby="lc-pk">' +
             LC_PRESETS.map(function (p, i) {
               return '<button type="button" data-p="' + i + '" aria-pressed="' + (i === 0) + '"><span class="lc-chip"' + (p[2] === "rev" ? " data-rev" : "") + ' style="background:' + p[1] + ";color:" + (p[2] && p[2] !== "rev" ? p[2] : "#ff4e3b") + '" aria-hidden="true">' +
-                (p[2] && p[2] !== "rev" ? "" : '<i style="background:#ff4e3b"></i><i style="background:#2457ff"></i>') + "</span>" + p[0] + "</button>";
+                (p[2] && p[2] !== "rev" ? "" : '<i style="background:#ff4e3b"></i><i style="background:#86de4e"></i>') + "</span>" + p[0] + "</button>";
             }).join("") + "</div></div>" +
           '<div class="lc-pickers">' +
             '<div class="field"><span>Background</span><label class="lc-pick"><span class="sr-only">Background</span><input type="color" id="lc-bg" value="#f4f3ef"><code id="lc-bg-hex"></code></label></div>' +
