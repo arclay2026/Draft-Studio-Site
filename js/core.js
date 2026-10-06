@@ -412,16 +412,17 @@
   var APP_MARKS = {
     photoshop: ["Ps", "#001e36", "#31a8ff", "photoshop"], illustrator: ["Ai", "#330000", "#ff9a00", "illustrator"],
     lightroom: ["Lr", "#001e36", "#31a8ff", "lightroom"], premiere: ["Pr", "#00005b", "#9999ff", "premiere"],
-    indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"],
-    pixellab: ["PL", "#2a1458", "#ffd23f"], canva: ["Ca", "#7d2ae8", "#ffffff"],
-    photopea: ["Pp", "#0d2b33", "#2ec5d3"], inkscape: ["Ik", "#000000", "#ffffff"], gimp: ["Gi", "#5c5543", "#f2d27a"]
+    indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff", "figma"],
+    pixellab: ["PL", "#2a1458", "#ffd23f", "pixellab.png"], canva: ["Ca", "#7d2ae8", "#ffffff", "canva"],
+    photopea: ["Pp", "#0d2b33", "#2ec5d3", "photopea"], inkscape: ["Ik", "#000000", "#ffffff", "inkscape"],
+    gimp: ["Gi", "#5c5543", "#f2d27a", "gimp"], affinity: ["Af", "#1b1b1b", "#a7f175", "affinity"]
   };
   function appKey(req) { return Object.keys(APP_MARKS).filter(function (k) { return String(req).toLowerCase().indexOf(k) !== -1; })[0]; }
   function appTheme(req) { var m = APP_MARKS[appKey(req)]; return m ? ' style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '"' : ""; }
   function appMark(req) {
     var key = appKey(req);
     var m = key ? APP_MARKS[key] : [String(req).trim().slice(0, 2), "#111111", "#f4f3ef"];
-    if (m[3]) return '<img class="app-mark app-logo" src="assets/apps/' + m[3] + '.svg" alt="" width="22" height="22">';
+    if (m[3]) return '<img class="app-mark app-logo app-' + key + '" src="assets/apps/' + m[3] + (m[3].indexOf(".") === -1 ? ".svg" : "") + '" alt="" width="22" height="22">';
     return '<span class="app-mark" style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '" aria-hidden="true">' + esc(m[0]) + "</span>";
   }
   function appShort(req) { return String(req).replace(/^adobe\s+/i, ""); }

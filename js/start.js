@@ -15,6 +15,8 @@
       text: "A professional design tool with a free plan. Great for clean vector work.", opens: ["SVG", "PNG", "JPG"] },
     { name: "Inkscape", where: "Windows · Mac · Linux", best: "Logos", url: "https://inkscape.org",
       text: "A free alternative to Illustrator for editing logos and other vector shapes.", opens: ["SVG", "PDF", "AI"] },
+    { name: "Affinity", where: "Windows · Mac · iPad", best: "Pro-level design for free", url: "https://www.affinity.studio",
+      text: "Photo editing, vector drawing and page layout in one app, now free with a Canva account.", opens: ["PSD", "AI", "SVG", "PDF", "PNG", "JPG"] },
     { name: "GIMP", where: "Windows · Mac · Linux", best: "Photo editing", url: "https://www.gimp.org",
       text: "A free photo editor with layers. It opens PSDs, but not mockup smart objects.", opens: ["PSD", "PNG", "JPG"] }
   ];

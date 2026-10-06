@@ -1902,3 +1902,7 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 @media (hover: hover) { .st-cta:hover { box-shadow: inset 0 0 0 1.5px var(--signal-ink); } }
 .st-cta { flex-wrap: nowrap; }
 @media (max-width: 767px) { .st-cta-more { display: none; } }
+/* App logos: object-fit keeps tall marks (Figma) in proportion; the black
+   Inkscape mark turns white in dark mode so it stays visible */
+.app-mark.app-logo { object-fit: contain; }
+:root[data-theme="dark"] .app-logo.app-inkscape { filter: invert(1); }
