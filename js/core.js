@@ -205,6 +205,8 @@
   /* ---------- tile (image-only card for the home, templates and logos grids) ----------
      Just the picture. The icon buttons appear on hover; the title, tags,
      price and formats live on the record page and in the quick look. */
+  var CROWN = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><defs><linearGradient id="ds-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe58a"/><stop offset=".55" stop-color="#f5c242"/><stop offset="1" stop-color="#d99a1c"/></linearGradient></defs>' +
+    '<path fill="url(#ds-gold)" d="M3 8.2l4.6 3.7L12 5l4.4 6.9L21 8.2l-1.9 9.3H4.9z"/><rect x="4.9" y="18.8" width="14.2" height="2.2" rx=".6" fill="url(#ds-gold)"/></svg>';
   DS.tile = function (it, opt) {
     opt = opt || {};
     var first = DS.quickFile(it), t = esc(it.title);
@@ -215,6 +217,7 @@
       '<a class="tile-media" href="' + it.url + '" data-plate-link aria-label="' + t + " — " + esc(it.typeLabel) + '">' +
         (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + t + '" loading="lazy" decoding="async">' : '<span class="label">No preview</span>') +
       "</a>" +
+      (it.price ? '<span class="tile-premium" role="img" aria-label="Premium" title="Premium">' + CROWN + "</span>" : "") +
       '<div class="tile-tools">' +
         '<button class="tile-btn" data-quick="' + esc(it.id) + '" aria-label="Preview ' + t + '">' + I.eye + "</button>" +
         '<button class="tile-btn" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + t + '">' + I.save + "</button>" +
