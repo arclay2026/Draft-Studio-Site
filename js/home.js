@@ -152,6 +152,20 @@
     show(0);
   }
 
+  /* ---------- 6b. Free tools preview: load the sample fonts only when near ---------- */
+  var tools = $("#tools");
+  if (tools) {
+    var loadToolFonts = function () {
+      var l = document.createElement("link"); l.rel = "stylesheet";
+      l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Bebas+Neue&family=Fraunces:wght@700&display=swap";
+      document.head.appendChild(l);
+    };
+    if ("IntersectionObserver" in window) {
+      var tio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { loadToolFonts(); tio.disconnect(); } }, { rootMargin: "800px 0px" });
+      tio.observe(tools);
+    } else loadToolFonts();
+  }
+
   /* ---------- 7. Services & prices ---------- */
   var svc = $("#svc-grid"), services = (DS.site.services || []).filter(function (x) { return x && x.name; });
   if (svc && services.length) {
