@@ -191,7 +191,7 @@
       "</article>";
     }).join("") +
       (waNo ? '<a class="stu stu-join" data-reveal href="https://wa.me/' + waNo + "?text=" + encodeURIComponent("Hi Draft Studio, I'd like to learn graphic design with you.") + '" target="_blank" rel="noopener">' +
-        '<div class="stu-photo stu-plus" aria-hidden="true">+</div><h3 class="stu-name">Learn with me</h3>' +
+        '<div class="stu-photo stu-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><h3 class="stu-name">Learn with me</h3>' +
         '<p class="stu-country">One-on-one lessons on WhatsApp</p><span class="btn btn-signal btn-sm">' + DS.icon.wa + " Message me</span></a>" : "");
     var sn = $("#students-n"); if (sn) sn.textContent = pad(students.length, 2) + (students.length === 1 ? " student" : " students");
     $("#students").hidden = false;

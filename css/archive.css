@@ -1933,3 +1933,8 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
   .spec-cells { grid-template-columns: repeat(10, minmax(0, 1fr)); }
   .spec-cells a:nth-child(n+25) { display: grid; }
 }
+/* "Learn with me": a centred, softer plus */
+.stu-join .stu-plus::before { content: none; }
+.stu-join .stu-plus { color: var(--mute); box-shadow: inset 0 0 0 1.5px var(--rule); opacity: .8; }
+.stu-join .stu-plus svg { width: 38%; height: 38%; }
+@media (hover: hover) { .stu-join:hover .stu-plus { color: var(--signal-ink); box-shadow: inset 0 0 0 1.5px var(--signal-ink); opacity: 1; } }
