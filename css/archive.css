@@ -52,7 +52,7 @@
 
   /* type families */
   --f-sans: "Geist", system-ui, sans-serif;
-  --f-serif: "Instrument Serif", "Times New Roman", serif;
+  --f-serif: "Pacifico", cursive;
   --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* type scale (fluid between 390px and 1440px) */
@@ -2042,3 +2042,9 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 .fp-top { flex-wrap: wrap; }
 .fp-foot { flex-wrap: wrap; }
 @media (max-width: 479px) { .fp-foot { flex-direction: column; align-items: stretch; } .fp-css { align-self: flex-start; } }
+
+/* Accent font: Pacifico is an upright script with no italic, so it is set
+   upright (no fake slant) and a little smaller to sit with Geist headlines */
+em.s, .serif, .cat-list li:nth-child(even) .name, .studio blockquote { font-style: normal; font-synthesis: none; letter-spacing: 0; }
+em.s { font-size: .86em; }
+.studio blockquote { font-size: clamp(26px, 12px + 2.8vw, 58px); line-height: 1.25; }

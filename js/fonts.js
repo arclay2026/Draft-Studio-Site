@@ -10,7 +10,7 @@
   var DS = window.DS, $ = DS.$, $all = DS.$all, esc = DS.esc, pad = DS.pad;
 
   var PAIRS = [
-    { h: { f: "Instrument Serif", w: 400, s: "serif" },  b: { f: "Geist", s: "sans-serif" }, moods: ["Editorial", "Modern"], note: "The Draft Studio pair" },
+    { h: { f: "Pacifico", w: 400, s: "cursive" },  b: { f: "Geist", s: "sans-serif" }, moods: ["Editorial", "Modern"], note: "The Draft Studio pair" },
     { h: { f: "Playfair Display", w: 700, s: "serif" },  b: { f: "Source Sans 3", s: "sans-serif" }, moods: ["Editorial", "Classic"] },
     { h: { f: "Montserrat", w: 700, s: "sans-serif" },   b: { f: "Merriweather", s: "serif" }, moods: ["Modern", "Classic"] },
     { h: { f: "Bebas Neue", w: 400, s: "sans-serif" },   b: { f: "Inter", s: "sans-serif" }, moods: ["Bold"] },
@@ -60,7 +60,7 @@
   function loadFonts(i) {
     if (loaded[i]) return; loaded[i] = true;
     var p = PAIRS[i];
-    if (p.h.f === "Instrument Serif" && p.b.f === "Geist") return;   // already on every page
+    if (p.h.f === "Pacifico" && p.b.f === "Geist") return;   // already on every page
     var l = document.createElement("link"); l.rel = "stylesheet"; l.href = cssUrl(p); document.head.appendChild(l);
   }
   var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
