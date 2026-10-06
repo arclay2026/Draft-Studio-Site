@@ -230,6 +230,7 @@ window.DRAFT_STUDIO = {
         { format: "ZIP", path: "files/logos/dore/dore-logo.zip", size: "271 KB" }
       ],
       art: "previews/dore-logo-art.png",
+      breakdown: true,   // has a "How it was made" page (breakdown.html?id=dore-logo)
       creator: "Isaac Matovu",
       date: "2026-09-28",
       featured: true

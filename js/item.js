@@ -52,6 +52,7 @@
         '<div class="label">' + it.no + " — " + esc(it.typeLabel) + "</div>" +
         "<h1>" + esc(it.title) + "</h1>" +
         (it.description ? '<p class="lede">' + esc(it.description) + "</p>" : "") +
+        (it.breakdown ? '<a class="bd-link" href="breakdown.html?id=' + encodeURIComponent(it.id) + '"><span class="st-cta-tag">Logo breakdown</span><span>See how it was made</span><span class="arrow arrow-right" aria-hidden="true">→</span></a>' : "") +
         '<div><div class="label" style="margin-bottom:8px">' + (it.price ? (it.sold ? "Sold" : "Buy — exclusive") : "Download — free") + "</div>" + DS.requiresNotice(it) + (it.price ? DS.buyBox(it) : DS.downloads(it)) + (it.sold ? "" : '<a class="howto-jump" href="#how-to-use">How to use this file <span aria-hidden="true">↓</span></a>') + "</div>" +
         '<div class="btn-row">' +
           '<button class="btn btn-sm" data-save="' + esc(it.id) + '" aria-pressed="false" id="save-btn">' + DS.icon.save + ' <span>Save</span></button>' +
