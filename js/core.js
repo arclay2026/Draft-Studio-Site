@@ -304,10 +304,11 @@
     var el = overlay("ov-index", "Index — Draft Studio archive",
       '<ul class="index-list">' +
         row("01", "index.html", "Front page", "", items[0]) +
-        row("02", "templates.html", "Templates", pad(t.length, 2), t[0]) +
-        row("03", "logos.html", "Logos", pad(l.length, 2), l[0]) +
-        row("04", "icons.html", "Icons", pad(DS.icons.length, 2)) +
-        row("05", "about.html", "About", "") +
+        row("02", "start.html", "Start here", "") +
+        row("03", "templates.html", "Templates", pad(t.length, 2), t[0]) +
+        row("04", "logos.html", "Logos", pad(l.length, 2), l[0]) +
+        row("05", "icons.html", "Icons", pad(DS.icons.length, 2)) +
+        row("06", "about.html", "About", "") +
       "</ul>" +
       '<div class="index-foot">' +
         '<div><div class="label">Categories</div>' + cats.map(function (c) {
@@ -412,7 +413,8 @@
     photoshop: ["Ps", "#001e36", "#31a8ff", "photoshop"], illustrator: ["Ai", "#330000", "#ff9a00", "illustrator"],
     lightroom: ["Lr", "#001e36", "#31a8ff", "lightroom"], premiere: ["Pr", "#00005b", "#9999ff", "premiere"],
     indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"],
-    pixellab: ["PL", "#2a1458", "#ffd23f"], canva: ["Ca", "#7d2ae8", "#ffffff"]
+    pixellab: ["PL", "#2a1458", "#ffd23f"], canva: ["Ca", "#7d2ae8", "#ffffff"],
+    photopea: ["Pp", "#0d2b33", "#2ec5d3"], inkscape: ["Ik", "#000000", "#ffffff"], gimp: ["Gi", "#5c5543", "#f2d27a"]
   };
   function appKey(req) { return Object.keys(APP_MARKS).filter(function (k) { return String(req).toLowerCase().indexOf(k) !== -1; })[0]; }
   function appTheme(req) { var m = APP_MARKS[appKey(req)]; return m ? ' style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '"' : ""; }
