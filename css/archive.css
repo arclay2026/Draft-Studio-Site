@@ -1513,7 +1513,7 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
    ROUNDED + PILL (option B): pill-shaped buttons, fields and tags,
    18px corners on cards and panels.
    ========================================================================== */
-:root { --r-sm: 999px; --r: 999px; --r-card: 18px; }
+:root { --r-sm: 6px; --r: 10px; --r-card: 18px; }   /* pills are set per element below; images and anything else get a gentle curve */
 .btn, .util-btn, .tool, .save, .dl-sq, .shelf-ctrl button, .share-btn, .chiplist a, .chiplist button,
 .cs-btn, .cp-copy, .lc-ink > button, .zoom-btn, .reset, .find, .search-box, .buy-btn, .viewtoggle, .typeswitch,
 .cp-hex, .input, .field input[type="text"], .swatch,
@@ -1523,7 +1523,7 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 .wall-caption, .toast, .cs-list, .cp, .dl-list, .svc-grid, .facts, .icon-cells.is-empty, .code-box { border-radius: var(--r-card); }
 .lc-presets button { border-radius: 14px; }
 .cs-list li, .dl-item { border-radius: 10px; }
-.plate-media img, .saved-row .thumb img { border-radius: 8px; }
+.plate-media img, .saved-row .thumb img, .quick-art img, .lighttable img { border-radius: 8px; }
 .saved-row .thumb, .index-row .thumb { border-radius: 12px; }
 .app-mark:not(.app-logo) { border-radius: 6px; }
 /* the download-format menu opens out of its button, so that pair keeps card corners */
