@@ -124,6 +124,19 @@ window.DRAFT_STUDIO = {
         text: "Everything a new brand needs to launch with confidence.",
         includes: ["Logo design (as above)", "Colour palette and font pairing", "Brand guide PDF", "Business card and 3 social posts", "2 mockups of your brand"]
       }
+    ],
+
+    // STUDENTS — shown in "Students" on the home page.
+    //   name      first name (or full name)
+    //   photo     upload a square photo to the students/ folder, e.g.
+    //             "students/blessed.jpg". Leave "" to show their initials.
+    //   country   e.g. "South Africa"
+    //   programs  the apps they're learning, e.g. ["Photoshop", "Illustrator"]
+    //             (Photoshop, Illustrator, Lightroom and Premiere show their logo)
+    // Add a {…} block for each new student. An empty list hides the section.
+    students: [
+      { name: "Blessed", photo: "", country: "", programs: [] },
+      { name: "Sudais",  photo: "", country: "", programs: [] }
     ]
   },
 

@@ -163,6 +163,31 @@
     $("#services").hidden = false;
   }
 
+  /* ---------- 7b. Students ---------- */
+  var stu = $("#stu-grid"), students = (DS.site.students || []).filter(function (x) { return x && x.name; });
+  if (stu && students.length) {
+    var waNo = String(DS.site.whatsapp || "").replace(/\D/g, "");
+    var pin = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+    function initials(n) { return String(n).trim().split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase(); }
+    stu.innerHTML = students.map(function (x) {
+      var progs = (x.programs || []).filter(Boolean);
+      return '<article class="stu" data-reveal>' +
+        '<div class="stu-photo" data-initials="' + esc(initials(x.name)) + '">' +
+          (x.photo ? '<img src="' + esc(x.photo) + '" alt="' + esc(x.name) + '" loading="lazy" decoding="async" onerror="this.remove()">' : "") + "</div>" +
+        '<h3 class="stu-name">' + esc(x.name) + "</h3>" +
+        (x.country ? '<p class="stu-country">' + pin + "<span>" + esc(x.country) + "</span></p>" : "") +
+        (progs.length ? '<div class="stu-apps"><span class="label">Learning</span><ul>' + progs.map(function (pr) {
+          return "<li>" + DS.appMark(pr) + "<span>" + esc(DS.appShort(pr)) + "</span></li>";
+        }).join("") + "</ul></div>" : "") +
+      "</article>";
+    }).join("") +
+      (waNo ? '<a class="stu stu-join" data-reveal href="https://wa.me/' + waNo + "?text=" + encodeURIComponent("Hi Draft Studio, I'd like to learn graphic design with you.") + '" target="_blank" rel="noopener">' +
+        '<div class="stu-photo stu-plus" aria-hidden="true">+</div><h3 class="stu-name">Learn with me</h3>' +
+        '<p class="stu-country">One-on-one lessons on WhatsApp</p><span class="btn btn-signal btn-sm">' + DS.icon.wa + " Message me</span></a>" : "");
+    var sn = $("#students-n"); if (sn) sn.textContent = pad(students.length, 2) + (students.length === 1 ? " student" : " students");
+    $("#students").hidden = false;
+  }
+
   /* ---------- 8. Studio / creator ---------- */
   var st = $("#creator-stats");
   if (st) {

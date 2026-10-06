@@ -422,6 +422,7 @@
     return '<span class="app-mark" style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '" aria-hidden="true">' + esc(m[0]) + "</span>";
   }
   function appShort(req) { return String(req).replace(/^adobe\s+/i, ""); }
+  DS.appMark = appMark; DS.appShort = appShort;
   DS.requiresBadge = function (it) {
     return '<span class="req-badge"' + appTheme(it.requires) + ">" + appMark(it.requires) + "<span>" + esc(appShort(it.requires)) + " only</span></span>";
   };

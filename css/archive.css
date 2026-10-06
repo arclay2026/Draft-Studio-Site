@@ -1787,3 +1787,37 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 .spread { display: block; }
 .spread .caption { margin-top: var(--s5); }
 .spread > .tiles { display: flex; }
+
+/* =====================================================================
+   STUDENTS — profile cards on the home page
+   ===================================================================== */
+.stu-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--tile-gap); margin-top: var(--s6); }
+@media (min-width: 768px)  { .stu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1440px) { .stu-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.stu {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; min-width: 0;
+  padding: var(--s5) var(--s3); border-radius: var(--r-card); background: var(--tf-bg);
+}
+.stu-photo {
+  position: relative; width: clamp(76px, 22vw, 112px); aspect-ratio: 1; border-radius: 999px; overflow: hidden; margin-bottom: var(--s2);
+  display: grid; place-items: center; background: var(--signal); color: #111111;
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4.5px var(--signal);
+}
+.stu-photo::before { content: attr(data-initials); font: 800 clamp(26px, 7vw, 38px)/1 var(--f-sans); letter-spacing: -.03em; }
+.stu-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0 !important; }
+.stu-name { font-weight: 800; font-size: var(--fs-h3); letter-spacing: -.025em; line-height: 1.1; overflow-wrap: anywhere; }
+.stu-country { display: inline-flex; align-items: center; gap: 5px; color: var(--mute); font-size: var(--fs-small); }
+.stu-country svg { width: 14px; height: 14px; flex: none; }
+.stu-apps { display: grid; justify-items: center; gap: 6px; margin-top: var(--s2); }
+.stu-apps .label { font-size: 10.5px; }
+.stu-apps ul { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.stu-apps li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 5px; border-radius: 999px; background: var(--bg); font-weight: 600; font-size: 12.5px; }
+.stu-apps .app-mark { width: 20px; height: 20px; font-size: 9px; border-radius: 5px; }
+.stu-apps .app-mark.app-logo { width: 20px; height: 20px; margin: 0; }
+/* "Learn with me" card */
+.stu-join { background: none; box-shadow: inset 0 0 0 1.5px var(--rule-strong); justify-content: center; transition: box-shadow .2s, background .2s; }
+.stu-join .stu-plus { background: none; color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--rule-strong); font: 300 44px/1 var(--f-sans); }
+.stu-join .btn { margin-top: var(--s3); pointer-events: none; }
+.stu-join .btn .wa-icon { width: 16px; height: 16px; }
+@media (hover: hover) { .stu-join:hover { background: var(--tf-bg); box-shadow: inset 0 0 0 1.5px var(--signal-ink); } }
+@media (max-width: 767px) { .stu-join:nth-child(odd) { grid-column: 1 / -1; } }
