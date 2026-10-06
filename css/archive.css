@@ -1592,3 +1592,15 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 /* a small press-down feel */
 .btn:active, .tool:active, .save:active, .share-btn:active, .util-btn:active, .shelf-ctrl button:active, .lc-ink > button:active,
 .cp-copy:active, .dl-sq:active { transform: translateY(1px); }
+
+/* Tonal buttons, refined: no border box at all (it repeated the gradient
+   into a thick double edge) and a single ultra-thin hairline instead. */
+:root { --tb-hi: inset 0 0 0 .5px rgba(17, 17, 17, .12); --tp-hi: inset 0 0 0 .5px rgba(17, 17, 17, .14); }
+:root[data-theme="dark"], .about-cta, .specimen { --tb-hi: inset 0 0 0 .5px rgba(255, 255, 255, .14); }
+.btn:not(.btn-signal), .util-btn, .tool:not(.dl), .save, .share-btn, .shelf-ctrl button, .chiplist a, .chiplist button,
+.cp-copy, .lc-ink > button, .lc-presets button, .zoom-btn, .about-cta-alt, .viewtoggle, .typeswitch, .cp-btn,
+.btn-signal, .tool.dl:not(.is-sold), .dl-sq:not(.is-sold), .save[aria-pressed="true"], .btn[data-save][aria-pressed="true"] {
+  border-width: 0 !important; background-origin: border-box;
+}
+.btn-signal, .tool.dl:not(.is-sold), .dl-sq:not(.is-sold), .save[aria-pressed="true"], .btn[data-save][aria-pressed="true"] { box-shadow: var(--tp-hi); }
+.lc-presets button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--signal-ink); }
