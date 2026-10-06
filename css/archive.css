@@ -1533,3 +1533,62 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 @media (max-width: 767px) { .cp { border-radius: var(--r-card) var(--r-card) 0 0; } }
 @media (min-width: 768px) { .dock { border-radius: var(--r-card); } }
 @media (min-width: 1024px) { .ctrl .cs-btn { border-radius: 0; } }   /* inline filter words keep a straight underline */
+
+/* ==========================================================================
+   TONAL BUTTONS — filled, borderless pills with a soft top-to-bottom sheen
+   (like YouTube's buttons). Main actions are green, everything else grey.
+   ========================================================================== */
+:root {
+  --tb-bg: linear-gradient(180deg, #e9e7e1 0%, #dcd9d1 100%);
+  --tb-bg-hover: linear-gradient(180deg, #dedbd4 0%, #cfccc3 100%);
+  --tb-fg: #111111;
+  --tb-hi: inset 0 1px 0 rgba(255, 255, 255, .7);
+  --tp-bg: linear-gradient(180deg, #9aea68 0%, #7fd446 100%);
+  --tp-bg-hover: linear-gradient(180deg, #8ddf59 0%, #72c63b 100%);
+  --tp-fg: #111111;
+  --tp-hi: inset 0 1px 0 rgba(255, 255, 255, .45);
+  --tb-on-bg: #111111; --tb-on-fg: #f4f3ef;          /* selected / pressed */
+}
+:root[data-theme="dark"] {
+  --tb-bg: linear-gradient(180deg, #3e3e3e 0%, #2c2c2c 100%);
+  --tb-bg-hover: linear-gradient(180deg, #4a4a4a 0%, #363636 100%);
+  --tb-fg: #f4f3ef;
+  --tb-hi: inset 0 1px 0 rgba(255, 255, 255, .1);
+  --tb-on-bg: #f4f3ef; --tb-on-fg: #111111;
+}
+/* dark sections keep dark buttons in both themes */
+.about-cta, .specimen { --tb-bg: linear-gradient(180deg, #3e3e3e 0%, #2c2c2c 100%); --tb-bg-hover: linear-gradient(180deg, #4a4a4a 0%, #363636 100%); --tb-fg: #f4f3ef; --tb-hi: inset 0 1px 0 rgba(255, 255, 255, .1); }
+
+/* secondary buttons */
+.btn:not(.btn-signal), .util-btn, .tool:not(.dl), .save, .share-btn, .shelf-ctrl button, .chiplist a, .chiplist button,
+.cp-copy, .lc-ink > button, .lc-presets button, .zoom-btn, .about-cta-alt, .viewtoggle, .typeswitch, .cp-btn {
+  background: var(--tb-bg); color: var(--tb-fg); border-color: transparent !important; box-shadow: var(--tb-hi);
+  transition: background .2s, color .2s, transform .15s var(--ease);
+}
+.btn:not(.btn-signal):hover, .util-btn:hover, .tool:not(.dl):hover, .save:hover, .share-btn:hover, .shelf-ctrl button:hover,
+.chiplist a:hover, .chiplist button:hover, .cp-copy:hover, .lc-ink > button:hover, .lc-presets button:hover, .zoom-btn:hover,
+.about-cta-alt:hover, .cp-btn:hover { background: var(--tb-bg-hover); color: var(--tb-fg); }
+/* the platform colours on the share buttons stay as a hover hint */
+@media (hover: hover) {
+  #sh-wa:hover { background: #25d366; color: #111; }
+  #sh-ig:hover { background: #d62976; color: #fff; }
+}
+/* segmented controls: one grey pill, the chosen part filled */
+.viewtoggle button, .typeswitch a { border: 0 !important; background: transparent; color: inherit; }
+.viewtoggle button[aria-pressed="true"], .typeswitch a[aria-current="page"],
+.lc-ink > button[aria-checked="true"] { background: var(--tb-on-bg); color: var(--tb-on-fg); box-shadow: none; }
+.viewtoggle, .typeswitch { padding: 3px; gap: 2px; }
+.viewtoggle button, .typeswitch a { border-radius: 999px; }
+/* chosen quick look keeps a green ring */
+.lc-presets button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--signal-ink); padding: 6px var(--s3) 6px 6px; border: 0; }
+
+/* main actions */
+.btn-signal, .tool.dl:not(.is-sold), .dl-sq:not(.is-sold), .save[aria-pressed="true"], .btn[data-save][aria-pressed="true"] {
+  background: var(--tp-bg); color: var(--tp-fg); border-color: transparent !important; box-shadow: var(--tp-hi);
+}
+.btn-signal:hover, .tool.dl:not(.is-sold):hover, .dl-sq:not(.is-sold):hover { background: var(--tp-bg-hover); color: var(--tp-fg); }
+.svc.is-featured .btn-signal:hover { background: var(--tp-bg-hover); color: var(--tp-fg); }
+
+/* a small press-down feel */
+.btn:active, .tool:active, .save:active, .share-btn:active, .util-btn:active, .shelf-ctrl button:active, .lc-ink > button:active,
+.cp-copy:active, .dl-sq:active { transform: translateY(1px); }
