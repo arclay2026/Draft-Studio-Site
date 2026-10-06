@@ -1743,7 +1743,24 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
   .btn { font-size: 13px; }
 }
 /* Touch screens: no hover, so the image simply opens the record */
-@media (hover: none) { .tile-tools { display: none; } }
+/* Phones and tablets: no hover, so the icon buttons are always shown,
+   a little smaller to fit two tiles across */
+@media (hover: none) {
+  .tile-tools { opacity: 1; transform: none; pointer-events: auto; top: 8px; right: 8px; gap: 8px; }
+  .tile-btn { position: relative; }
+  .tile-btn::before { content: ""; position: absolute; inset: -4px; }   /* 40px tap area, buttons stay 32px */
+  .tile-btn, .tile-sold { width: 32px; height: 32px; }
+  .tile-sold { width: auto; padding: 0 10px; font-size: 11px; }
+  .tile-btn svg { width: 15px; height: 15px; }
+  .tile-premium { left: 8px; bottom: 8px; }
+}
+/* Phones: every tile group is two across (2 × 2) */
+@media (max-width: 767px) {
+  .spread { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--tile-gap); }
+  .spread .caption { grid-column: 1 / -1; }
+  .shelf { grid-auto-columns: calc((100% - var(--tile-gap)) / 2); gap: var(--tile-gap); }
+}
+@media (min-width: 1024px) { .spread .p4 { display: none; } }
 /* Search bar button: a green pill nested in the rounded bar, with even
    space above, below and to the right */
 .search-box { padding-right: 7px; }

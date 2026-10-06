@@ -68,12 +68,12 @@
   var spread = $("#spread");
   if (spread) {
     var picks = items.filter(function (i) { return i.featured; });
-    items.forEach(function (i) { if (picks.length < 3 && picks.indexOf(i) === -1) picks.push(i); });
-    picks = picks.slice(0, 3);
+    items.forEach(function (i) { if (picks.length < 4 && picks.indexOf(i) === -1) picks.push(i); });
+    picks = picks.slice(0, 4);   // 4 fills a 2 × 2 grid on phones; desktop shows the first 3
     spread.innerHTML = picks.map(function (it, n) {
       return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.tile(it) + "</div>";
     }).join("") +
-      '<div class="caption" data-reveal style="--d:.3s"><span class="label label-ink">' + pad(picks.length, 2) + ' picks</span><span class="label">Chosen by the studio. Updated as new work is filed.</span></div>';
+      '<div class="caption" data-reveal style="--d:.3s"><span class="label label-ink">Studio picks</span><span class="label">Chosen by the studio. Updated as new work is filed.</span></div>';
   }
 
   /* ---------- 4. Category index with floating previews ---------- */
