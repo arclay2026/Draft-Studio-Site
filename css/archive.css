@@ -44,14 +44,14 @@
   --rule: rgba(17, 17, 17, .16);
   --rule-strong: rgba(17, 17, 17, .5);    /* softer lines; still 3.5:1 so fields and buttons stay visible */
   --signal: #86de4e;               /* fills; black text 11.3:1 */
-  --signal-ink: #86de4e;           /* text/links on the page background */
+  --signal-ink: #2e7a14;           /* deeper green for text/links on paper: 4.8:1 */
   --on-signal: #111111;
   --dock-bg: #111111;
   --dock-fg: #f4f3ef;
   --shadow-art: 0 1px 0 rgba(0, 0, 0, .04), 0 22px 40px -24px rgba(0, 0, 0, .45);
 
   /* type families */
-  --f-sans: "Manrope", system-ui, sans-serif;
+  --f-sans: "Inter", system-ui, sans-serif;
   --f-serif: "Instrument Serif", "Times New Roman", serif;
   --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -98,7 +98,7 @@
   --mute: #a3a19b;
   --rule: rgba(244, 243, 239, .16);
   --rule-strong: rgba(244, 243, 239, .4);  /* softer lines; still 3.5:1 on ink */
-  --signal-ink: #86de4e;           /* brand blue in both themes */
+  --signal-ink: #86de4e;           /* bright green on ink: 11.3:1 */
   --dock-bg: #f4f3ef;
   --dock-fg: #111111;
   --shadow-art: 0 1px 0 rgba(0, 0, 0, .2), 0 22px 40px -22px rgba(0, 0, 0, .9);
