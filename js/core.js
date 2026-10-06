@@ -257,9 +257,22 @@
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-theme-toggle]");
     if (!t) return;
-    var dark = document.documentElement.getAttribute("data-theme") === "dark";
-    if (dark) document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", "dark");
-    try { localStorage.setItem("ds_theme", dark ? "light" : "dark"); } catch (err) {}
+    var root = document.documentElement, dark = root.getAttribute("data-theme") === "dark";
+    function flip() {
+      if (dark) root.removeAttribute("data-theme"); else root.setAttribute("data-theme", "dark");
+      try { localStorage.setItem("ds_theme", dark ? "light" : "dark"); } catch (err) {}
+    }
+    // The new theme spreads out as a circle from the button (where supported)
+    if (!document.startViewTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { flip(); return; }
+    var r = t.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.classList.add("is-theme-vt");
+    var vt = document.startViewTransition(flip);
+    vt.ready.then(function () {
+      root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
+        { duration: 560, easing: "cubic-bezier(.2, .7, .1, 1)", pseudoElement: "::view-transition-new(root)" });
+    }).catch(function () {});
+    vt.finished.then(function () { root.classList.remove("is-theme-vt"); }, function () { root.classList.remove("is-theme-vt"); });
   });
 
   /* ---------- overlays ---------- */
@@ -582,7 +595,20 @@
     }
   });
   window.addEventListener("pageshow", function () {
-    $all(".plate-hero-vt").forEach(function (i) { i.classList.remove("plate-hero-vt"); });
+    if (!document.body.hasAttribute("data-page") || document.body.getAttribute("data-page") !== "item")
+      $all(".plate-hero-vt").forEach(function (i) { i.classList.remove("plate-hero-vt"); });
+  });
+  // Coming back from a record page: the big image shrinks back into its tile
+  window.addEventListener("pagereveal", function (e) {
+    if (!e.viewTransition || !window.navigation || !navigation.activation || !navigation.activation.from) return;
+    var m = /item\.html\?id=([^&#]+)/.exec(navigation.activation.from.url || "");
+    if (!m || document.body.getAttribute("data-page") === "item") return;
+    var id = decodeURIComponent(m[1]);
+    var img = $all(".tile[data-id], .plate[data-id]").filter(function (t) { return t.getAttribute("data-id") === id; })
+      .map(function (t) { return $("img", t); }).filter(function (i) {
+        if (!i) return false; var r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight;
+      })[0];
+    if (img) { img.classList.add("plate-hero-vt"); e.viewTransition.finished.then(function () { img.classList.remove("plate-hero-vt"); }, function () {}); }
   });
 
   /* Floating hover preview for lists */

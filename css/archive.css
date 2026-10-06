@@ -130,11 +130,31 @@ ul, ol { margin: 0; padding: 0; }
 
 /* Page transitions (cross-document, progressive enhancement) */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: vt-out .25s var(--ease) both; }
-::view-transition-new(root) { animation: vt-in .4s var(--ease) both; }
-@keyframes vt-out { to { opacity: 0; } }
-@keyframes vt-in { from { opacity: 0; transform: translateY(8px); } }
+/* The page content fades up and out, then the new page rises in. The
+   masthead and dock keep their own names so they stay put, like an app. */
+::view-transition-old(root) { animation: vt-out .22s cubic-bezier(.4, 0, 1, 1) both; }
+::view-transition-new(root) { animation: vt-in .46s var(--ease) .06s both; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+.masthead { view-transition-name: masthead; }
+.dock { view-transition-name: dock; }
+::view-transition-group(masthead), ::view-transition-group(dock) { animation-duration: .3s; }
+/* The clicked picture travels into the record page (and back) */
 .plate-hero-vt { view-transition-name: plate-hero; }
+::view-transition-group(plate-hero) { animation-duration: .5s; animation-timing-function: var(--ease); }
+::view-transition-old(plate-hero), ::view-transition-new(plate-hero) { height: 100%; object-fit: cover; }
+/* Theme switch: a circle reveal (driven from core.js), nothing else moves */
+.is-theme-vt .masthead, .is-theme-vt .dock, .is-theme-vt .plate-hero-vt { view-transition-name: none; }
+.is-theme-vt::view-transition-old(root), .is-theme-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.is-theme-vt::view-transition-old(root) { z-index: 1; }
+.is-theme-vt::view-transition-new(root) { z-index: 2; }
+/* Browsers without page transitions (Firefox): a soft fade-in on arrival */
+@supports not (view-transition-name: none) { body { animation: page-fade .45s var(--ease) both; } }
+@keyframes page-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  body { animation: none !important; }
+}
 
 /* ---------- 3 · Layout primitives ---------- */
 .container { padding-inline: var(--pad-x); }
