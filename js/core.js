@@ -411,7 +411,8 @@
   var APP_MARKS = {
     photoshop: ["Ps", "#001e36", "#31a8ff", "photoshop"], illustrator: ["Ai", "#330000", "#ff9a00", "illustrator"],
     lightroom: ["Lr", "#001e36", "#31a8ff", "lightroom"], premiere: ["Pr", "#00005b", "#9999ff", "premiere"],
-    indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"]
+    indesign: ["Id", "#49021f", "#ff3366"], figma: ["Fg", "#1e1e1e", "#a259ff"],
+    pixellab: ["PL", "#2a1458", "#ffd23f"], canva: ["Ca", "#7d2ae8", "#ffffff"]
   };
   function appKey(req) { return Object.keys(APP_MARKS).filter(function (k) { return String(req).toLowerCase().indexOf(k) !== -1; })[0]; }
   function appTheme(req) { var m = APP_MARKS[appKey(req)]; return m ? ' style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '"' : ""; }
