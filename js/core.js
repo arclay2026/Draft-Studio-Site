@@ -97,6 +97,16 @@
     return { id: ic.id, name: ic.name || ic.id, category: ic.category || "General", tags: ic.tags || [], file: ic.file, no: "IC–" + pad(i + 1) };
   });
 
+  /* Students (site.students in the catalog): each gets a portfolio page */
+  DS.students = (SITE.students || []).filter(function (x) { return x && x.name; }).map(function (x) {
+    var id = x.id || slug(x.name);
+    return { id: id, name: x.name, photo: x.photo || "", country: x.country || "", since: x.since || "", bio: x.bio || "",
+      instagram: String(x.instagram || "").replace(/^@/, ""), programs: (x.programs || []).filter(Boolean),
+      work: (x.work || []).filter(function (w) { return w && w.image; }), milestones: (x.milestones || []).filter(function (m) { return m && m.text; }),
+      url: "student.html?id=" + encodeURIComponent(id) };
+  });
+  DS.initials = function (n) { return String(n).trim().split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase(); };
+
   DS.matches = function (it, q) {
     if (!q) return true;
     var hay = [it.title, it.name, it.category, it.description, it.no, it.typeLabel, it.creator].concat(it.tags || [], it.formats || []).join(" ").toLowerCase();

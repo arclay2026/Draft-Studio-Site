@@ -126,17 +126,33 @@ window.DRAFT_STUDIO = {
       }
     ],
 
-    // STUDENTS — shown in "Students" on the home page.
-    //   name      first name (or full name)
-    //   photo     upload a square photo to the students/ folder, e.g.
-    //             "students/blessed.jpg". Leave "" to show their initials.
-    //   country   e.g. "South Africa"
-    //   programs  the apps they're learning, e.g. ["Photoshop", "Illustrator"]
-    //             (Photoshop, Illustrator, Lightroom and Premiere show their logo)
+    // STUDENTS — shown in "Students" on the home page; each student also
+    // gets a portfolio page (student.html?id=blessed).
+    //   name       first name (or full name)
+    //   photo      a square photo in the students/ folder, e.g. "students/blessed.jpg".
+    //              Leave "" to show their initials.
+    //   country    e.g. "South Africa"
+    //   programs   the apps they're learning, e.g. ["Photoshop", "Illustrator"]
+    //   since      (optional) when they started, e.g. "2026-08"
+    //   bio        (optional) a sentence or two about them
+    //   instagram  (optional) their Instagram username, e.g. "blessed.designs"
+    //   work       (optional) their designs. Upload the images to students/<name>/
+    //              and list them:  { image: "students/blessed/flyer.jpg", title: "Church flyer", app: "PixelLab" }
+    //   milestones (optional) their journey: { date: "2026-09", text: "Designed my first logo" }
     // Add a {…} block for each new student. An empty list hides the section.
     students: [
-      { name: "Blessed", photo: "students/blessed.jpg", country: "Nigeria", programs: ["PixelLab"] },
-      { name: "Sudais",  photo: "students/sudais.jpg",  country: "South Africa", programs: ["Adobe Illustrator", "Adobe Photoshop"] }
+      {
+        name: "Blessed", photo: "students/blessed.jpg", country: "Nigeria", programs: ["PixelLab"],
+        since: "", bio: "", instagram: "",
+        work: [],
+        milestones: []
+      },
+      {
+        name: "Sudais", photo: "students/sudais.jpg", country: "South Africa", programs: ["Adobe Illustrator", "Adobe Photoshop"],
+        since: "", bio: "", instagram: "",
+        work: [],
+        milestones: []
+      }
     ]
   },
 

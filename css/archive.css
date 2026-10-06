@@ -2070,3 +2070,51 @@ em.s { font-size: .86em; }
 .tl-text { color: var(--mute); font-size: var(--fs-small); line-height: 1.55; margin-top: 4px; max-width: 46ch; }
 .tl-go { flex: none; pointer-events: none; }
 .tl-art { flex: 1; }
+
+/* =====================================================================
+   STUDENT PORTFOLIO (student.html) + linked cards on the home page
+   ===================================================================== */
+.stu-link { transition: box-shadow .2s, background .2s; }
+.stu-view { margin-top: var(--s3); font-weight: 700; font-size: var(--fs-small); color: var(--signal-ink); }
+@media (hover: hover) { .stu-link:hover { box-shadow: inset 0 0 0 1.5px var(--signal-ink); } }
+
+.sp-head { padding: var(--s6) var(--pad-x) 0; display: grid; gap: var(--s6); }
+.sp-back { display: inline-flex; gap: 6px; justify-self: start; }
+@media (hover: hover) { .sp-back:hover { color: var(--signal-ink); } }
+.sp-id { display: grid; gap: var(--s5); align-items: center; }
+@media (min-width: 768px) { .sp-id { grid-template-columns: auto minmax(0, 1fr); gap: var(--s7); } }
+.sp-photo { width: clamp(132px, 34vw, 200px); margin: 0; }
+.sp-photo::before { font-size: clamp(44px, 11vw, 68px); }
+.sp-text { display: grid; gap: var(--s3); justify-items: start; }
+.sp-name { line-height: 1; }
+.sp-facts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s4); }
+.sp-facts .stu-country { font-size: var(--fs-body); }
+.sp-bio { max-width: 52ch; }
+.sp-acts { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s2); }
+.sp-acts .btn svg { width: 16px; height: 16px; }
+.sp-stats { margin: 0; }
+.sp-apps { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s5); }
+.sp-apps li { display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: var(--tf-bg); font-weight: 700; }
+.sp-apps .app-mark { width: 32px; height: 32px; font-size: 13px; border-radius: 8px; }
+.sp-apps .app-mark.app-logo { width: 32px; height: 32px; margin: 0; }
+.sp-work { margin-top: var(--s5); }
+.sp-tile .tile-media { width: 100%; padding: 0; cursor: zoom-in; }
+.sp-tile figcaption { display: flex; justify-content: space-between; gap: var(--s2); padding: 8px 4px 0; font-weight: 600; font-size: var(--fs-small); }
+.sp-empty { margin-top: var(--s5); padding: var(--s7) var(--s5); border-radius: var(--r-card); box-shadow: inset 0 0 0 1.5px var(--rule); text-align: center; display: grid; gap: var(--s2); justify-items: center; }
+.sp-journey { list-style: none; margin-top: var(--s5); display: grid; border-left: 2px solid var(--rule); margin-left: 6px; }
+.sp-journey li { position: relative; padding: 0 0 var(--s5) var(--s5); display: grid; gap: 4px; }
+.sp-journey li::before { content: ""; position: absolute; left: -8px; top: 2px; width: 14px; height: 14px; border-radius: 999px; background: var(--signal); box-shadow: 0 0 0 4px var(--bg); }
+.sp-journey p { font-size: var(--fs-lede); max-width: 60ch; }
+.sp-others { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--tile-gap); margin-top: var(--s5); }
+@media (min-width: 768px) { .sp-others { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sp-other { display: flex; align-items: center; gap: var(--s4); padding: var(--s3); border-radius: var(--r-card); background: var(--tf-bg); transition: box-shadow .2s; }
+.sp-other .stu-photo { width: 56px; margin: 0; box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--signal); }
+.sp-other .stu-photo::before { font-size: 20px; }
+.sp-other > div:nth-child(2) { flex: 1; min-width: 0; }
+.sp-other-n { font-weight: 800; font-size: var(--fs-h4); }
+@media (hover: hover) { .sp-other:hover { box-shadow: inset 0 0 0 1.5px var(--signal-ink); } }
+.sp-view { border: 0; padding: 0; max-width: min(92vw, 1100px); max-height: 92vh; background: var(--bg); color: var(--fg); border-radius: var(--r-card); overflow: hidden; }
+.sp-view::backdrop { background: rgba(10, 10, 10, .8); }
+.sp-view img { display: block; max-width: 100%; max-height: calc(92vh - 60px); margin: 0 auto; }
+.sp-view p { padding: 12px 18px; display: flex; gap: var(--s3); align-items: baseline; }
+.sp-view-x { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 999px; background: rgba(17, 17, 17, .7); color: #fff; }
