@@ -135,7 +135,7 @@ window.DRAFT_STUDIO = {
     //             (Photoshop, Illustrator, Lightroom and Premiere show their logo)
     // Add a {…} block for each new student. An empty list hides the section.
     students: [
-      { name: "Blessed", photo: "", country: "", programs: [] },
+      { name: "Blessed", photo: "students/blessed.jpg", country: "", programs: [] },
       { name: "Sudais",  photo: "", country: "", programs: [] }
     ]
   },
