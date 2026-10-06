@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>(function(){var d=document.documentElement;d.className+=" js";try{var t=localStorage.getItem("ds_theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches))d.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<title>Templates — Draft Studio archive</title>
-<meta name="description" content="Editable layouts in PSD, AI, PDF and SVG: flyers, social posts, stationery and more. Every file is free to download.">
-<meta property="og:title" content="Templates — Draft Studio archive">
-<meta property="og:description" content="Editable layouts in PSD, AI, PDF and SVG: flyers, social posts, stationery and more. Every file is free to download.">
+<title>Colour palettes — free, copy in one click · Draft Studio</title>
+<meta name="description" content="Free colour palettes for designers: generate your own, filter by mood, and copy hex codes or CSS in one click.">
+<meta property="og:title" content="Colour palettes · Draft Studio">
+<meta property="og:description" content="Free colour palettes for designers: generate your own, filter by mood, and copy hex codes or CSS in one click.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Draft Studio">
-<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/templates.html">
+<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/palettes.html">
 <meta property="og:image" content="https://arclay2026.github.io/Draft-Studio-Site/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/archive.css?v=687880e597">
 </head>
-<body data-page="browse" data-type="template">
+<body data-page="palettes">
 <a class="skip" href="#main">Skip to content</a>
 <header class="masthead">
   <a href="index.html" class="brand" aria-label="Draft Studio — front page">
@@ -39,26 +39,31 @@
 </header>
 
 <main id="main">
-  <section class="page-head">
-    <div class="title-wrap"><p class="label">§ 02 — Templates</p><h1>Templa<em class="s">tes</em><sup class="count" data-count="template">00</sup></h1></div>
-    <div class="aside"><p class="lede">Editable layouts in PSD, AI, PDF and SVG: flyers, social posts, stationery and more. Every file is free to download.</p><nav class="typeswitch" aria-label="Archive sections"><a href="templates.html" aria-current="page">Templates <span class="n" data-count="template">00</span></a><a href="logos.html">Logos <span class="n" data-count="logo">00</span></a><a href="icons.html">Icons <span class="n" data-count="icons">00</span></a></nav></div>
+  <section class="page-head pal-head" aria-labelledby="pal-title">
+    <div class="title-wrap"><p class="label">§ 05 — Colour</p><h1 id="pal-title">Pal<em class="s">ettes</em></h1></div>
+    <div class="aside"><p class="lede">Ready-made colour palettes for your next design. Click any colour to copy its hex code, or generate a brand-new palette of your own.</p></div>
   </section>
 
-  <div class="filterbar" role="search" aria-label="Filter templates">
-    <label class="find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><span class="sr-only">Search templates</span><input type="search" id="f-q" placeholder="Search templates" autocomplete="off"></label>
-    <div class="filters">
-      <span class="w">Showing</span>
-      <label class="ctrl"><span class="k">Format</span><select id="f-fmt"><option value="">all</option></select></label>
-      <span class="w">templates in</span>
-      <label class="ctrl"><span class="k">Category</span><select id="f-cat"><option value="">every category</option></select></label><span class="w">, sorted</span>
-      <label class="ctrl"><span class="k">Sort</span><select id="f-sort"><option value="new">newest first</option><option value="old">oldest first</option><option value="az">A to Z</option></select></label>
-      <button class="reset" id="f-reset" hidden>Reset filters ✕</button>
+  <section class="section pal-gen-wrap" aria-labelledby="h-gen">
+    <div class="folio"><span class="label label-ink">§ 01</span><span class="label">Generator</span><span class="rule"></span><span class="label folio-note" id="pal-scheme"></span></div>
+    <div class="sect-head"><h2 class="h2" id="h-gen">Make <em class="s">your own</em></h2><div class="sect-aside"><p class="lede">Lock the colours you like, then shuffle the rest. <span class="pal-kbd-hint">Press <kbd>Space</kbd> to generate.</span></p></div></div>
+    <div class="pal-gen" id="pal-gen" aria-live="polite"></div>
+    <div class="pal-gen-bar">
+      <button class="btn btn-signal" id="pal-new" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg> Generate</button>
+      <button class="btn" id="pal-gen-css" type="button">Copy CSS</button>
+      <button class="btn" id="pal-gen-png" type="button">Save PNG</button>
     </div>
-    <div class="viewtoggle" role="group" aria-label="Layout"><button data-view="plates" aria-pressed="true">Plates</button><button data-view="index" aria-pressed="false">List</button></div>
-  </div>
-  <div class="results-meta"><p class="label" id="r-count" aria-live="polite"></p><p class="label hint">Hover an image for tools · click for the full record</p></div>
-  <div class="results" id="results"></div>
+  </section>
+
+  <section class="section" aria-labelledby="h-pals">
+    <div class="folio"><span class="label label-ink">§ 02</span><span class="label">Curated palettes</span><span class="rule"></span><span class="label folio-note" id="pal-n"></span></div>
+    <div class="sect-head"><h2 class="h2" id="h-pals">Pick a <em class="s">mood</em></h2></div>
+    <div class="pal-moods" id="pal-moods" role="group" aria-label="Filter by mood"></div>
+    <div class="pal-grid" id="pal-grid"></div>
+    <p class="label pal-note">Tip: use the darkest colour for text, the lightest for backgrounds, and save the brightest for buttons and highlights.</p>
+  </section>
 </main>
+
 
 <footer class="colophon">
   <div class="folio"><span class="label label-ink">§ Colophon</span><span class="label">Draft Studio</span><span class="rule"></span><span class="label folio-note">Vol. 01 — <span data-year></span></span></div>
@@ -74,7 +79,7 @@
 
 <nav class="dock" aria-label="Primary">
   <button class="dock-item dock-index" data-open-index><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M3 7h18M3 12h18M3 17h11"/></svg><span>Index</span></button>
-  <a class="dock-item" href="templates.html" data-sec="templates" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17"/><path d="M3.5 9h17M9 20.5V9"/></svg><span>Templates</span><span class="n" data-count="template">00</span></a>
+  <a class="dock-item" href="templates.html" data-sec="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17"/><path d="M3.5 9h17M9 20.5V9"/></svg><span>Templates</span><span class="n" data-count="template">00</span></a>
   <a class="dock-item" href="logos.html" data-sec="logos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 15.5L12 8l3.5 7.5M9.8 13h4.4"/></svg><span>Logos</span><span class="n" data-count="logo">00</span></a>
   <a class="dock-item" href="icons.html" data-sec="icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Icons</span><span class="n" data-count="icons">00</span></a>
   <a class="dock-item" href="about.html" data-sec="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>About</span></a>
@@ -84,6 +89,6 @@
 
 <script>/* always load the newest catalog, never a cached copy */document.write('<script src="js/catalog.js?v=' + Date.now() + '"><\/script>');</script>
 <script src="js/core.js?v=0d52e4f124"></script>
-<script src="js/browse.js?v=0df7b171d5"></script>
+<script src="js/palettes.js?v=9ed1e866cb"></script>
 </body>
 </html>

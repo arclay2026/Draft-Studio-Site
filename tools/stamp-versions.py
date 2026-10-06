@@ -11,7 +11,7 @@ already load it fresh on every visit.
 import glob, hashlib, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILES = ["css/archive.css", "js/core.js", "js/home.js", "js/browse.js", "js/item.js", "js/icons.js", "js/start.js"]
+FILES = ["css/archive.css", "js/core.js", "js/home.js", "js/browse.js", "js/item.js", "js/icons.js", "js/start.js", "js/palettes.js"]
 
 def digest(path):
     with open(os.path.join(ROOT, path), "rb") as f:
