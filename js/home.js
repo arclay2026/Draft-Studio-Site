@@ -4,6 +4,15 @@
   var DS = window.DS, $ = DS.$, $all = DS.$all, esc = DS.esc, pad = DS.pad;
   var items = DS.items, icons = DS.icons;
 
+  // A mixed sample of icons: one from each category in turn, so the home page
+  // shows the range of the set rather than just the first category.
+  function iconMix(n) {
+    var groups = {}, order = [], out = [];
+    icons.forEach(function (ic) { if (!groups[ic.category]) { groups[ic.category] = []; order.push(ic.category); } groups[ic.category].push(ic); });
+    for (var r = 0; out.length < Math.min(n, icons.length); r++) order.forEach(function (c) { if (groups[c][r] && out.length < n) out.push(groups[c][r]); });
+    return out;
+  }
+
   /* ---------- 1. Design wall: real previews drifting in columns ---------- */
   var wall = $("#wall");
   if (wall) {
@@ -30,7 +39,7 @@
     var pool = [];
     withArt.forEach(function (it) { pool.push(artTile(it)); });
     cats.forEach(function (cat, n) { pool.splice(Math.min(pool.length, 2 + n * 3), 0, typeTile(cat, n, n % 2 === 1)); });
-    icons.slice(0, 6).forEach(function (ic, n) { pool.splice(Math.min(pool.length, 4 + n * 4), 0, glyphTile(ic)); });
+    iconMix(6).forEach(function (ic, n) { pool.splice(Math.min(pool.length, 4 + n * 4), 0, glyphTile(ic)); });
     if (pool.length) {
       var perCol = Math.max(5, Math.ceil(pool.length / COLS) + 2);
       for (c = 0; c < COLS; c++) {
@@ -125,7 +134,7 @@
   if (!icons.length) {                       // no icons yet: hide the specimen section
     var spec = cells && cells.closest(".specimen"); if (spec) spec.hidden = true;
   } else if (cells && focus) {
-    var sample = icons.slice(0, 12);
+    var sample = iconMix(12);
     cells.innerHTML = sample.map(function (ic, n) {
       return '<a href="icons.html#' + esc(ic.id) + '" data-i="' + n + '" aria-label="' + esc(ic.name) + '"><span class="n">' + pad(n + 1, 2) + '</span><span class="g"></span></a>';
     }).join("");
