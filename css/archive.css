@@ -1604,3 +1604,58 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 }
 .btn-signal, .tool.dl:not(.is-sold), .dl-sq:not(.is-sold), .save[aria-pressed="true"], .btn[data-save][aria-pressed="true"] { box-shadow: var(--tp-hi); }
 .lc-presets button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--signal-ink); }
+
+/* ==========================================================================
+   FILLED FIELDS — search boxes and dropdowns match the tonal buttons:
+   a flat fill, no outline, one ultra-thin hairline, green ring on focus
+   ========================================================================== */
+:root { --tf-bg: #e8e6e0; --tf-bg-hover: #e0ddd6; --tf-hi: inset 0 0 0 .5px rgba(17, 17, 17, .12); }
+:root[data-theme="dark"] { --tf-bg: #262626; --tf-bg-hover: #2e2e2e; --tf-hi: inset 0 0 0 .5px rgba(255, 255, 255, .14); }
+.find, .search-box, .cs-btn, .input, .field input[type="text"], .field textarea, .cp-hex, .search-field, .code-box {
+  background: var(--tf-bg); border-width: 0 !important; box-shadow: var(--tf-hi); transition: background .2s, box-shadow .2s;
+}
+.find:hover, .search-box:hover, .cs-btn:hover, .cp-hex:hover, .search-field:hover { background: var(--tf-bg-hover); box-shadow: var(--tf-hi); }
+.find:focus-within, .search-box:focus-within, .cp-hex:focus-within, .search-field:focus-within, .input:focus,
+.field input:focus, .field textarea:focus, .cs-btn:focus-visible, .cs.is-open .cs-btn {
+  box-shadow: inset 0 0 0 2px var(--signal-ink); outline: none;
+}
+.find, .search-box { padding-inline: var(--s4); }
+.search-box .btn { box-shadow: none; }
+/* big search in the search overlay */
+.search-field { border-radius: var(--r-card); padding: var(--s2) var(--s5); }
+/* desktop filter sentence: each dropdown becomes a small filled pill inside the sentence */
+@media (min-width: 1024px) {
+  .ctrl .cs-btn {
+    background: var(--tf-bg); border: 0 !important; box-shadow: var(--tf-hi); border-radius: 999px;
+    padding: 2px 14px 4px; line-height: 1.25;
+  }
+  .ctrl .cs-btn:hover { background: var(--tf-bg-hover); }
+  .ctrl .cs.is-open .cs-btn, .ctrl .cs-btn:focus-visible { box-shadow: inset 0 0 0 2px var(--signal-ink); outline: none; }
+}
+
+/* ==========================================================================
+   SYMMETRY — every card the same frame, even grids, one rhythm
+   ========================================================================== */
+/* all design cards: one 4:5 frame, artwork centred inside it */
+.plate.is-fixed .plate-media { aspect-ratio: 4 / 5; padding: 10%; }
+.plate.is-fixed .plate-media img { border-radius: 8px; }
+
+/* results: an even grid instead of uneven columns */
+.masonry { column-count: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s7) var(--gap); align-items: start; }
+.masonry .plate { margin-bottom: 0; }
+@media (min-width: 768px) { .masonry { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .masonry { grid-template-columns: repeat(3, minmax(0, 1fr)); column-count: auto; }
+  .masonry .plate:nth-child(4n+2) .plate-media { padding: 10%; }
+}
+@media (min-width: 1440px) { .masonry { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* editor's selection: equal cards side by side, caption underneath */
+.spread { grid-template-columns: minmax(0, 1fr); gap: var(--s7) var(--gap); }
+.spread > div[class^="p"] { grid-column: auto !important; grid-row: auto !important; margin-top: 0 !important; }
+.spread .caption { grid-column: 1 / -1 !important; grid-row: auto !important; display: flex !important; flex-wrap: wrap; align-items: baseline; gap: var(--s3) var(--s4); align-self: start; padding-top: var(--s4); border-top: 1px solid var(--rule); }
+@media (min-width: 768px) { .spread { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .spread { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* tablet filter bar: one column, so the search and the Plates/List switch reach the right margin */
+@media (min-width: 768px) and (max-width: 1023px) { .filterbar { grid-template-columns: minmax(0, 1fr); } }

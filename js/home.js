@@ -71,9 +71,9 @@
     items.forEach(function (i) { if (picks.length < 3 && picks.indexOf(i) === -1) picks.push(i); });
     picks = picks.slice(0, 3);
     spread.innerHTML = picks.map(function (it, n) {
-      return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.plate(it, { showType: true }) + "</div>";
+      return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.plate(it, { showType: true, fixed: true }) + "</div>";
     }).join("") +
-      '<div class="caption" data-reveal style="--d:.3s"><div class="big-no">' + pad(picks.length, 2) + '</div><p class="label" style="margin-top:14px">Chosen by the studio. Updated as new work is filed.</p></div>';
+      '<div class="caption" data-reveal style="--d:.3s"><span class="label label-ink">' + pad(picks.length, 2) + ' picks</span><span class="label">Chosen by the studio. Updated as new work is filed.</span></div>';
   }
 
   /* ---------- 4. Category index with floating previews ---------- */
