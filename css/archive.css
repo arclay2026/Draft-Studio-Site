@@ -1508,3 +1508,28 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 .fact { border: 0; background: var(--bg); }
 @media (min-width: 1024px) { .ctrl .cs-btn { border-radius: 0; } }   /* inline filter words keep a straight underline */
 .btn:not(.btn-signal):hover, .shelf-ctrl button:hover, .cp-copy:hover { border-color: var(--fg); }   /* dark fill on hover gets a matching edge */
+
+/* ==========================================================================
+   ROUNDED + PILL (option B): pill-shaped buttons, fields and tags,
+   18px corners on cards and panels.
+   ========================================================================== */
+:root { --r-sm: 999px; --r: 999px; --r-card: 18px; }
+.btn, .util-btn, .tool, .save, .dl-sq, .shelf-ctrl button, .share-btn, .chiplist a, .chiplist button,
+.cs-btn, .cp-copy, .lc-ink > button, .zoom-btn, .reset, .find, .search-box, .buy-btn, .viewtoggle, .typeswitch,
+.cp-hex, .input, .field input[type="text"], .swatch,
+.fmt, .req-badge, .sale-badge b, .sale-badge.is-sold, .free-badge, .svc-tag, .buy-sold,
+.cp-sw button, .cp-sw button span, .lc-chip, .cp-btn, .cp-btn .cp-dot { border-radius: 999px; }
+.plate-media, .lc-stage, .creator, .howto-formats, .buy-box.is-sold, .req-notice, .spec-focus, .inspector .stage,
+.wall-caption, .toast, .cs-list, .cp, .dl-list, .svc-grid, .facts, .icon-cells.is-empty, .code-box { border-radius: var(--r-card); }
+.lc-presets button { border-radius: 14px; }
+.cs-list li, .dl-item { border-radius: 10px; }
+.plate-media img, .saved-row .thumb img { border-radius: 8px; }
+.saved-row .thumb, .index-row .thumb { border-radius: 12px; }
+.app-mark:not(.app-logo) { border-radius: 6px; }
+/* the download-format menu opens out of its button, so that pair keeps card corners */
+.dl-box .btn { border-radius: var(--r-card); }
+.dl-menu:has(.dl-list:not([hidden])) > .btn { border-radius: var(--r-card) var(--r-card) 0 0; }
+.dl-list { border-radius: 0 0 var(--r-card) var(--r-card); }
+@media (max-width: 767px) { .cp { border-radius: var(--r-card) var(--r-card) 0 0; } }
+@media (min-width: 768px) { .dock { border-radius: var(--r-card); } }
+@media (min-width: 1024px) { .ctrl .cs-btn { border-radius: 0; } }   /* inline filter words keep a straight underline */
