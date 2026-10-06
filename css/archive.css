@@ -1906,3 +1906,30 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
    Inkscape mark turns white in dark mode so it stays visible */
 .app-mark.app-logo { object-fit: contain; }
 :root[data-theme="dark"] .app-logo.app-inkscape { filter: invert(1); }
+
+/* Icon specimen (home): compact on desktop. A fixed-size preview panel and
+   a dense grid of short cells (3 rows) instead of huge squares that grow
+   with the screen. Phones and tablets show the first 12 icons. */
+@media (max-width: 1023px) { .spec-cells a:nth-child(n+13) { display: none; } }
+@media (min-width: 1024px) {
+  .spec-grid { grid-template-columns: 300px minmax(0, 1fr); align-items: start; }
+  .spec-focus { aspect-ratio: auto; height: 300px; }
+  .spec-focus .glyph svg, .spec-focus .glyph img { width: 96px; }
+  .spec-cells { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 100px; }
+  .spec-cells a { aspect-ratio: auto; }
+  .spec-cells a .g { width: 26px; }
+  .spec-cells a:nth-child(n+19) { display: none; }
+}
+@media (min-width: 1280px) {
+  .spec-grid { grid-template-columns: 360px minmax(0, 1fr); }
+  .spec-focus { height: 360px; }
+  .spec-focus .glyph svg, .spec-focus .glyph img { width: 112px; }
+  .spec-cells { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-auto-rows: 120px; }
+  .spec-cells a .g { width: 28px; }
+  .spec-cells a:nth-child(n+19) { display: grid; }
+  .spec-cells a:nth-child(n+25) { display: none; }
+}
+@media (min-width: 1680px) {
+  .spec-cells { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+  .spec-cells a:nth-child(n+25) { display: grid; }
+}

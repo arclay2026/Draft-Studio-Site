@@ -134,7 +134,7 @@
   if (!icons.length) {                       // no icons yet: hide the specimen section
     var spec = cells && cells.closest(".specimen"); if (spec) spec.hidden = true;
   } else if (cells && focus) {
-    var sample = iconMix(12);
+    var sample = iconMix(30);   // phones show 12; desktop shows up to 30 (see CSS)
     cells.innerHTML = sample.map(function (ic, n) {
       return '<a href="icons.html#' + esc(ic.id) + '" data-i="' + n + '" aria-label="' + esc(ic.name) + '"><span class="n">' + pad(n + 1, 2) + '</span><span class="g"></span></a>';
     }).join("");
