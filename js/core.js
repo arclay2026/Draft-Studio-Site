@@ -226,6 +226,33 @@
     "</article>";
   };
 
+  /* ---------- masonry: tiles dealt left to right into columns ----------
+     Each column stacks on its own, so a short tile never leaves a gap
+     under it (like Pinterest). Rebuilt when the column count changes. */
+  var masonries = [];
+  DS.masonry = function (el, html, opt) {
+    var m = { el: el, html: html, opt: opt, key: "" };
+    masonries = masonries.filter(function (x) { return x.el !== el && x.el.isConnected; });
+    masonries.push(m); layout(m);
+  };
+  function layout(m) {
+    var w = window.innerWidth, n = m.opt.cols(w), max = m.opt.max ? m.opt.max(w) : m.html.length, key = n + "/" + max;
+    if (key === m.key) return;
+    m.key = key;
+    var cols = [];
+    for (var c = 0; c < n; c++) cols.push([]);
+    m.html.slice(0, max).forEach(function (h, i) { cols[i % n].push(h); });
+    m.el.style.setProperty("--cols", n);
+    m.el.innerHTML = cols.map(function (c) { return '<div class="mcol">' + c.join("") + "</div>"; }).join("");
+    syncSaved();
+  }
+  var mzTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(mzTimer);
+    mzTimer = setTimeout(function () { masonries.forEach(function (m) { if (m.el.isConnected) layout(m); }); }, 120);
+  });
+  DS.tileCols = function (w) { return w >= 1440 ? 4 : w >= 768 ? 3 : 2; };
+
   /* ---------- theme ---------- */
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-theme-toggle]");

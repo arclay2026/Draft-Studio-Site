@@ -70,10 +70,11 @@
     var picks = items.filter(function (i) { return i.featured; });
     items.forEach(function (i) { if (picks.length < 4 && picks.indexOf(i) === -1) picks.push(i); });
     picks = picks.slice(0, 4);   // 4 fills a 2 × 2 grid on phones; desktop shows the first 3
-    spread.innerHTML = picks.map(function (it, n) {
-      return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.tile(it) + "</div>";
-    }).join("") +
+    spread.innerHTML = '<div class="tiles spread-tiles" data-reveal></div>' +
       '<div class="caption" data-reveal style="--d:.3s"><span class="label label-ink">Studio picks</span><span class="label">Chosen by the studio. Updated as new work is filed.</span></div>';
+    // 4 picks in 2 columns on phones and tablets, the first 3 in 3 columns on desktop
+    DS.masonry(spread.firstChild, picks.map(function (it) { return DS.tile(it); }),
+      { cols: function (w) { return w >= 1024 ? 3 : 2; }, max: function (w) { return w >= 1024 ? 3 : 4; } });
   }
 
   /* ---------- 4. Category index with floating previews ---------- */

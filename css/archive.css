@@ -1779,3 +1779,11 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 }
 .tile-premium svg { width: 19px; height: 19px; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .35)); }
 @media (min-width: 1024px) { .tile-premium { width: 32px; height: 32px; } .tile-premium svg { width: 20px; height: 20px; } }
+/* Masonry: tiles are dealt left to right into columns that stack on their
+   own, so a short tile never leaves a gap beneath it */
+.tiles { column-count: auto; display: flex; align-items: flex-start; gap: var(--tile-gap); }
+.mcol { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--tile-gap); }
+.tiles .tile { margin-bottom: 0; }
+.spread { display: block; }
+.spread .caption { margin-top: var(--s5); }
+.spread > .tiles { display: flex; }
