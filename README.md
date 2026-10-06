@@ -32,7 +32,7 @@ All tokens live at the top of `css/archive.css`:
 
 - **Colour:** ink `#111111`, paper `#f4f3ef`, green `#86de4e` as the only signal colour.
   Dark mode swaps ink and paper and uses a lighter blue for text so it stays readable.
-- **Type:** Inter (brand), Instrument Serif italic (contrast), JetBrains Mono (metadata).
+- **Type:** Geist (brand), Instrument Serif italic (contrast), JetBrains Mono (metadata).
   A fluid scale (`--fs-label` … `--fs-mega`) grows smoothly from phone to desktop; big headlines
   scale to their container, so they never run off the screen. Nothing is smaller than 12px.
 - **Spacing:** a 4px scale (`--s1` … `--s9`) plus `--section` for the gap between sections.
@@ -74,7 +74,7 @@ page so visitors' browsers load the new files instead of an old saved copy.
 ## Branding
 
 - Colours: `#86de4e` (green), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/archive.css`.
-- Font: Inter (Google Fonts).
+- Font: Geist (Google Fonts).
 - Original logo upload: `assets/brand/draft-studio-logo-original.svg`. The files below are cut from it.
 - Header logo: `assets/logo.svg` (light background) and `assets/logo-dark.svg` (dark mode).
 - 3D hero logo: `assets/logo-mark.svg`, the logo symbol on its own. The site
