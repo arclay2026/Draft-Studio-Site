@@ -322,7 +322,8 @@
         row("04", "logos.html", "Logos", pad(l.length, 2), l[0]) +
         row("05", "icons.html", "Icons", pad(DS.icons.length, 2)) +
         row("06", "palettes.html", "Palettes", "") +
-        row("07", "about.html", "About", "") +
+        row("07", "fonts.html", "Font pairs", "") +
+        row("08", "about.html", "About", "") +
       "</ul>" +
       '<div class="index-foot">' +
         '<div><div class="label">Categories</div>' + cats.map(function (c) {
