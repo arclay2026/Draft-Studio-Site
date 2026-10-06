@@ -48,7 +48,7 @@
       out.innerHTML = '<div class="empty"><p class="label">No records</p><p class="h2">' +
         (all.length ? 'Nothing filed under that. <em class="s">Try another word.</em>' : 'New work is <em class="s">on the way.</em>') + "</p></div>";
     } else if (state.view === "plates") {
-      out.innerHTML = '<div class="masonry">' + list.map(function (it, n) { return DS.plate(it, { i: n, fixed: true }); }).join("") + "</div>";
+      out.innerHTML = '<div class="tiles">' + list.map(function (it, n) { return DS.tile(it, { i: n }); }).join("") + "</div>";
     } else {
       out.innerHTML = '<div class="index-table" role="table">' +
         '<div class="index-row head label" role="row"><span></span><span>Title</span><span class="cat">Category</span><span class="fm">Formats</span><span class="date">Filed</span><span>Actions</span></div>' +

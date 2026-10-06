@@ -92,7 +92,7 @@
 
     (related.length ? '<section class="section"><div class="folio"><span class="label label-ink">§ Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
       '<div class="sect-head"><h2 class="h2">Also filed <em class="s">nearby</em></h2></div>' +
-      '<div class="shelf" tabindex="0" aria-label="Related designs">' + related.map(function (r) { return DS.plate(r, { showType: true, fixed: true }); }).join("") + "</div></section>" : "");
+      '<div class="shelf" tabindex="0" aria-label="Related designs">' + related.map(function (r) { return DS.tile(r); }).join("") + "</div></section>" : "");
 
   /* ---------- How to use: steps picked for the kind of file ---------- */
   function howToSteps() {

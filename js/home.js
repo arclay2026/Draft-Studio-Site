@@ -13,7 +13,7 @@
     for (var c = 0; c < COLS; c++) cols.push([]);
 
     function artTile(it) {
-      return '<a class="wall-tile" href="' + it.url + '" data-cursor="Open" tabindex="-1"><span class="tag">' + it.no + '</span><img src="' + esc(it.preview) + '" alt="" decoding="async"></a>';
+      return '<a class="wall-tile" href="' + it.url + '" data-cursor="Open" tabindex="-1"><img src="' + esc(it.preview) + '" alt="" decoding="async"></a>';
     }
     function typeTile(cat, n, blue) {
       var count = items.filter(function (i) { return i.category === cat; }).length;
@@ -71,7 +71,7 @@
     items.forEach(function (i) { if (picks.length < 3 && picks.indexOf(i) === -1) picks.push(i); });
     picks = picks.slice(0, 3);
     spread.innerHTML = picks.map(function (it, n) {
-      return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.plate(it, { showType: true, fixed: true }) + "</div>";
+      return '<div class="p' + (n + 1) + '" data-reveal style="--d:' + (n * 0.12) + 's">' + DS.tile(it) + "</div>";
     }).join("") +
       '<div class="caption" data-reveal style="--d:.3s"><span class="label label-ink">' + pad(picks.length, 2) + ' picks</span><span class="label">Chosen by the studio. Updated as new work is filed.</span></div>';
   }
@@ -95,7 +95,7 @@
   /* ---------- 5. Recently filed shelf (horizontal) ---------- */
   var shelf = $("#shelf");
   if (shelf) {
-    shelf.innerHTML = items.slice(0, 10).map(function (it) { return DS.plate(it, { showType: true, fixed: true }); }).join("");
+    shelf.innerHTML = items.slice(0, 10).map(function (it) { return DS.tile(it); }).join("");
     var counter = $("#shelf-n");
     function upd() {
       var max = shelf.scrollWidth - shelf.clientWidth;

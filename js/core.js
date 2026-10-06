@@ -202,6 +202,27 @@
     "</article>";
   };
 
+  /* ---------- tile (image-only card for the home, templates and logos grids) ----------
+     Just the picture. The icon buttons appear on hover; the title, tags,
+     price and formats live on the record page and in the quick look. */
+  DS.tile = function (it, opt) {
+    opt = opt || {};
+    var first = DS.quickFile(it), t = esc(it.title);
+    var buy = it.price ? (it.sold ? '<span class="tile-sold">Sold</span>'
+      : '<a class="tile-btn" href="' + esc(DS.buyUrl(it)) + '" target="_blank" rel="noopener" aria-label="Buy ' + t + " for " + esc(it.price) + ' on WhatsApp">' + I.wa + "</a>") : "";
+    var dl = first ? '<a class="tile-btn" href="' + esc(first.path) + '"' + DS.dlAttrs(first.path) + ' data-dl aria-label="Download ' + t + '">' + I.down + "</a>" : "";
+    return '<article class="tile" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + ">" +
+      '<a class="tile-media" href="' + it.url + '" data-plate-link aria-label="' + t + " — " + esc(it.typeLabel) + '">' +
+        (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + t + '" loading="lazy" decoding="async">' : '<span class="label">No preview</span>') +
+      "</a>" +
+      '<div class="tile-tools">' +
+        '<button class="tile-btn" data-quick="' + esc(it.id) + '" aria-label="Preview ' + t + '">' + I.eye + "</button>" +
+        '<button class="tile-btn" data-save="' + esc(it.id) + '" aria-pressed="false" aria-label="Save ' + t + '">' + I.save + "</button>" +
+        buy + dl +
+      "</div>" +
+    "</article>";
+  };
+
   /* ---------- theme ---------- */
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-theme-toggle]");
@@ -513,7 +534,7 @@
     // Shared-element page transition: tag the clicked plate's image
     var pl = e.target.closest("[data-plate-link]");
     if (pl) {
-      var img = $("img", pl.closest(".plate") || pl);
+      var img = $("img", pl.closest(".plate, .tile") || pl);
       if (img) img.classList.add("plate-hero-vt");
     }
   });
