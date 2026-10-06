@@ -50,6 +50,10 @@
  *   Don't upload the real files of a logo you sell: everything on GitHub can be
  *   downloaded. Keep them on your computer and send them to the buyer.
  *
+ * FREE LOGO (like Dore)
+ *   Leave out price, priceWithName, sold and includes. Upload the files to
+ *   files/logos/<name>/ and list them under files, exactly like a template.
+ *
  * EXAMPLE — a template (copy from { to }, and keep the comma after it)
  *
  *   {
@@ -187,11 +191,15 @@ window.DRAFT_STUDIO = {
       dimensions: "Vector · any size (raster 2250 × 2250 px)",
       tags: ["letter d", "lettermark", "monogram", "wordmark", "red", "arcs"],
       preview: "previews/dore-logo.jpg",
-      // FOR SALE — exclusive, sold once. Set sold: true after someone buys it.
-      price: "R350",
-      priceWithName: "R500",
-      sold: false,
-      includes: ["SVG", "AI", "PDF", "PNG", "JPG"],
+      // FREE — anyone can download it.
+      files: [
+        { format: "SVG", path: "files/logos/dore/dore-logo.svg", size: "4 KB" },
+        { format: "AI",  path: "files/logos/dore/dore-logo.ai",  size: "175 KB" },
+        { format: "PDF", path: "files/logos/dore/dore-logo.pdf", size: "43 KB" },
+        { format: "PNG", path: "files/logos/dore/dore-logo.png", size: "64 KB" },
+        { format: "JPG", path: "files/logos/dore/dore-logo.jpg", size: "134 KB" },
+        { format: "ZIP", path: "files/logos/dore/dore-logo.zip", size: "271 KB" }
+      ],
       art: "previews/dore-logo-art.png",
       creator: "Isaac Matovu",
       date: "2026-09-28",
