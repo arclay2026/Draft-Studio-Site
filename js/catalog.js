@@ -190,7 +190,7 @@ window.DRAFT_STUDIO = {
       description: "A letter D built from nested arcs in deep red, paired with a clean geometric DORE wordmark.",
       dimensions: "Vector · any size (raster 2250 × 2250 px)",
       tags: ["letter d", "lettermark", "monogram", "wordmark", "red", "arcs"],
-      preview: "previews/dore-logo.jpg",
+      preview: "previews/dore-logo-v2.jpg",
       // FREE — anyone can download it.
       files: [
         { format: "SVG", path: "files/logos/dore/dore-logo.svg", size: "4 KB" },
