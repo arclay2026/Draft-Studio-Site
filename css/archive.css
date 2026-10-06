@@ -1744,3 +1744,12 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 }
 /* Touch screens: no hover, so the image simply opens the record */
 @media (hover: none) { .tile-tools { display: none; } }
+/* Search bar button: a green pill nested in the rounded bar, with even
+   space above, below and to the right */
+.search-box { padding-right: 7px; }
+.search-box .go {
+  display: inline-flex; align-items: center; align-self: stretch; margin-block: 7px; padding: 0 18px;
+  border-radius: 999px; background: var(--tp-bg); color: var(--tp-fg); box-shadow: var(--tp-hi), inset 0 0 0 .5px rgba(17, 17, 17, .12);
+  transition: background .2s;
+}
+.search-box:hover .go { background: var(--tp-bg-hover); }
