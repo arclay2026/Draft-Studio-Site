@@ -2356,3 +2356,7 @@ em.s { font-size: .86em; }
 .eye-play > .eye-tip { margin-top: 0; }
 .howto + .pager, .section + .pager { margin-top: var(--section); }
 .font-opts { gap: var(--s3); }
+/* Closing call-to-action: the heading's capital letters line up with the
+   top of the first button (no more floating in the middle) */
+@media (min-width: 1024px) { .about-cta-body { align-items: start !important; } }
+@media (min-width: 1024px) { .about-cta-body > h2 { margin-top: -0.109em; } }
