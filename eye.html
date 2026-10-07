@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>(function(){var d=document.documentElement;d.className+=" js";try{var t=localStorage.getItem("ds_theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches))d.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<title>Templates — Draft Studio archive</title>
-<meta name="description" content="Editable layouts in PSD, AI, PDF and SVG: flyers, social posts, stationery and more. Every file is free to download.">
-<meta property="og:title" content="Templates — Draft Studio archive">
-<meta property="og:description" content="Editable layouts in PSD, AI, PDF and SVG: flyers, social posts, stationery and more. Every file is free to download.">
+<title>Design eye test — how good is your eye? · Draft Studio</title>
+<meta name="description" content="How good is your design eye? 8 quick challenges: kern a word, find the true centre, match a colour and name the font. Get a score and challenge your friends.">
+<meta property="og:title" content="How good is your design eye? · Draft Studio">
+<meta property="og:description" content="How good is your design eye? 8 quick challenges: kern a word, find the true centre, match a colour and name the font. Get a score and challenge your friends.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Draft Studio">
-<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/templates.html">
+<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/eye.html">
 <meta property="og:image" content="https://arclay2026.github.io/Draft-Studio-Site/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/archive.css?v=871d1c0ec6">
 </head>
-<body data-page="browse" data-type="template">
+<body data-page="eye">
 <a class="skip" href="#main">Skip to content</a>
 <header class="masthead">
   <a href="index.html" class="brand" aria-label="Draft Studio — front page">
@@ -39,26 +39,13 @@
 </header>
 
 <main id="main">
-  <section class="page-head">
-    <div class="title-wrap"><p class="label">§ 02 — Templates</p><h1>Templa<em class="s">tes</em><sup class="count" data-count="template">00</sup></h1></div>
-    <div class="aside"><p class="lede">Editable layouts in PSD, AI, PDF and SVG: flyers, social posts, stationery and more. Every file is free to download.</p><nav class="typeswitch" aria-label="Archive sections"><a href="templates.html" aria-current="page">Templates <span class="n" data-count="template">00</span></a><a href="logos.html">Logos <span class="n" data-count="logo">00</span></a><a href="icons.html">Icons <span class="n" data-count="icons">00</span></a></nav></div>
+  <section class="page-head eye-head" aria-labelledby="eye-title">
+    <div class="title-wrap"><p class="label">§ 08 — Game</p><h1 id="eye-title">Eye <em class="s">test</em></h1></div>
+    <div class="aside"><p class="lede">Kern a word, find the true centre, match a colour, name the font. Eight quick rounds to test your design eye, then challenge your friends.</p></div>
   </section>
-
-  <div class="filterbar" role="search" aria-label="Filter templates">
-    <label class="find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><span class="sr-only">Search templates</span><input type="search" id="f-q" placeholder="Search templates" autocomplete="off"></label>
-    <div class="filters">
-      <span class="w">Showing</span>
-      <label class="ctrl"><span class="k">Format</span><select id="f-fmt"><option value="">all</option></select></label>
-      <span class="w">templates in</span>
-      <label class="ctrl"><span class="k">Category</span><select id="f-cat"><option value="">every category</option></select></label><span class="w">, sorted</span>
-      <label class="ctrl"><span class="k">Sort</span><select id="f-sort"><option value="new">newest first</option><option value="old">oldest first</option><option value="az">A to Z</option></select></label>
-      <button class="reset" id="f-reset" hidden>Reset filters ✕</button>
-    </div>
-    <div class="viewtoggle" role="group" aria-label="Layout"><button data-view="plates" aria-pressed="true">Plates</button><button data-view="index" aria-pressed="false">List</button></div>
-  </div>
-  <div class="results-meta"><p class="label" id="r-count" aria-live="polite"></p><p class="label hint">Hover an image for tools · click for the full record</p></div>
-  <div class="results" id="results"></div>
+  <section class="section eye-wrap" aria-live="polite"><div id="eye"></div></section>
 </main>
+
 
 <footer class="colophon">
   <div class="folio"><span class="label label-ink">§ Colophon</span><span class="label">Draft Studio</span><span class="rule"></span><span class="label folio-note">Vol. 01 — <span data-year></span></span></div>
@@ -74,7 +61,7 @@
 
 <nav class="dock" aria-label="Primary">
   <button class="dock-item dock-index" data-open-index><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M3 7h18M3 12h18M3 17h11"/></svg><span>Index</span></button>
-  <a class="dock-item" href="templates.html" data-sec="templates" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17"/><path d="M3.5 9h17M9 20.5V9"/></svg><span>Templates</span><span class="n" data-count="template">00</span></a>
+  <a class="dock-item" href="templates.html" data-sec="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17"/><path d="M3.5 9h17M9 20.5V9"/></svg><span>Templates</span><span class="n" data-count="template">00</span></a>
   <a class="dock-item" href="logos.html" data-sec="logos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 15.5L12 8l3.5 7.5M9.8 13h4.4"/></svg><span>Logos</span><span class="n" data-count="logo">00</span></a>
   <a class="dock-item" href="icons.html" data-sec="icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Icons</span><span class="n" data-count="icons">00</span></a>
   <a class="dock-item" href="about.html" data-sec="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>About</span></a>
@@ -84,6 +71,6 @@
 
 <script>/* always load the newest catalog, never a cached copy */document.write('<script src="js/catalog.js?v=' + Date.now() + '"><\/script>');</script>
 <script src="js/core.js?v=2c647046c1"></script>
-<script src="js/browse.js?v=0df7b171d5"></script>
+<script src="js/eye.js?v=28417db24a"></script>
 </body>
 </html>

@@ -333,7 +333,8 @@
         row("05", "icons.html", "Icons", pad(DS.icons.length, 2)) +
         row("06", "palettes.html", "Palettes", "") +
         row("07", "fonts.html", "Font pairs", "") +
-        (window.matchMedia("(min-width: 1024px)").matches ? row("08", "qr.html", "QR maker", "") + row("09", "about.html", "About", "") : row("08", "about.html", "About", "")) +
+        row("08", "eye.html", "Eye test", "") +
+        (window.matchMedia("(min-width: 1024px)").matches ? row("09", "qr.html", "QR maker", "") + row("10", "about.html", "About", "") : row("09", "about.html", "About", "")) +
       "</ul>" +
       '<div class="index-foot">' +
         '<div><div class="label">Categories</div>' + cats.map(function (c) {
