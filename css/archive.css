@@ -2343,3 +2343,16 @@ em.s { font-size: .86em; }
 @media (hover: hover) { .eye-promo:hover { transform: translateY(-2px); } }
 @media (max-width: 767px) { .eye-promo { grid-template-columns: auto minmax(0, 1fr); } .eye-promo .btn { grid-column: 1 / -1; justify-content: center; } .eye-break li { grid-template-columns: 110px minmax(0, 1fr) 32px; } .col-sliders .field { grid-template-columns: 80px minmax(0, 1fr) 46px; } }
 .col-sw .label { mix-blend-mode: normal; color: #fff !important; background: rgba(17, 17, 17, .55); padding: 5px 10px; border-radius: 999px; font-size: 10.5px; }
+
+/* =====================================================================
+   SPACING SYSTEM — one rhythm everywhere
+   · section label line (folio) → its content: --s6 (same as heading → content)
+   · stacked pieces inside a game/tool card: --s3
+   · the record pager sits a full section below the content above it
+   ===================================================================== */
+.folio + :not(.sr-only):not(.sect-head), .folio + .sr-only + * { margin-top: var(--s6) !important; }
+@media (min-width: 1024px) { .folio + :not(.sr-only):not(.sect-head), .folio + .sr-only + * { margin-top: var(--s7) !important; } }
+.eye-play { display: grid; gap: var(--s3); }
+.eye-play > .eye-tip { margin-top: 0; }
+.howto + .pager, .section + .pager { margin-top: var(--section); }
+.font-opts { gap: var(--s3); }
