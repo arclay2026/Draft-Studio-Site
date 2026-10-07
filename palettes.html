@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/archive.css?v=3eefc2afdf">
+<link rel="stylesheet" href="css/archive.css?v=3cd681557a">
 </head>
 <body data-page="palettes">
 <a class="skip" href="#main">Skip to content</a>
@@ -55,8 +55,30 @@
     </div>
   </section>
 
+  <section class="section pal-photo" id="pal-photo" aria-labelledby="h-photo">
+    <div class="folio"><span class="label label-ink">§ 02</span><span class="label">From a photo</span><span class="rule"></span><span class="label folio-note">Stays on your device</span></div>
+    <div class="sect-head"><h2 class="h2" id="h-photo">Steal colours <em class="s">from a photo</em></h2><div class="sect-aside"><p class="lede">Drop in any picture (a sunset, an outfit, a street) and get its palette in seconds. Your photo never leaves your device.</p></div></div>
+    <div class="ph-grid">
+      <label class="ph-drop" id="ph-drop">
+        <input type="file" id="ph-file" accept="image/*" hidden>
+        <span class="ph-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9.5" r="2"/><path d="m3.5 18 5-5 4 4 3-3 5 5"/></svg><b>Choose a photo</b><span class="muted">or drag it here<span class="ph-paste">, or paste one with <kbd>Ctrl</kbd> + <kbd>V</kbd></span></span></span>
+        <span class="ph-stage" id="ph-stage"><img id="ph-img" alt="Your photo"><span class="ph-marks" id="ph-marks" aria-hidden="true"></span></span>
+      </label>
+      <div class="ph-result">
+        <div id="ph-out" class="ph-out"><p class="muted ph-hint">Your palette will appear here.</p></div>
+        <div class="ph-bar" id="ph-bar" hidden>
+          <label class="field ph-count"><span>Colours</span><select id="ph-count"><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="8">8</option></select></label>
+          <button class="btn" type="button" id="ph-again">Try again</button>
+          <button class="btn" type="button" id="ph-new">New photo</button>
+          <button class="btn" type="button" id="ph-css">Copy CSS</button>
+          <button class="btn btn-signal" type="button" id="ph-png">Save PNG</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="h-pals">
-    <div class="folio"><span class="label label-ink">§ 02</span><span class="label">Curated palettes</span><span class="rule"></span><span class="label folio-note" id="pal-n"></span></div>
+    <div class="folio"><span class="label label-ink">§ 03</span><span class="label">Curated palettes</span><span class="rule"></span><span class="label folio-note" id="pal-n"></span></div>
     <div class="sect-head"><h2 class="h2" id="h-pals">Pick a <em class="s">mood</em></h2></div>
     <div class="pal-moods" id="pal-moods" role="group" aria-label="Filter by mood"></div>
     <div class="pal-grid" id="pal-grid"></div>
@@ -89,6 +111,6 @@
 
 <script>/* always load the newest catalog, never a cached copy */document.write('<script src="js/catalog.js?v=' + Date.now() + '"><\/script>');</script>
 <script src="js/core.js?v=f6408fe266"></script>
-<script src="js/palettes.js?v=9ed1e866cb"></script>
+<script src="js/palettes.js?v=ff15fa096e"></script>
 </body>
 </html>

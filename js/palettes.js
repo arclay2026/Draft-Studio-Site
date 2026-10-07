@@ -126,6 +126,87 @@
     });
   }
 
+  /* ---------- palette from a photo ----------
+     The photo is read only inside the browser (never uploaded). Colours are
+     found with k-means clustering on a small copy of the image; each colour
+     gets a marker on the spot of the photo it came from.                    */
+  var ph = $("#pal-photo");
+  if (ph) {
+    var drop = $("#ph-drop"), file = $("#ph-file"), stage = $("#ph-stage"), img = $("#ph-img"), marks = $("#ph-marks"),
+        out = $("#ph-out"), countSel = $("#ph-count"), bar = $("#ph-bar"), pixels = null, W = 0, H = 0, colors = [];
+    var hex = function (c) { return "#" + c.map(function (v) { return ("0" + Math.round(v).toString(16)).slice(-2); }).join("").toUpperCase(); };
+    var dist = function (a, b) { var r = (a[0] + b[0]) / 2, dr = a[0] - b[0], dg = a[1] - b[1], db = a[2] - b[2]; return (2 + r / 256) * dr * dr + 4 * dg * dg + (2 + (255 - r) / 256) * db * db; };
+
+    function load(f) {
+      if (!f || !/^image\//.test(f.type)) { DS.toast("Please choose a photo (JPG, PNG or WebP)"); return; }
+      var url = URL.createObjectURL(f), im = new Image();
+      im.onload = function () {
+        var s = Math.min(1, 160 / Math.max(im.naturalWidth, im.naturalHeight)); W = Math.max(1, Math.round(im.naturalWidth * s)); H = Math.max(1, Math.round(im.naturalHeight * s));
+        var cv = document.createElement("canvas"); cv.width = W; cv.height = H; var x = cv.getContext("2d", { willReadFrequently: true }); x.drawImage(im, 0, 0, W, H);
+        var d = x.getImageData(0, 0, W, H).data; pixels = [];
+        for (var i = 0; i < d.length; i += 4) if (d[i + 3] > 200) pixels.push([d[i], d[i + 1], d[i + 2], (i / 4) % W, Math.floor(i / 4 / W)]);
+        img.src = url; ph.classList.add("has-photo"); extract();
+      };
+      im.onerror = function () { DS.toast("That photo couldn’t be opened"); };
+      im.src = url;
+    }
+
+    function extract() {
+      if (!pixels || !pixels.length) return;
+      var k = +countSel.value || 5, cents = [], i, j;
+      // k-means++ start: spread the starting colours apart
+      cents.push(pixels[Math.floor(Math.random() * pixels.length)].slice(0, 3));
+      while (cents.length < k) {
+        var best = null, bd = -1;
+        for (i = 0; i < pixels.length; i += 3) { var m = Infinity; for (j = 0; j < cents.length; j++) m = Math.min(m, dist(pixels[i], cents[j])); if (m > bd) { bd = m; best = pixels[i]; } }
+        cents.push(best.slice(0, 3));
+      }
+      var asg = new Array(pixels.length);
+      for (var it = 0; it < 12; it++) {
+        var sum = cents.map(function () { return [0, 0, 0, 0]; });
+        for (i = 0; i < pixels.length; i++) {
+          var bi = 0, bv = Infinity; for (j = 0; j < k; j++) { var dv = dist(pixels[i], cents[j]); if (dv < bv) { bv = dv; bi = j; } }
+          asg[i] = bi; sum[bi][0] += pixels[i][0]; sum[bi][1] += pixels[i][1]; sum[bi][2] += pixels[i][2]; sum[bi][3]++;
+        }
+        cents = sum.map(function (s, n) { return s[3] ? [s[0] / s[3], s[1] / s[3], s[2] / s[3]] : cents[n]; });
+      }
+      // for each colour: the photo pixel closest to it (where the marker goes) and how much of the photo it covers
+      colors = cents.map(function (c, n) {
+        var near = null, nd = Infinity, share = 0;
+        for (i = 0; i < pixels.length; i++) if (asg[i] === n) { share++; var dv = dist(pixels[i], c); if (dv < nd) { nd = dv; near = pixels[i]; } }
+        var cl = function (v) { return Math.min(.94, Math.max(.06, v)); };
+        return { hex: hex(c), x: near ? cl((near[3] + .5) / W) : .5, y: near ? cl((near[4] + .5) / H) : .5, share: share / pixels.length };
+      }).filter(function (c) { return c.share > 0; })
+        .sort(function (a, b) { return lum(a.hex) - lum(b.hex); });   // dark → light, like the curated palettes
+      draw();
+    }
+
+    function draw() {
+      out.innerHTML = '<div class="pal-strip ph-strip">' + colors.map(function (c) { return swatchHtml(c.hex); }).join("") + "</div>" +
+        '<ul class="ph-list">' + colors.map(function (c) {
+          return '<li><button class="ph-sw" data-copy="' + c.hex + '" style="--c:' + c.hex + '" aria-label="Copy ' + c.hex + '"></button><span><b>' + c.hex + "</b><span class=\"label\">" + Math.max(1, Math.round(c.share * 100)) + "% of the photo</span></span></li>";
+        }).join("") + "</ul>";
+      marks.innerHTML = colors.map(function (c, n) {
+        return '<span class="ph-mark" style="left:' + (c.x * 100) + "%;top:" + (c.y * 100) + "%;--c:" + c.hex + ";--i:" + n + '"></span>';
+      }).join("");
+      bar.hidden = false;
+    }
+
+    file.addEventListener("change", function () { load(file.files[0]); file.value = ""; });
+    ["dragenter", "dragover"].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add("is-over"); }); });
+    ["dragleave", "drop"].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove("is-over"); }); });
+    drop.addEventListener("drop", function (e) { if (e.dataTransfer.files[0]) load(e.dataTransfer.files[0]); });
+    document.addEventListener("paste", function (e) {
+      var f = [].slice.call((e.clipboardData || {}).files || []).filter(function (x) { return /^image\//.test(x.type); })[0];
+      if (f) { load(f); ph.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    });
+    countSel.addEventListener("change", extract);
+    $("#ph-again").addEventListener("click", extract);
+    $("#ph-new").addEventListener("click", function () { file.click(); });
+    $("#ph-css").addEventListener("click", function () { DS.copy(cssOf("photo", colors.map(function (c) { return c.hex; })), "CSS copied"); });
+    $("#ph-png").addEventListener("click", function () { savePng("From my photo", colors.map(function (c) { return c.hex; })); });
+  }
+
   /* ---------- curated palettes ---------- */
   var grid = $("#pal-grid"), chips = $("#pal-moods"), count = $("#pal-n"), mood = "";
   function render() {
