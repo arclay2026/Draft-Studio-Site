@@ -134,11 +134,11 @@
     x.fillStyle = "#86de4e"; x.fillRect(0, H - 18, W, 18);
     x.fillStyle = "#f4f3ef"; x.font = "500 34px 'JetBrains Mono', monospace"; x.fillText("DRAFT STUDIO · DESIGN EYE TEST", 80, 130);
     x.font = "400 92px Pacifico, cursive"; x.fillStyle = "#86de4e"; x.fillText("My design eye", 80, 330);
-    x.fillStyle = "#f4f3ef"; x.font = "800 420px Geist, system-ui, sans-serif"; x.fillText(String(total), 60, 760);
+    x.fillStyle = "#f4f3ef"; x.font = "800 420px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillText(String(total), 60, 760);
     var nw = x.measureText(String(total)).width;
-    x.font = "700 70px Geist, system-ui, sans-serif"; x.fillStyle = "rgba(244,243,239,.55)"; x.fillText("/ 100", 60 + nw + 24, 760);
-    x.fillStyle = "#f4f3ef"; x.font = "800 84px Geist, system-ui, sans-serif"; x.fillText(title, 80, 1010);
-    x.font = "500 44px Geist, system-ui, sans-serif"; x.fillStyle = "rgba(244,243,239,.7)"; x.fillText("Can you beat me?", 80, 1090);
+    x.font = "700 70px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillStyle = "rgba(244,243,239,.55)"; x.fillText("/ 100", 60 + nw + 24, 760);
+    x.fillStyle = "#f4f3ef"; x.font = "800 84px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillText(title, 80, 1010);
+    x.font = "500 44px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillStyle = "rgba(244,243,239,.7)"; x.fillText("Can you beat me?", 80, 1090);
     x.font = "500 30px 'JetBrains Mono', monospace"; x.fillText(String(DS.site.url || location.origin).replace(/^https?:\/\//, "").replace(/\/$/, "") + "/eye.html", 80, 1240);
     cv.toBlob(function (blob) {
       var file = new File([blob], "my-design-eye-score.png", { type: "image/png" });
@@ -152,7 +152,7 @@
     var FS = 200, word = r.word, n = word.length;
     play.innerHTML = '<div class="eye-stage eye-kern"><svg viewBox="0 0 1000 300" id="kern-svg" role="img" aria-label="The word ' + word + ', drag the middle letters"></svg></div><p class="label eye-tip">Tip: use the left and right arrow keys after tapping a letter.</p>';
     var svg = $("#kern-svg"), ready = false, xs = [], prof = [], ideal = [];
-    var font = "800 " + FS + "px Geist, system-ui, sans-serif";
+    var font = "800 " + FS + "px 'Bricolage Grotesque', system-ui, sans-serif";
     function profile(ch) {   // left/right ink edge per row, relative to the letter origin
       var c = document.createElement("canvas"), S = FS * 1.4; c.width = S; c.height = S;
       var g = c.getContext("2d", { willReadFrequently: true }); g.font = font; g.fillStyle = "#000"; g.textBaseline = "alphabetic";

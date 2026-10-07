@@ -51,7 +51,7 @@
   --shadow-art: 0 1px 0 rgba(0, 0, 0, .04), 0 22px 40px -24px rgba(0, 0, 0, .45);
 
   /* type families */
-  --f-sans: "Geist", system-ui, sans-serif;
+  --f-sans: "Bricolage Grotesque", system-ui, sans-serif;
   --f-serif: "Pacifico", cursive;
   --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -2044,7 +2044,7 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 @media (max-width: 479px) { .fp-foot { flex-direction: column; align-items: stretch; } .fp-css { align-self: flex-start; } }
 
 /* Accent font: Pacifico is an upright script with no italic, so it is set
-   upright (no fake slant) and a little smaller to sit with Geist headlines */
+   upright (no fake slant) and a little smaller to sit with the headlines */
 em.s, .serif, .cat-list li:nth-child(even) .name, .studio blockquote { font-style: normal; font-synthesis: none; letter-spacing: 0; }
 em.s { font-size: .86em; }
 .studio blockquote { font-size: clamp(26px, 12px + 2.8vw, 58px); line-height: 1.25; }
@@ -2277,7 +2277,7 @@ em.s { font-size: .86em; }
 .eye-stage svg { display: block; width: 100%; height: auto; }
 .eye-tip { margin-top: var(--s2); }
 @media (hover: none) { .eye-tip { display: none; } }
-.kern-fixed, .kern-move, .kern-ghost { font: 800 200px Geist, system-ui, sans-serif; }
+.kern-fixed, .kern-move, .kern-ghost { font: 800 200px "Bricolage Grotesque", system-ui, sans-serif; }
 .kern-fixed { fill: #111; }
 .kern-move { fill: #111; cursor: ew-resize; outline: none; }
 .kern-move:hover, .kern-move:focus-visible, .kern-move.is-drag { fill: #2e7a14; }
@@ -2359,4 +2359,4 @@ em.s { font-size: .86em; }
 /* Closing call-to-action: the heading's capital letters line up with the
    top of the first button (no more floating in the middle) */
 @media (min-width: 1024px) { .about-cta-body { align-items: start !important; } }
-@media (min-width: 1024px) { .about-cta-body > h2 { margin-top: -0.109em; } }
+@media (min-width: 1024px) { .about-cta-body > h2 { margin-top: -0.127em; } }
