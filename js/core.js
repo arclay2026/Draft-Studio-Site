@@ -77,7 +77,7 @@
         price: raw.price || "", priceWithName: raw.priceWithName || "", sold: !!raw.sold, art: raw.art || "",
         preview: previewOf(raw), date: raw.date || "", featured: !!raw.featured,
         dimensions: raw.dimensions || "", creator: raw.creator || SITE.name || "Draft Studio",
-        requires: raw.requires || "", howTo: raw.howTo || null, breakdown: !!raw.breakdown,
+        requires: raw.requires || "", howTo: raw.howTo || null,
         type: t[1], typeLabel: t[2], page: t[0] + ".html", order: i,
         url: "item.html?id=" + encodeURIComponent(raw.id)
       });
