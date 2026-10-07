@@ -2137,3 +2137,41 @@ em.s { font-size: .86em; }
 .pal-lock { opacity: 1; }
 .pal-lock:active { transform: scale(.94); }
 .st-cta-tag { background: var(--tp-bg); color: var(--tp-fg); box-shadow: var(--tp-hi); }
+
+/* =====================================================================
+   TONAL CARDS — boxes match the YouTube-style buttons: a soft top-to-
+   bottom gradient fill, no border, one 0.5px hairline. Lines inside
+   cards (dividers) stay as thin rules.
+   ===================================================================== */
+:root { --card-bg: linear-gradient(180deg, #eceae4 0%, #e2e0d9 100%); --card-bg-hover: linear-gradient(180deg, #e5e3dc 0%, #dad7cf 100%); --card-hi: inset 0 0 0 .5px rgba(17, 17, 17, .11); }
+:root[data-theme="dark"] { --card-bg: linear-gradient(180deg, #2c2c2c 0%, #232323 100%); --card-bg-hover: linear-gradient(180deg, #333 0%, #292929 100%); --card-hi: inset 0 0 0 .5px rgba(255, 255, 255, .13); }
+
+.stu:not(.stu-join), .tl-card, .pal-card, .fp-card, .st-steps li, .st-app, .st-list li, .st-file, .sp-other,
+.creator, .howto-formats, .buy-box.is-sold, .svc:not(.is-featured), .fact, .sp-empty {
+  background: var(--card-bg); box-shadow: var(--card-hi); border: 0; background-origin: border-box;
+}
+/* boxes that sat on a 1px "grid line" background become separate cards */
+.svc-grid, .facts { gap: var(--tile-gap); background: none; border: 0; border-radius: 0; overflow: visible; }
+.svc, .fact { border-radius: var(--r-card); }
+.svc.is-featured { box-shadow: none; }
+.creator, .howto-formats, .buy-box.is-sold { border-radius: var(--r-card); overflow: hidden; }
+/* clickable cards: a slightly deeper shade, plus the green ring */
+@media (hover: hover) {
+  .stu-link:hover, .tl-card:hover, .sp-other:hover, .st-app:hover { background: var(--card-bg-hover); }
+}
+.creator-top .mark { border-radius: 12px; }
+/* Tonal cards, refined:
+   1 · a gentler gradient on big boxes so they stay clean
+   2 · buttons inside cards sit one step lighter so they never blend in
+   3 · plain reading blocks get only a hairline outline, keeping pages light */
+:root { --card-bg: linear-gradient(180deg, #ebe9e3 0%, #e6e4dd 100%); --card-bg-hover: linear-gradient(180deg, #e4e2db 0%, #dfdcd5 100%); }
+:root[data-theme="dark"] { --card-bg: linear-gradient(180deg, #2a2a2a 0%, #252525 100%); --card-bg-hover: linear-gradient(180deg, #303030 0%, #2a2a2a 100%); }
+.stu:not(.stu-join), .tl-card, .pal-card, .fp-card, .st-app, .sp-other, .creator, .svc:not(.is-featured), .fact, .buy-box.is-sold {
+  --tb-bg: linear-gradient(180deg, #fdfcfa 0%, #f3f1ec 100%); --tb-bg-hover: linear-gradient(180deg, #ffffff 0%, #ebe9e3 100%); --tb-fg: #111111;
+  --tb-hi: inset 0 0 0 .5px rgba(17, 17, 17, .14), 0 1px 2px rgba(17, 17, 17, .06);
+}
+:root[data-theme="dark"] :is(.stu:not(.stu-join), .tl-card, .pal-card, .fp-card, .st-app, .sp-other, .creator, .svc:not(.is-featured), .fact, .buy-box.is-sold) {
+  --tb-bg: linear-gradient(180deg, #424242 0%, #363636 100%); --tb-bg-hover: linear-gradient(180deg, #4c4c4c 0%, #3e3e3e 100%); --tb-fg: #f4f3ef;
+  --tb-hi: inset 0 0 0 .5px rgba(255, 255, 255, .16);
+}
+.st-file, .st-steps li, .st-list li, .howto-formats { background: none; box-shadow: inset 0 0 0 1px var(--rule); }
