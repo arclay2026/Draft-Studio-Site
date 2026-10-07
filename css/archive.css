@@ -2118,3 +2118,22 @@ em.s { font-size: .86em; }
 .sp-view img { display: block; max-width: 100%; max-height: calc(92vh - 60px); margin: 0 auto; }
 .sp-view p { padding: 12px 18px; display: flex; gap: var(--s3); align-items: baseline; }
 .sp-view-x { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 999px; background: rgba(17, 17, 17, .7); color: #fff; }
+
+/* =====================================================================
+   NEWER BUTTONS → the tonal (YouTube-style) system: soft gradient pill,
+   0.5px hairline, darker on hover, a tiny press-in; selected = filled.
+   ===================================================================== */
+.pal-moods button, .pal-act, .fp-css, .st-cta, .sp-view-x, .pal-lock {
+  background: var(--tb-bg); color: var(--tb-fg); box-shadow: var(--tb-hi); border: 0; background-origin: border-box;
+  transition: background .2s, color .2s, transform .15s var(--ease);
+}
+.pal-moods button[aria-pressed="true"], .pal-lock[aria-pressed="true"] { background: var(--tb-on-bg); color: var(--tb-on-fg); box-shadow: none; }
+@media (hover: hover) {
+  .pal-moods button:not([aria-pressed="true"]):hover, .pal-act:hover, .fp-css:hover, .st-cta:hover, .sp-view-x:hover, .pal-lock:not([aria-pressed="true"]):hover {
+    background: var(--tb-bg-hover); color: var(--tb-fg); box-shadow: var(--tb-hi);
+  }
+}
+.pal-moods button:active, .pal-act:active, .fp-css:active, .st-cta:active, .sp-view-x:active { transform: translateY(1px); }
+.pal-lock { opacity: 1; }
+.pal-lock:active { transform: scale(.94); }
+.st-cta-tag { background: var(--tp-bg); color: var(--tp-fg); box-shadow: var(--tp-hi); }
