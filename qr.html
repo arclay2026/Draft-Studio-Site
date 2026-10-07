@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>(function(){var d=document.documentElement;d.className+=" js";try{var t=localStorage.getItem("ds_theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches))d.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<title>Student portfolio · Draft Studio</title>
-<meta name="description" content="A Draft Studio student's portfolio: their work, the apps they're learning and their progress.">
-<meta property="og:title" content="Student portfolio · Draft Studio">
-<meta property="og:description" content="A Draft Studio student's portfolio: their work, the apps they're learning and their progress.">
+<title>QR code maker — branded QR codes, free · Draft Studio</title>
+<meta name="description" content="Make a free branded QR code for your WhatsApp, Instagram or website, in your own colours with your logo in the middle. Download as PNG or SVG.">
+<meta property="og:title" content="QR code maker · Draft Studio">
+<meta property="og:description" content="Make a free branded QR code for your WhatsApp, Instagram or website, in your own colours with your logo in the middle. Download as PNG or SVG.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Draft Studio">
-<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/student.html">
+<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/qr.html">
 <meta property="og:image" content="https://arclay2026.github.io/Draft-Studio-Site/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/archive.css?v=3eefc2afdf">
 </head>
-<body data-page="student">
+<body data-page="qr">
 <a class="skip" href="#main">Skip to content</a>
 <header class="masthead">
   <a href="index.html" class="brand" aria-label="Draft Studio — front page">
@@ -38,7 +38,90 @@
   </div>
 </header>
 
-<main id="main"><div id="student"></div></main>
+<main id="main">
+  <section class="page-head qr-head" aria-labelledby="qr-title">
+    <div class="title-wrap"><p class="label">§ 07 — Tool</p><h1 id="qr-title">QR <em class="s">maker</em></h1></div>
+    <div class="aside"><p class="lede">A QR code for your WhatsApp, Instagram or website, in your own colours with your logo in the middle. Free, and it never expires.</p></div>
+  </section>
+
+  <!-- Phones and tablets: the maker is desktop only -->
+  <section class="section qr-mobile">
+    <div class="sp-empty"><p class="h3">Open this on a <em class="s">computer</em></p><p class="muted">The QR maker needs a bigger screen. Visit this page on a laptop or desktop to make your QR code.</p><a class="btn" href="index.html">Back to the front page</a></div>
+  </section>
+
+  <section class="section qr-app" aria-label="QR code maker">
+    <div class="qr-grid">
+      <div class="qr-controls">
+        <div class="qr-group">
+          <p class="label">1 · What should it open?</p>
+          <label class="field"><span>Type</span>
+            <select id="qr-type">
+              <option value="link">Website link</option>
+              <option value="whatsapp">WhatsApp chat</option>
+              <option value="instagram">Instagram profile</option>
+              <option value="text">Plain text</option>
+            </select>
+          </label>
+          <label class="field" data-for="link"><span>Website address</span><input class="input" id="qr-url" type="url" placeholder="yourbrand.com" autocomplete="off"></label>
+          <div data-for="whatsapp" class="qr-two">
+            <label class="field"><span>Phone number, with country code</span><input class="input" id="qr-wa-num" type="tel" placeholder="+27 73 000 0000" autocomplete="off"></label>
+            <label class="field"><span>Message (optional)</span><input class="input" id="qr-wa-msg" type="text" placeholder="Hi! I’d like to order…" autocomplete="off"></label>
+          </div>
+          <label class="field" data-for="instagram"><span>Instagram username</span><input class="input" id="qr-ig" type="text" placeholder="@yourbrand" autocomplete="off" spellcheck="false"></label>
+          <label class="field" data-for="text"><span>Text</span><textarea class="input" id="qr-text" rows="3" placeholder="Anything you like"></textarea></label>
+        </div>
+
+        <div class="qr-group">
+          <p class="label">2 · Colours</p>
+          <div class="qr-two">
+            <label class="field"><span>Dots</span><span class="swatch"><input type="color" id="qr-fg" value="#111111"><code id="qr-fg-hex"></code></span></label>
+            <label class="field"><span>Background</span><span class="swatch"><input type="color" id="qr-bg" value="#ffffff"><code id="qr-bg-hex"></code></span></label>
+          </div>
+          <div class="qr-presets" role="group" aria-label="Colour presets">
+            <button type="button" data-preset="#111111,#ffffff" style="--a:#111111;--b:#ffffff" aria-label="Black on white"></button>
+            <button type="button" data-preset="#1f5c0e,#eaf9df" style="--a:#1f5c0e;--b:#eaf9df" aria-label="Draft green"></button>
+            <button type="button" data-preset="#0b3d91,#eef3ff" style="--a:#0b3d91;--b:#eef3ff" aria-label="Navy"></button>
+            <button type="button" data-preset="#8a1c1c,#fff1ec" style="--a:#8a1c1c;--b:#fff1ec" aria-label="Deep red"></button>
+            <button type="button" data-preset="#4a1d6b,#f6eefc" style="--a:#4a1d6b;--b:#f6eefc" aria-label="Purple"></button>
+            <button type="button" data-preset="#3e2723,#f5eee6" style="--a:#3e2723;--b:#f5eee6" aria-label="Coffee"></button>
+          </div>
+        </div>
+
+        <div class="qr-group">
+          <p class="label">3 · Style</p>
+          <div class="qr-two">
+            <label class="field"><span>Dots</span><select id="qr-dots"><option value="square">Square</option><option value="rounded" selected>Rounded</option><option value="dots">Extra round</option></select></label>
+            <label class="field"><span>Corners</span><select id="qr-eyes"><option value="square">Square</option><option value="soft">Soft</option><option value="round" selected>Round</option></select></label>
+          </div>
+        </div>
+
+        <div class="qr-group">
+          <p class="label">4 · Logo in the middle (optional)</p>
+          <div class="qr-logo-row">
+            <label class="btn btn-sm qr-upload">Upload logo<input type="file" id="qr-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden></label>
+            <button type="button" class="btn btn-sm" id="qr-use-mark">Use the Draft Studio mark</button>
+            <span class="label qr-logo-name" id="qr-logo-name">No logo</span>
+            <button type="button" class="btn btn-sm" id="qr-logo-clear" hidden>Remove</button>
+          </div>
+          <p class="muted qr-small">Your logo stays on your computer. It’s never uploaded anywhere. Square logos on a plain background work best.</p>
+        </div>
+      </div>
+
+      <div class="qr-preview">
+        <div class="qr-out" id="qr-out" aria-live="polite"></div>
+        <p class="qr-warn" id="qr-warn" role="alert" hidden></p>
+        <p class="label qr-data-k">Opens</p>
+        <p class="qr-data" id="qr-data"></p>
+        <div class="qr-dl">
+          <label class="field"><span>PNG size</span><select id="qr-size"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px (print)</option></select></label>
+          <button type="button" class="btn btn-signal" id="qr-png">Download PNG</button>
+          <button type="button" class="btn" id="qr-svg">Download SVG</button>
+        </div>
+        <p class="muted qr-small">Always test-scan your QR code with your phone before printing it.</p>
+      </div>
+    </div>
+  </section>
+</main>
 
 
 <footer class="colophon">
@@ -65,6 +148,7 @@
 
 <script>/* always load the newest catalog, never a cached copy */document.write('<script src="js/catalog.js?v=' + Date.now() + '"><\/script>');</script>
 <script src="js/core.js?v=f6408fe266"></script>
-<script src="js/student.js?v=cdd0d36c39"></script>
+<script src="js/vendor/qrcode.js"></script>
+<script src="js/qr.js?v=6620e46f25"></script>
 </body>
 </html>
