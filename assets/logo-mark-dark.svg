@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#111"/>
-  <svg x="5" y="5" width="54" height="54" viewBox="227.94 355.17 544.13 544.13">
-  <g transform="translate(0 127.23)">
-<defs>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="217.94 345.17 564.13 309.67">
+  <defs>
     <style>
       .cls-1 {
         fill: #111;
@@ -36,6 +34,4 @@
       <path class="cls-1" d="M743.6,633.43c-4.4,0-7.69-.94-9.89-2.81-2.2-1.87-3.3-4.77-3.3-8.7s1.1-6.97,3.3-8.84c2.2-1.87,5.49-2.81,9.89-2.81s7.83.94,10.03,2.81c2.2,1.87,3.3,4.82,3.3,8.84,0,7.67-4.44,11.5-13.33,11.5Z"/>
     </g>
   </g>
-  </g>
-  </svg>
 </svg>

@@ -688,7 +688,15 @@
   DS.build3d = function (obj, opts) {
     if (!obj) return;
     opts = opts || {};
-    var src = obj.getAttribute("data-src"), L = opts.layers || 18, gap = opts.gap || 0.9, html = "";
+    // The dark-theme version (data-src-dark) is used, and swapped in, while the theme is dark
+    function pick() {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      return (dark && obj.getAttribute("data-src-dark")) || obj.getAttribute("data-src");
+    }
+    if (obj.getAttribute("data-src-dark")) new MutationObserver(function () {
+      var s = pick(); $all("img", obj).forEach(function (i) { i.setAttribute("src", s); });
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    var src = pick(), L = opts.layers || 18, gap = opts.gap || 0.9, html = "";
     for (var n = L; n >= 0; n--) {
       html += '<img src="' + esc(src) + '" alt="" draggable="false"' + (n ? ' style="transform:translateZ(' + (-n * gap).toFixed(2) + "px);filter:brightness(" + (0.45 + 0.3 * (1 - n / L)).toFixed(2) + ')"' : "") + ">";
     }

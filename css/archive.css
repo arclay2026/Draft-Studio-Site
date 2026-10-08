@@ -2360,3 +2360,12 @@ em.s { font-size: .86em; }
    top of the first button (no more floating in the middle) */
 @media (min-width: 1024px) { .about-cta-body { align-items: start !important; } }
 @media (min-width: 1024px) { .about-cta-body > h2 { margin-top: -0.127em; } }
+
+/* ===== BRAND MARK (stacked "Draft / Studio." wordmark) ===== */
+.seal-core .logo3d-obj { width: 66px; height: 36px; }
+@media (min-width: 1024px) { .seal-core .logo3d-obj { width: 76px; height: 42px; } }
+.creator-top .mark { padding: 8px; }
+.creator-top .mark img { width: 100%; height: auto; }
+.creator-top .mark .logo-dark { display: none; }
+:root[data-theme="dark"] .creator-top .mark .logo-light { display: none; }
+:root[data-theme="dark"] .creator-top .mark .logo-dark { display: block; }

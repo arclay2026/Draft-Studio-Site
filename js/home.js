@@ -62,7 +62,7 @@
   if (lf && last) lf.innerHTML = '<span class="label">Last filed</span><a href="' + last.url + '">' + esc(last.title) + '</a><span class="label when">' + last.no + " · " + esc(DS.ago(last.date)) + "</span>";
   var searchBtn = $("#intro-search");
   if (searchBtn) searchBtn.querySelector(".ph").textContent = "Search " + (items.length + icons.length) + " designs & icons";
-  if (window.matchMedia("(min-width: 768px)").matches) DS.build3d($(".seal .logo3d-obj"), { layers: 14, gap: 0.8 });
+  if (window.matchMedia("(min-width: 768px)").matches) DS.build3d($(".seal .logo3d-obj"), { layers: 8, gap: 0.5 });
 
   /* ---------- 2. Ticker of newest records ---------- */
   var tick = $("#ticker");

@@ -75,12 +75,15 @@ page so visitors' browsers load the new files instead of an old saved copy.
 
 - Colours: `#86de4e` (green), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/archive.css`.
 - Font: Bricolage Grotesque (Google Fonts).
-- Original logo upload: `assets/brand/draft-studio-logo-original.svg`. The files below are cut from it.
+- Original logo uploads: `assets/brand/` (navbar wordmark and stacked brand mark,
+  light and dark). The files below are cropped from them. The old striped-D logo
+  is kept there too (`draft-studio-logo-original.svg`) but no longer used.
 - Header logo: `assets/logo.svg` (light background) and `assets/logo-dark.svg` (dark mode).
-- 3D hero logo: `assets/logo-mark.svg`, the logo symbol on its own. The site
-  extrudes it into 3D automatically. Use an SVG, or a PNG with a transparent background.
-  If you use a PNG, change `data-src` in `index.html` to point at it.
-- Favicon: `assets/favicon.svg`.
+- Brand mark (stacked "Draft / Studio."): `assets/logo-mark.svg` and
+  `assets/logo-mark-dark.svg`. Used for the 3D seal on the front page (the site
+  extrudes it automatically and swaps to the dark version in dark mode), the
+  creator card and the QR maker's "Use Draft Studio mark" button.
+- Favicon: `assets/favicon.svg` (the brand mark on a dark rounded square).
 - Name, tagline, email, WhatsApp, Instagram and licence text: `site` block in `js/catalog.js`.
 
 ## Run locally
