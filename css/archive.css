@@ -2417,3 +2417,79 @@ html.lg-intro .logo-live .lg-studio { animation: lg-fade .35s ease .6s backwards
 #xray .xr-bar b { color: var(--signal); text-transform: uppercase; letter-spacing: .1em; }
 #xray .xr-bar .xr-hint { color: #9a9890; flex: none; }
 #xray .xr-bar button { pointer-events: auto; flex: none; height: 30px; padding: 0 12px; border-radius: 999px; background: var(--signal); color: #111; font: 600 11px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; }
+
+/* ===== OPENING ANIMATION (js/boot.js) — first page of each visit =====
+   0.0s blueprint grid + guide lines · 0.35s "Draft" is drawn in outline
+   then filled · 1.25s the green box sweeps across · 1.55s "Studio" rises
+   into it · 1.95s the dot drops in · then the logo flies to the header. */
+html.ds-boot { overflow: hidden; }
+html.ds-boot .masthead .logo-live { visibility: hidden; }
+html.ds-boot:not(.ds-booting) body::before {   /* covers the page until the loader is built */
+  content: ""; position: fixed; inset: 0; z-index: 999; background: var(--bg); animation: boot-safety 0s 4s forwards;
+}
+@keyframes boot-safety { to { visibility: hidden; } }
+#boot { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; color: var(--fg); pointer-events: none; }
+#boot .boot-bg { position: absolute; inset: 0; background: var(--bg); clip-path: inset(0 0 0 0); }
+#boot .boot-grid { position: absolute; inset: 0; opacity: 0;
+  background-image: linear-gradient(color-mix(in srgb, var(--fg) 7%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--fg) 7%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: center center;
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent); mask-image: radial-gradient(closest-side, #000 30%, transparent); }
+#boot .boot-stage { position: relative; }
+#boot .boot-logo { display: block; width: min(78vw, 760px); height: auto; overflow: visible; }
+#boot .bl { position: absolute; background: var(--signal-ink); opacity: .85; }
+#boot .bl-cap, #boot .bl-base { left: -50vw; right: -50vw; height: 1px; transform: scaleX(0); }
+#boot .bl-cap { top: 14.6%; } #boot .bl-base { top: 92.4%; }
+#boot .bl.bl-base i { transform: translateY(70%); }
+#boot .bl-l, #boot .bl-r { top: -40vh; bottom: -40vh; width: 1px; transform: scaleY(0); }
+#boot .bl-l { left: 0; } #boot .bl-r { right: 0; }
+#boot .bl i { position: absolute; left: 50vw; transform: translateY(-160%); font: 500 10px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--signal-ink); opacity: 0; white-space: nowrap; padding-right: 10px; }
+#boot .reg { position: absolute; width: 22px; height: 22px; opacity: 0; }
+#boot .reg::before, #boot .reg::after { content: ""; position: absolute; background: var(--fg); }
+#boot .reg::before { left: 50%; top: 0; bottom: 0; width: 1px; } #boot .reg::after { top: 50%; left: 0; right: 0; height: 1px; }
+#boot .reg-tl { left: -40px; top: -40px; } #boot .reg-br { right: -40px; bottom: -40px; }
+#boot .lg-draft { fill: var(--fg); fill-opacity: 0; stroke: var(--fg); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+#boot .lg-box { fill: var(--signal); transform-box: fill-box; transform-origin: 0 50%; transform: scaleX(0); transition: none; }
+#boot .lg-studio { fill: #111111; transform-box: fill-box; transform: translateY(115%); }
+#boot .lg-dot { fill: #111111; transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; animation: none; }
+#boot .boot-foot { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--s5) + 6px); display: flex; justify-content: space-between; gap: var(--s4); font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); opacity: 0; }
+#boot .boot-n b { color: var(--fg); font-weight: 600; }
+#boot .boot-tag { font: 400 15px/1 var(--f-serif); letter-spacing: 0; text-transform: none; color: var(--signal-ink); opacity: 0; }
+#boot .boot-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
+#boot .boot-bar i { display: block; height: 100%; background: var(--signal); transform-origin: 0 50%; transform: scaleX(0); }
+
+#boot.is-on .boot-grid { animation: b-fade .5s ease forwards; }
+#boot.is-on .bl-cap, #boot.is-on .bl-base { animation: b-sx .55s cubic-bezier(.7, 0, .2, 1) .1s forwards; }
+#boot.is-on .bl-base { animation-delay: .18s; }
+#boot.is-on .bl-l, #boot.is-on .bl-r { animation: b-sy .55s cubic-bezier(.7, 0, .2, 1) .26s forwards; }
+#boot.is-on .bl i { animation: b-fade .3s ease .6s forwards; }
+#boot.is-on .reg { animation: b-reg .5s cubic-bezier(.34, 1.56, .64, 1) .3s forwards; }
+#boot.is-on .lg-draft { animation: b-draw 1s cubic-bezier(.45, 0, .25, 1) .35s forwards, b-fill .35s ease 1.15s forwards; }
+#boot.is-on .lg-box { animation: b-sx .5s cubic-bezier(.75, 0, .2, 1) 1.25s forwards; }
+#boot.is-on .lg-studio { animation: b-rise .5s cubic-bezier(.2, .9, .25, 1.15) 1.55s forwards; }
+#boot.is-on .lg-dot { animation: b-drop .45s cubic-bezier(.3, 1.6, .5, 1) 1.95s forwards, b-blink 1.1s steps(1, end) 2.5s infinite; }
+#boot.is-on .boot-foot { animation: b-fade .4s ease .15s forwards; }
+#boot.is-on .boot-tag { animation: b-fade .5s ease 2s forwards; }
+#boot.is-on .boot-bar i { animation: b-sx 2.6s cubic-bezier(.5, 0, .5, 1) forwards; }
+@keyframes b-fade { to { opacity: 1; } }
+@keyframes b-sx { to { transform: scaleX(1); } }
+@keyframes b-sy { to { transform: scaleY(1); } }
+@keyframes b-reg { from { opacity: 0; transform: rotate(-90deg) scale(.4); } to { opacity: .7; transform: none; } }
+@keyframes b-draw { to { stroke-dashoffset: 0; } }
+@keyframes b-fill { to { fill-opacity: 1; stroke-opacity: 0; } }
+@keyframes b-rise { to { transform: none; } }
+@keyframes b-drop { from { opacity: 1; transform: translateY(-260%) scaleY(1.4); } to { opacity: 1; transform: none; } }
+@keyframes b-blink { 0% { opacity: 1; } 50% { opacity: 0; } }
+
+/* leaving: the paper lifts like a curtain while the logo flies to the header */
+#boot.is-out .boot-bg { transition: clip-path .8s cubic-bezier(.76, 0, .24, 1); clip-path: inset(0 0 100% 0); }
+#boot.is-out .boot-grid, #boot.is-out .bl, #boot.is-out .reg, #boot.is-out .boot-foot, #boot.is-out .boot-bar { transition: opacity .25s ease; opacity: 0 !important; animation: none; }
+#boot.is-out .boot-logo { transition: transform .8s cubic-bezier(.76, 0, .24, 1); }
+#boot.is-gone .boot-logo { transition: opacity .3s ease; opacity: 0; }
+
+/* reduced motion: no drawing, just the logo, then a soft fade */
+#boot.boot-rm .lg-draft { fill-opacity: 1; stroke: none; }
+#boot.boot-rm .lg-box, #boot.boot-rm .lg-studio { transform: none; }
+#boot.boot-rm .lg-dot { opacity: 1; }
+#boot.boot-rm * { animation: none !important; }
+#boot.boot-rm .boot-foot, #boot.boot-rm .boot-grid { opacity: 1; }
+#boot.boot-rm.is-out { transition: opacity .3s ease; opacity: 0; }
