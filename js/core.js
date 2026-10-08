@@ -1135,6 +1135,23 @@
     t.parentNode.insertBefore(x, t); t.parentNode.insertBefore(s, t); syncSoundBtn(s);
   });
 
+  /* ---------- Looping logo (home page "The mark") ----------
+     The header logo is copied into the panel; CSS draws it over and over.
+     It only plays while the panel is on screen.                         */
+  $all("[data-logo-loop]").forEach(function (box) {
+    var src = $(".masthead .logo-live"), slot = $(".ml-mark", box); if (!src || !slot) return;
+    var svg = src.cloneNode(true), ns = "http://www.w3.org/2000/svg";
+    svg.removeAttribute("width"); svg.removeAttribute("height"); svg.setAttribute("class", "ml-logo");
+    var rect = $(".lg-box", svg), defs = document.createElementNS(ns, "defs"), clip = document.createElementNS(ns, "clipPath"), g = document.createElementNS(ns, "g");
+    clip.setAttribute("id", "ml-clip"); clip.appendChild(rect.cloneNode()); clip.firstChild.removeAttribute("class");
+    defs.appendChild(clip); svg.insertBefore(defs, svg.firstChild);
+    var studio = $(".lg-studio", svg); g.setAttribute("clip-path", "url(#ml-clip)"); studio.parentNode.insertBefore(g, studio); g.appendChild(studio);
+    $(".lg-draft", svg).setAttribute("pathLength", "1");
+    slot.appendChild(svg);
+    if (!("IntersectionObserver" in window)) { box.classList.add("is-playing"); return; }
+    new IntersectionObserver(function (en) { en.forEach(function (e) { box.classList.toggle("is-playing", e.isIntersecting); }); }, { threshold: .35 }).observe(box);
+  });
+
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
     syncSaved(); DS.reveal();

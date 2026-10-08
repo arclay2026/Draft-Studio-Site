@@ -2493,3 +2493,73 @@ html.ds-boot:not(.ds-booting) body::before {   /* covers the page until the load
 #boot.boot-rm * { animation: none !important; }
 #boot.boot-rm .boot-foot, #boot.boot-rm .boot-grid { opacity: 1; }
 #boot.boot-rm.is-out { transition: opacity .3s ease; opacity: 0; }
+
+/* ===== THE MARK: the opening animation on a loop (home page) =====
+   One 6s cycle: guides draw · "Draft" traced then filled · box sweeps ·
+   "Studio" rises · dot drops and blinks · everything erases · repeat.  */
+.mark-loop { position: relative; margin-top: var(--s6); border-radius: var(--r-card); background: #111111; color: #f4f3ef; overflow: hidden;
+  aspect-ratio: 16 / 7; min-height: 300px; display: grid; place-items: center; --ml: 6s; }
+.mark-loop .ml-grid { position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(244, 243, 239, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(244, 243, 239, .06) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: center center;
+  -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent); mask-image: radial-gradient(closest-side, #000 35%, transparent); }
+.mark-loop .ml-stage { position: relative; }
+.mark-loop .ml-logo { display: block; width: min(62vw, 720px); height: auto; overflow: visible; }
+.mark-loop .bl { position: absolute; background: var(--signal); opacity: .75; }
+.mark-loop .bl-cap, .mark-loop .bl-base { left: -60vw; right: -60vw; height: 1px; transform: scaleX(0); }
+.mark-loop .bl-cap { top: 14.6%; } .mark-loop .bl-base { top: 92.4%; }
+.mark-loop .bl-l, .mark-loop .bl-r { top: -50vh; bottom: -50vh; width: 1px; transform: scaleY(0); }
+.mark-loop .bl-l { left: 0; } .mark-loop .bl-r { right: 0; }
+.mark-loop .bl i { position: absolute; left: 60vw; transform: translateY(-160%); font: 500 10px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--signal); white-space: nowrap; opacity: 0; }
+.mark-loop .bl.bl-base i { transform: translateY(70%); }
+.mark-loop .reg { position: absolute; width: 22px; height: 22px; opacity: 0; }
+.mark-loop .reg::before, .mark-loop .reg::after { content: ""; position: absolute; background: #f4f3ef; }
+.mark-loop .reg::before { left: 50%; top: 0; bottom: 0; width: 1px; } .mark-loop .reg::after { top: 50%; left: 0; right: 0; height: 1px; }
+.mark-loop .reg-tl { left: -40px; top: -40px; } .mark-loop .reg-br { right: -40px; bottom: -40px; }
+.mark-loop .lg-draft { fill: #f4f3ef; fill-opacity: 0; stroke: #f4f3ef; stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.mark-loop .lg-box { fill: var(--signal); transform-box: fill-box; transform-origin: 0 50%; transform: scaleX(0); transition: none; }
+.mark-loop .lg-studio { fill: #111111; transform-box: fill-box; transform: translateY(115%); }
+.mark-loop .lg-dot { fill: #111111; transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; }
+.mark-loop .ml-foot { position: absolute; left: var(--s5); right: var(--s5); bottom: var(--s5); display: flex; justify-content: space-between; gap: var(--s4); font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(244, 243, 239, .55); }
+.mark-loop .ml-tag { font: 400 16px/1 var(--f-serif); letter-spacing: 0; text-transform: none; color: var(--signal); opacity: 0; }
+.mark-loop .ml-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
+.mark-loop .ml-bar i { display: block; height: 100%; background: var(--signal); transform-origin: 0 50%; transform: scaleX(0); }
+
+.mark-loop.is-playing .bl-cap, .mark-loop.is-playing .bl-base { animation: ml-sx var(--ml) cubic-bezier(.7, 0, .2, 1) infinite; }
+.mark-loop.is-playing .bl-l, .mark-loop.is-playing .bl-r { animation: ml-sy var(--ml) cubic-bezier(.7, 0, .2, 1) infinite; }
+.mark-loop.is-playing .bl i, .mark-loop.is-playing .reg { animation: ml-show var(--ml) ease infinite; }
+.mark-loop.is-playing .lg-draft { animation: ml-draft var(--ml) cubic-bezier(.45, 0, .25, 1) infinite; }
+.mark-loop.is-playing .lg-box { animation: ml-box var(--ml) cubic-bezier(.75, 0, .2, 1) infinite; }
+.mark-loop.is-playing .lg-studio { animation: ml-rise var(--ml) cubic-bezier(.2, .9, .25, 1.15) infinite; }
+.mark-loop.is-playing .lg-dot { animation: ml-dot var(--ml) ease-out infinite; }
+.mark-loop.is-playing .ml-tag { animation: ml-tag var(--ml) ease infinite; }
+.mark-loop.is-playing .ml-bar i { animation: ml-bar var(--ml) linear infinite; }
+/* 6s cycle: 1% = 60ms */
+@keyframes ml-sx { 0% { transform: scaleX(0); opacity: .75; } 9%, 84% { transform: scaleX(1); opacity: .75; } 92%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes ml-sy { 0%, 3% { transform: scaleY(0); opacity: .75; } 12%, 84% { transform: scaleY(1); opacity: .75; } 92%, 100% { transform: scaleY(1); opacity: 0; } }
+@keyframes ml-show { 0%, 8% { opacity: 0; } 13%, 84% { opacity: .8; } 92%, 100% { opacity: 0; } }
+@keyframes ml-draft {
+  0%, 5% { stroke-dashoffset: 1; fill-opacity: 0; stroke-opacity: 1; opacity: 1; }
+  22% { stroke-dashoffset: 0; fill-opacity: 0; stroke-opacity: 1; }
+  27%, 84% { stroke-dashoffset: 0; fill-opacity: 1; stroke-opacity: 0; opacity: 1; }
+  91%, 100% { stroke-dashoffset: 0; fill-opacity: 1; stroke-opacity: 0; opacity: 0; }
+}
+@keyframes ml-box { 0%, 20% { transform: scaleX(0); } 29%, 82% { transform: scaleX(1); } 90%, 100% { transform: scaleX(0); } }
+@keyframes ml-rise { 0%, 25% { transform: translateY(115%); } 34%, 80% { transform: none; } 87%, 100% { transform: translateY(115%); } }
+@keyframes ml-dot {
+  0%, 32% { opacity: 0; transform: translateY(-260%) scaleY(1.4); }
+  33% { opacity: 1; transform: translateY(-260%) scaleY(1.4); }
+  38% { opacity: 1; transform: translateY(12%) scaleY(.8); }
+  41% { opacity: 1; transform: none; }
+  50% { opacity: 1; } 50.1% { opacity: 0; } 59% { opacity: 0; } 59.1% { opacity: 1; }
+  68% { opacity: 1; } 68.1% { opacity: 0; } 77% { opacity: 0; } 77.1%, 80% { opacity: 1; transform: none; }
+  84%, 100% { opacity: 0; transform: none; }
+}
+@keyframes ml-tag { 0%, 34% { opacity: 0; transform: translateY(6px); } 40%, 82% { opacity: 1; transform: none; } 88%, 100% { opacity: 0; } }
+@keyframes ml-bar { 0% { transform: scaleX(0); } 84% { transform: scaleX(1); opacity: 1; } 92%, 100% { transform: scaleX(1); opacity: 0; } }
+@media (max-width: 767px) { .mark-loop { aspect-ratio: auto; min-height: 260px; } .mark-loop .ml-logo { width: 80vw; } .mark-loop .ml-foot span:first-child { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .mark-loop * { animation: none !important; }
+  .mark-loop .lg-draft { fill-opacity: 1; stroke: none; } .mark-loop .lg-box, .mark-loop .lg-studio { transform: none; } .mark-loop .lg-dot, .mark-loop .ml-tag { opacity: 1; }
+  .mark-loop .bl { transform: none; opacity: .4; }
+}
