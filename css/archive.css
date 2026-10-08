@@ -2369,3 +2369,10 @@ em.s { font-size: .86em; }
 .creator-top .mark .logo-dark { display: none; }
 :root[data-theme="dark"] .creator-top .mark .logo-light { display: none; }
 :root[data-theme="dark"] .creator-top .mark .logo-dark { display: block; }
+
+/* Footer: the real logo instead of typed text, full width */
+.colophon .word { font: inherit; letter-spacing: 0; line-height: 0; }
+.colophon .word img { display: block; width: 100%; height: auto; }
+.colophon .word .logo-dark { display: none; }
+:root[data-theme="dark"] .colophon .word .logo-light { display: none; }
+:root[data-theme="dark"] .colophon .word .logo-dark { display: block; }
