@@ -183,6 +183,7 @@
     else fallback();
   };
   DS.saveBlob = function (blob, name) {
+    if (DS.sound) DS.sound.play("paper");
     var url = URL.createObjectURL(blob), a = document.createElement("a");
     a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
@@ -577,6 +578,7 @@
     if (s) {
       e.preventDefault();
       var added = DS.saved.toggle(s.getAttribute("data-save"));
+      if (added) DS.sound.play("pencil");
       s.classList.remove("pop"); void s.offsetWidth; s.classList.add("pop");
       DS.toast(added ? "Saved to your shortlist" : "Removed from saved");
       return;
@@ -591,6 +593,7 @@
       dl.classList.remove("is-done"); void dl.offsetWidth; dl.classList.add("is-done");
       var href = dl.getAttribute("href");
       DS.toast(DS.isExternal(href) ? "Opening " + DS.hostName(href) + " in a new tab" : "Downloading " + fileName(href));
+      DS.sound.play("paper");
     }
     // Shared-element page transition: tag the clicked plate's image
     var pl = e.target.closest("[data-plate-link]");
@@ -985,6 +988,152 @@
     var upd = function () { var min = +r.min || 0, max = +r.max || 100; r.style.setProperty("--p", ((r.value - min) / (max - min) * 100) + "%"); out.textContent = r.value + unit; };
     r.addEventListener("input", upd); upd();
   };
+
+  /* ---------- Paper sounds (off until switched on) ----------
+     Made live with the Web Audio API, so there are no sound files to load.
+     pencil: saving a design · paper: downloads · stamp: eye-test wins.  */
+  var SOUND_KEY = "ds_sound", actx = null;
+  function soundOn() { try { return localStorage.getItem(SOUND_KEY) === "on"; } catch (e) { return false; } }
+  function audio() {
+    if (!actx) { var A = window.AudioContext || window.webkitAudioContext; if (!A) return null; actx = new A(); }
+    if (actx.state === "suspended") actx.resume();
+    return actx;
+  }
+  function noise(c, dur) {
+    var n = Math.floor(c.sampleRate * dur), buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    var src = c.createBufferSource(); src.buffer = buf; return src;
+  }
+  function burst(c, t, dur, type, freq, q, peak) {   // shaped noise: the building block of every sound
+    var src = noise(c, dur), f = c.createBiquadFilter(), g = c.createGain();
+    f.type = type; f.frequency.setValueAtTime(freq, t); f.Q.value = q;
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(peak, t + Math.min(.012, dur / 4)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(f); f.connect(g); g.connect(c.destination); src.start(t); src.stop(t + dur + .01);
+    return f;
+  }
+  var SOUNDS = {
+    pencil: function (c, t) { [0, .085, .16].forEach(function (o, k) { burst(c, t + o, .07, "bandpass", 3000 + k * 650, 1.4, .2); }); },
+    paper: function (c, t) {
+      var f = burst(c, t, .42, "bandpass", 900, .8, .16);
+      f.frequency.exponentialRampToValueAtTime(4200, t + .38);
+    },
+    stamp: function (c, t) {
+      var o = c.createOscillator(), g = c.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(52, t + .2);
+      g.gain.setValueAtTime(.6, t); g.gain.exponentialRampToValueAtTime(0.0001, t + .28);
+      o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + .3);
+      burst(c, t, .06, "lowpass", 1800, .7, .4);
+    },
+    tick: function (c, t) { burst(c, t, .035, "highpass", 2500, .7, .18); }
+  };
+  DS.sound = {
+    on: soundOn,
+    play: function (name) { if (!soundOn()) return; var c = audio(); if (c && SOUNDS[name]) try { SOUNDS[name](c, c.currentTime + .01); } catch (e) {} }
+  };
+  var SPK_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+  var SPK_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>';
+  var XRAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M9 4v16M15 4v16" stroke-dasharray="2 2.5" stroke-width="1.6"/></svg>';
+  function syncSoundBtn(b) {
+    var on = soundOn(); b.innerHTML = on ? SPK_ON : SPK_OFF; b.setAttribute("aria-pressed", on);
+    b.setAttribute("aria-label", on ? "Turn sound effects off" : "Turn sound effects on"); b.title = on ? "Sound on" : "Sound off";
+  }
+
+  /* ---------- X-ray mode ----------
+     Hold X (or tap the X-ray button) to see how the page is built: the
+     column grid, the page margins, every gap in pixels and every font. */
+  var xr = null, xrHeld = false, xrPinned = false, xrRaf = 0;
+  function px(v) { return Math.round(parseFloat(v) || 0); }
+  function xrayDraw() {
+    xrRaf = 0; if (!xr) return;
+    var vw = innerWidth, vh = innerHeight, cs = getComputedStyle(document.documentElement);
+    var cols = px(cs.getPropertyValue("--cols")) || 4;
+    var probe = document.createElement("div");   // measures the page margin and grid gap exactly as the CSS does
+    probe.style.cssText = "position:absolute;left:0;right:0;top:0;visibility:hidden;padding-left:var(--pad-x);column-gap:var(--gap)";
+    document.body.appendChild(probe);
+    var pst = getComputedStyle(probe), pad = px(pst.paddingLeft), gap = px(pst.columnGap); probe.remove();
+    var marks = [], tags = [], fonts = {}, specCount = {};
+    function vis(r) { return r.width > 12 && r.height > 6 && r.bottom > 0 && r.top < vh && r.left < vw; }
+    function free(x, y, w) {   // keep labels from piling on top of each other
+      for (var i = 0; i < tags.length; i++) { var t = tags[i]; if (x < t[0] + t[2] && x + w > t[0] && Math.abs(y - t[1]) < 18) return false; }
+      tags.push([x, y, w]); return true;
+    }
+    function mark(r, tag) {
+      var w = tag.length * 6.6 + 12, shift = Math.min(0, vw - 6 - w - r.left), show = free(r.left + shift, r.top, w);
+      marks.push('<div class="xr-box" style="left:' + r.left + "px;top:" + r.top + "px;width:" + r.width + "px;height:" + r.height + 'px">' + (show ? '<i style="left:' + (shift - 1) + 'px">' + esc(tag) + "</i>" : "") + "</div>");
+    }
+    // Pictures: design tiles and stand-alone images get their size
+    $all("main .tile, main .plate, main img").forEach(function (el) {
+      if (marks.length > 60 || (el.tagName === "IMG" && el.closest(".tile, .plate, .wall, .seal, a, button"))) return;
+      var r = el.getBoundingClientRect(); if (vis(r) && r.width > 60) mark(r, Math.round(r.width) + " × " + Math.round(r.height));
+    });
+    // Type: every visible piece of text gets its font, weight and size/line height
+    $all("main *, footer .h3, footer .word").forEach(function (el) {
+      if (marks.length > 70 || el.closest("#xray, .overlay, svg")) return;
+      var own = false; for (var n = el.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.nodeValue.trim()) { own = true; break; }
+      if (!own) return;
+      var r = el.getBoundingClientRect(); if (!vis(r)) return;
+      var st = getComputedStyle(el), size = px(st.fontSize), fam = st.fontFamily.split(",")[0].replace(/["']/g, "").trim();
+      var spec = fam.split(" ")[0] + " " + st.fontWeight + " · " + size + "/" + (st.lineHeight === "normal" ? "auto" : px(st.lineHeight));
+      specCount[spec] = (specCount[spec] || 0) + 1;
+      if (size < 20 && specCount[spec] > 2) return;   // small text: show each style twice, not forty times
+      fonts[fam] = 1; mark(r, spec);
+    });
+    // Spacing: the gap between each block and the block below it
+    var gaps = 0, ys = [];
+    $all("main *").forEach(function (el) {
+      var nx = el.nextElementSibling; if (gaps > 16 || !nx || el.closest("#xray, svg")) return;
+      var a = el.getBoundingClientRect(); if (a.bottom < 0 || a.bottom > vh || a.width < 60) return;
+      var b = nx.getBoundingClientRect(), g = Math.round(b.top - a.bottom);
+      if (g < 8 || g > 320 || b.width < 60 || b.left > a.right || b.right < a.left) return;
+      if (ys.some(function (y) { return Math.abs(y - a.bottom) < 26; })) return;
+      ys.push(a.bottom); gaps++;
+      marks.push('<div class="xr-gap" style="left:' + (Math.min(a.right, b.right, vw) - 44) + "px;top:" + a.bottom + "px;height:" + g + 'px"><b>' + g + "</b></div>");
+    });
+    var fam = Object.keys(fonts).join(" · ") || "Bricolage Grotesque";
+    xr.innerHTML =
+      '<div class="xr-margin" style="left:0;width:' + pad + 'px"><b>' + pad + '</b></div><div class="xr-margin" style="right:0;width:' + pad + 'px"><b>' + pad + "</b></div>" +
+      '<div class="xr-grid" style="left:' + pad + "px;right:" + pad + "px;grid-template-columns:repeat(" + cols + ",1fr);column-gap:" + gap + 'px">' + new Array(cols + 1).join("<i></i>") + "</div>" +
+      marks.join("") +
+      '<div class="xr-bar"><span><b>X-ray</b> · ' + cols + " columns · gap " + gap + "px · margin " + pad + "px · " + esc(fam) + "</span>" +
+        (xrPinned ? '<button type="button" data-xray-off aria-label="Close X-ray">Close</button>' : "<span class=\"xr-hint\">Let go of X to close</span>") + "</div>";
+  }
+  function xrayQueue() { if (xr && !xrRaf) xrRaf = requestAnimationFrame(xrayDraw); }
+  function xraySet(on) {
+    if (on && !xr) {
+      xr = document.createElement("div"); xr.id = "xray"; xr.setAttribute("aria-hidden", "true");
+      document.body.appendChild(xr); document.documentElement.classList.add("is-xray"); xrayDraw();
+      DS.sound.play("tick");
+    } else if (!on && xr) { xr.remove(); xr = null; document.documentElement.classList.remove("is-xray"); }
+    $all("[data-xray]").forEach(function (b) { b.setAttribute("aria-pressed", !!xr); });
+  }
+  DS.xray = xraySet;
+  window.addEventListener("scroll", xrayQueue, { passive: true });
+  window.addEventListener("resize", xrayQueue);
+  document.addEventListener("keydown", function (e) {
+    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey || (e.key || "").toLowerCase() !== "x") return;
+    var a = document.activeElement; if (a && (/INPUT|TEXTAREA|SELECT/.test(a.tagName) || a.isContentEditable)) return;
+    if (!xr) { xrHeld = true; xrPinned = false; xraySet(true); }
+  });
+  document.addEventListener("keyup", function (e) { if ((e.key || "").toLowerCase() === "x" && xrHeld) { xrHeld = false; if (!xrPinned) xraySet(false); } });
+  window.addEventListener("blur", function () { if (xrHeld && !xrPinned) { xrHeld = false; xraySet(false); } });
+  document.addEventListener("click", function (e) {
+    if (e.target.closest("[data-xray-off]")) { xrPinned = false; xraySet(false); return; }
+    var xb = e.target.closest("[data-xray]");
+    if (xb) { xrPinned = !xr; xraySet(!xr); if (xr) DS.toast(window.matchMedia("(hover: hover)").matches ? "X-ray on · tip: just hold X" : "X-ray on · tap Close to finish"); return; }
+    var sb = e.target.closest("[data-sound]");
+    if (sb) {
+      var on = !soundOn(); try { localStorage.setItem(SOUND_KEY, on ? "on" : "off"); } catch (err) {}
+      $all("[data-sound]").forEach(syncSoundBtn);
+      DS.toast(on ? "Sound on" : "Sound off"); if (on) DS.sound.play("pencil");
+    }
+  });
+  // The two buttons sit next to the theme switch in every page's header
+  $all(".masthead .theme-btn").forEach(function (t) {
+    var s = document.createElement("button"); s.type = "button"; s.className = "util-btn icon-only sound-btn"; s.setAttribute("data-sound", "");
+    var x = document.createElement("button"); x.type = "button"; x.className = "util-btn icon-only xray-btn"; x.setAttribute("data-xray", "");
+    x.setAttribute("aria-pressed", "false"); x.setAttribute("aria-label", "X-ray mode: see the grid, spacing and fonts"); x.title = "X-ray (hold X)"; x.innerHTML = XRAY;
+    t.parentNode.insertBefore(x, t); t.parentNode.insertBefore(s, t); syncSoundBtn(s);
+  });
 
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
