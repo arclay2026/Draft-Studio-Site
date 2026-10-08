@@ -184,6 +184,7 @@
   };
   DS.saveBlob = function (blob, name) {
     if (DS.sound) DS.sound.play("paper");
+    if (DS.firstDownload) DS.firstDownload();
     var url = URL.createObjectURL(blob), a = document.createElement("a");
     a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
@@ -193,7 +194,7 @@
   DS.plate = function (it, opt) {
     opt = opt || {};
     var first = DS.quickFile(it);
-    return '<article class="plate' + (opt.fixed ? " is-fixed" : "") + '" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + (opt.reveal ? " data-reveal" : "") + ">" +
+    return '<article class="plate' + (opt.fixed ? " is-fixed" : "") + (it.price && !it.sold ? " is-premium" : "") + '" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + (opt.reveal ? " data-reveal" : "") + ">" +
       '<a class="plate-media" href="' + it.url + '" data-cursor="View" data-plate-link tabindex="-1" aria-hidden="true">' +
         (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + esc(it.title) + '" loading="lazy" decoding="async">' : '<span class="label">No preview</span>') +
         '<span class="crops" aria-hidden="true"></span>' +
@@ -224,7 +225,7 @@
     var buy = it.price ? (it.sold ? '<span class="tile-sold">Sold</span>'
       : '<a class="tile-btn" href="' + esc(DS.buyUrl(it)) + '" target="_blank" rel="noopener" aria-label="Buy ' + t + " for " + esc(it.price) + ' on WhatsApp">' + I.wa + "</a>") : "";
     var dl = first ? '<a class="tile-btn" href="' + esc(first.path) + '"' + DS.dlAttrs(first.path) + ' data-dl aria-label="Download ' + t + '">' + I.down + "</a>" : "";
-    return '<article class="tile" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + ">" +
+    return '<article class="tile' + (it.price && !it.sold ? " is-premium" : "") + '" data-id="' + esc(it.id) + '"' + (opt.i != null ? ' style="--i:' + opt.i + '"' : "") + ">" +
       '<a class="tile-media" href="' + it.url + '" data-plate-link aria-label="' + t + " — " + esc(it.typeLabel) + '">' +
         (it.preview ? '<img src="' + esc(it.preview) + '" alt="' + t + '" loading="lazy" decoding="async">' : '<span class="label">No preview</span>') +
       "</a>" +
@@ -342,7 +343,7 @@
           var it = items.filter(function (i) { return i.category === c; })[0];
           return '<a href="' + it.page + "?cat=" + encodeURIComponent(c) + '">' + esc(c) + "</a>";
         }).join("") + "</div>" +
-        '<div><div class="label">Your archive</div><a href="#" data-open-search>Search the archive</a><a href="#" data-open-saved><span>Saved designs (<span class="saved-n">00</span>)</span></a></div>' +
+        '<div><div class="label">Your archive</div><a href="#" data-open-search>Search the archive</a><a href="#" data-open-saved><span>Saved designs (<span class="saved-n">00</span>)</span></a>' + (window.matchMedia("(hover: hover)").matches ? '<a href="#" data-open-keys>Keyboard shortcuts (?)</a>' : "") + '</div>' +
         (SITE.email ? '<div><div class="label">Contact</div><a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + "</a></div>" : "") +
       "</div>"
     );
@@ -1150,6 +1151,131 @@
     slot.appendChild(svg);
     if (!("IntersectionObserver" in window)) { box.classList.add("is-playing"); return; }
     new IntersectionObserver(function (en) { en.forEach(function (e) { box.classList.toggle("is-playing", e.isIntersecting); }); }, { threshold: .35 }).observe(box);
+  });
+
+  /* ---------- Branded confetti ----------
+     Green squares, ink dots and paper chips (the logo's shapes) burst from
+     a point: first download, perfect eye-test scores, copied colours.  */
+  var lastX = innerWidth / 2, lastY = innerHeight / 2;
+  document.addEventListener("pointerdown", function (e) { lastX = e.clientX; lastY = e.clientY; }, true);
+  DS.confetti = function (x, y, count) {
+    if (reduce) return;
+    x = x == null ? lastX : x; y = y == null ? lastY : y; count = count || 70;
+    var cv = document.createElement("canvas"), dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+    cv.className = "confetti"; cv.width = W * dpr; cv.height = H * dpr; document.body.appendChild(cv);
+    var g = cv.getContext("2d"); g.scale(dpr, dpr);
+    var COLORS = ["#86de4e", "#86de4e", "#86de4e", "#111111", "#2e7a14", "#f4f3ef"], parts = [];
+    for (var i = 0; i < count; i++) {
+      var a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.1, sp = 6 + Math.random() * 9;
+      parts.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 3 + Math.random() * 5, rot: Math.random() * 6, vr: (Math.random() - .5) * .4,
+        c: COLORS[i % COLORS.length], dot: Math.random() < .35 });
+    }
+    var t0 = performance.now();
+    (function frame(now) {
+      var t = now - t0; g.clearRect(0, 0, W, H);
+      parts.forEach(function (p) {
+        p.vy += .32; p.vx *= .985; p.vy *= .985; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        g.globalAlpha = Math.max(0, 1 - t / 1700); g.fillStyle = p.c;
+        if (p.dot) { g.beginPath(); g.arc(p.x, p.y, p.r * .6, 0, 7); g.fill(); }
+        else { g.save(); g.translate(p.x, p.y); g.rotate(p.rot); g.fillRect(-p.r, -p.r * .6, p.r * 2, p.r * 1.2); g.restore(); }
+      });
+      if (t < 1700) requestAnimationFrame(frame); else cv.remove();
+    })(t0);
+  };
+  function firstDownload() {
+    var done; try { done = localStorage.getItem("ds_first_dl"); localStorage.setItem("ds_first_dl", "1"); } catch (e) { done = 1; }
+    if (!done) { DS.confetti(null, null, 90); setTimeout(function () { DS.toast("Your first download. Welcome to the studio!"); }, 300); }
+  }
+  DS.firstDownload = firstDownload;
+  document.addEventListener("click", function (e) { if (e.target.closest("[data-dl]")) firstDownload(); });
+  if (document.body.getAttribute("data-page") === "palettes") {
+    var copy0 = DS.copy;
+    DS.copy = function (text, msg) { copy0(text, msg); DS.confetti(null, null, 36); };
+  }
+
+  /* ---------- Headings that draft themselves ----------
+     Big headings are traced in outline as they scroll into view, then
+     filled in: the same "draft" move as the logo animation.           */
+  if (!reduce && "IntersectionObserver" in window && CSS.supports("-webkit-text-stroke", "1px black")) {
+    var dhIO = new IntersectionObserver(function (en) {
+      en.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var h = e.target; dhIO.unobserve(h);
+        setTimeout(function () { h.classList.remove("dh-pending"); h.classList.add("dh-drawn"); }, 60);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: .2 });
+    DS.draftHeadings = function () { $all("main .display, main .h2, .about-cta h2").forEach(function (h) {
+      if (h.classList.contains("dh") || !h.offsetParent) return;
+      if (h.closest(".overlay, .intro, .page-head") || h.getBoundingClientRect().top < innerHeight * .85) return;   // headings already on screen stay as they are
+      h.style.setProperty("--dh-ink", getComputedStyle(h).color);
+      h.classList.add("dh", "dh-pending"); dhIO.observe(h);
+    }); };
+    document.addEventListener("DOMContentLoaded", function () { setTimeout(DS.draftHeadings, 0); });
+  }
+
+  /* ---------- Page-change wipe ----------
+     Clicking to another page: a green panel wipes across with the blinking
+     dot, then the next page opens and the panel wipes away (js/boot.js). */
+  function wipeLink(a, e) {
+    if (reduce || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false;
+    if (a.target && a.target !== "_self" || a.hasAttribute("download") || a.hasAttribute("data-dl") || a.hasAttribute("data-plate-link")) return false;
+    var href = a.getAttribute("href") || "";
+    if (!/^[\w./-]+\.html(\?[^#]*)?(#.*)?$/.test(href)) return false;   // only this site's own pages
+    var u = new URL(a.href, location.href);
+    if (u.pathname === location.pathname && u.search === location.search) return false;   // same page (anchors)
+    return true;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[href]"); if (!a || !wipeLink(a, e)) return;
+    e.preventDefault();
+    var w = document.createElement("div"); w.className = "page-wipe"; w.innerHTML = "<i></i>"; document.body.appendChild(w);
+    try { sessionStorage.setItem("ds_wipe", "1"); } catch (err) {}
+    setTimeout(function () { location.href = a.href; }, 330);
+  });
+  window.addEventListener("pageshow", function (e) { if (e.persisted) $all(".page-wipe").forEach(function (w) { w.remove(); }); });
+
+  /* ---------- Foil shine on premium designs ----------
+     Logos for sale tilt towards the pointer and catch a holographic light. */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduce) {
+    document.addEventListener("pointermove", function (e) {
+      var t = e.target.closest && e.target.closest(".is-premium .tile-media, .is-premium .plate-media");
+      $all(".foil-on").forEach(function (el) { if (el !== t) { el.classList.remove("foil-on"); el.style.removeProperty("--rx"); el.style.removeProperty("--ry"); } });
+      if (!t) return;
+      var r = t.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      t.classList.add("foil-on");
+      t.style.setProperty("--rx", ((.5 - py) * 9).toFixed(2) + "deg"); t.style.setProperty("--ry", ((px - .5) * 11).toFixed(2) + "deg");
+      t.style.setProperty("--mx", (px * 100).toFixed(1) + "%"); t.style.setProperty("--my", (py * 100).toFixed(1) + "%");
+    }, { passive: true });
+  }
+
+  /* ---------- Keyboard shortcuts (press ?) ---------- */
+  var KEYS = [["/", "Search the archive"], ["?", "Show these shortcuts"], ["X", "Hold for X-ray mode"], ["S", "Save this design (or open your saved list)"],
+    ["D", "Dark or light theme"], ["M", "Sound on or off"], ["I", "Open the index"], ["← →", "Previous or next design"], ["Esc", "Close any panel"]];
+  function openKeys() {
+    var el = overlay("ov-keys", "Keyboard shortcuts",
+      '<h2 class="h2">Shortcuts <em class="s">for pros.</em></h2>' +
+      '<dl class="keys">' + KEYS.map(function (k) { return "<div><dt>" + k[0].split(" ").map(function (x) { return "<kbd>" + esc(x) + "</kbd>"; }).join("") + "</dt><dd>" + esc(k[1]) + "</dd></div>"; }).join("") + "</dl>" +
+      '<p class="label" style="margin-top:22px">Shortcuts work anywhere except while you’re typing</p>');
+    DS.open(el);
+  }
+  DS.openKeys = openKeys;
+  document.addEventListener("click", function (e) { if (e.target.closest("[data-open-keys]")) { e.preventDefault(); DS.closeAll(); openKeys(); } });
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var a = document.activeElement; if (a && (/INPUT|TEXTAREA|SELECT/.test(a.tagName) || a.isContentEditable)) return;
+    var k = e.key;
+    if (k === "?") { e.preventDefault(); if ($("#ov-keys.is-open")) DS.close(); else { DS.closeAll(); openKeys(); } return; }
+    if (stack.length) return;   // panels open: leave keys alone
+    var low = (k || "").toLowerCase();
+    if (low === "d") { var tb = $("[data-theme-toggle]"); if (tb) tb.click(); }
+    else if (low === "m") { var sb = $("[data-sound]"); if (sb) sb.click(); }
+    else if (low === "i") { e.preventDefault(); openIndex(); }
+    else if (low === "s") {
+      var sv = $("#save-btn"); if (sv) sv.click(); else { e.preventDefault(); openSaved(); }
+    }
+    else if (k === "ArrowLeft" || k === "ArrowRight") {
+      var nav = $('a[aria-label="' + (k === "ArrowLeft" ? "Previous" : "Next") + ' record"]'); if (nav) nav.click();
+    }
   });
 
   // Page scripts run after this file; finish shared setup once they have rendered.

@@ -83,7 +83,7 @@
       if (!checked) {
         var res = game.check(); if (res === null) return;
         checked = true; scores.push({ type: r.type, score: res.score });
-        if (res.score >= 100 && DS.sound) DS.sound.play("stamp");
+        if (res.score >= 100) { if (DS.sound) DS.sound.play("stamp"); if (DS.confetti) DS.confetti(); }
         var out = $("#eye-result");
         out.innerHTML = '<b class="eye-pts">' + res.score + "</b><span>" + res.note + "</span>";
         out.hidden = false; out.className = "eye-result " + (res.score >= 80 ? "is-great" : res.score >= 50 ? "is-ok" : "is-low");
@@ -104,7 +104,7 @@
   function done() {
     var total = Math.round(scores.reduce(function (a, s) { return a + s.score; }, 0) / scores.length);
     var prev = best(), isBest = total > prev; if (isBest) setBest(total);
-    if ((isBest || total >= 90) && DS.sound) DS.sound.play("stamp");
+    if (isBest || total >= 90) { if (DS.sound) DS.sound.play("stamp"); if (DS.confetti) setTimeout(function () { DS.confetti(innerWidth / 2, innerHeight * .45, 110); }, 150); }
     var rk = rank(total), byType = {};
     scores.forEach(function (s) { (byType[s.type] = byType[s.type] || []).push(s.score); });
     var url = (DS.site.url || location.origin + "/") + "eye.html";

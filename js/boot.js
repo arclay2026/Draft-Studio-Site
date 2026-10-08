@@ -6,6 +6,13 @@
    Then the logo flies into its place in the header.                    */
 (function () {
   var html = document.documentElement;
+  // arriving through the page-change wipe: slide the green panel away
+  if (/\bds-wipe-in\b/.test(html.className)) {
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      html.classList.add("ds-wipe-out");
+      setTimeout(function () { html.classList.remove("ds-wipe-in", "ds-wipe-out"); }, 420);
+    }); });
+  }
   if (!/\bds-boot\b/.test(html.className)) return;
   var src = document.querySelector(".masthead .logo-live");
   if (!src) { html.classList.remove("ds-boot", "ds-booting"); return; }
