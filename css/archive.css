@@ -2724,3 +2724,10 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 .pk-notes p:not(.label) { line-height: 1.55; color: var(--mute); }
 .pk-notes b { color: var(--fg); }
 .founding p b { color: var(--signal); font-weight: 700; }
+/* Packages page */
+.pk-head h1.display { font-size: clamp(46px, 14cqi, 150px); line-height: .95; }
+.pk-head .aside { display: grid; gap: var(--s5); align-content: end; }
+.pk-jump { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.pk-jump .btn { min-height: 52px; }
+@media (min-width: 1280px) { .pk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+#websites .founding { margin-top: var(--s6); }

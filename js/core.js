@@ -336,7 +336,7 @@
         row("06", "palettes.html", "Palettes", "") +
         row("07", "fonts.html", "Font pairs", "") +
         row("08", "eye.html", "Eye test", "") +
-        (window.matchMedia("(min-width: 1024px)").matches ? row("09", "qr.html", "QR maker", "") + row("10", "web.html", "Websites", "") + row("11", "about.html", "About", "") : row("09", "web.html", "Websites", "") + row("10", "about.html", "About", "")) +
+        (window.matchMedia("(min-width: 1024px)").matches ? row("09", "qr.html", "QR maker", "") + row("10", "web.html", "Websites", "") + row("11", "packages.html", "Packages", "") + row("12", "about.html", "About", "") : row("09", "web.html", "Websites", "") + row("10", "packages.html", "Packages", "") + row("11", "about.html", "About", "")) +
       "</ul>" +
       '<div class="index-foot">' +
         '<div><div class="label">Categories</div>' + cats.map(function (c) {

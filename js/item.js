@@ -90,7 +90,7 @@
       (next ? '<a href="' + next.url + '"><span class="label">Next · ' + next.no + ' →</span><span class="t">' + esc(next.title) + "</span></a>" : "<span></span>") +
     "</nav>" +
 
-    (related.length ? '<section class="section"><div class="folio"><span class="label label-ink">§ Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
+    (related.length ? '<section class="section"><div class="folio"><span class="label label-ink">Related</span><span class="label">More from the archive</span><span class="rule"></span><span class="label folio-note">' + DS.pad(related.length, 2) + " records</span></div>" +
       '<div class="sect-head"><h2 class="h2">Also filed <em class="s">nearby</em></h2></div>' +
       '<div class="shelf" tabindex="0" aria-label="Related designs">' + related.map(function (r) { return DS.tile(r); }).join("") + "</div></section>" : "");
 
@@ -142,7 +142,7 @@
     if (!steps.length) return "";
     var fmts = it.type === "logo" ? it.formats.filter(function (f) { return FORMAT_USE[f]; }) : [];
     return '<section class="section howto" id="how-to-use" aria-labelledby="ht-title">' +
-      '<div class="folio"><span class="label label-ink">§ How to use</span><span class="label">Step by step</span><span class="rule"></span><span class="label folio-note">' + DS.pad(steps.length, 2) + " steps</span></div>" +
+      '<div class="folio"><span class="label label-ink">How to use</span><span class="label">Step by step</span><span class="rule"></span><span class="label folio-note">' + DS.pad(steps.length, 2) + " steps</span></div>" +
       '<div class="sect-head"><h2 class="h2" id="ht-title">How to use <em class="s">this file.</em></h2></div>' +
       '<div class="howto-grid' + (fmts.length ? " has-formats" : "") + '">' +
         '<ol class="howto-steps' + (steps.length > 4 ? " is-long" : "") + '">' + steps.map(function (x, n) {
@@ -155,7 +155,7 @@
 
   function colourTestHtml() {
     return '<section class="section lc" id="colour-test" aria-labelledby="lc-title">' +
-      '<div class="folio"><span class="label label-ink">§ Colour test</span><span class="label">Try the mark</span><span class="rule"></span><span class="label folio-note">Live · from the SVG</span></div>' +
+      '<div class="folio"><span class="label label-ink">Colour test</span><span class="label">Try the mark</span><span class="rule"></span><span class="label folio-note">Live · from the SVG</span></div>' +
       '<div class="sect-head"><h2 class="h2" id="lc-title">See it in <em class="s">any colour.</em></h2></div>' +
       '<div class="lc-grid">' +
         '<div class="lc-stage" id="lc-stage"><div class="lc-art" id="lc-art" role="img" aria-label="' + esc(it.title) + ' in the chosen colours"><p class="label">Loading…</p></div>' +
