@@ -2767,8 +2767,9 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 @media (min-width: 1024px) { .side-badge { bottom: 28px; } }
 @media (min-width: 768px) { .side-badge { display: block; } }
 .side-badge img { display: block; width: 36px; height: 188px; }
-.side-badge .sb-dark { display: none; }
-:root[data-theme="dark"] .side-badge .sb-light { display: none; }
-:root[data-theme="dark"] .side-badge .sb-dark { display: block; }
+/* contrast: the dark badge on the light theme, the light badge on the dark theme */
+.side-badge .sb-light { display: none; }
+:root[data-theme="dark"] .side-badge .sb-dark { display: none; }
+:root[data-theme="dark"] .side-badge .sb-light { display: block; }
 .side-badge:hover, .side-badge:focus-visible { transform: translateX(-4px); box-shadow: -10px 0 24px -14px rgba(0, 0, 0, .45); }
 html.ds-boot .side-badge, html.is-xray .side-badge { display: none; }
