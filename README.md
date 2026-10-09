@@ -32,7 +32,7 @@ All tokens live at the top of `css/archive.css`:
 
 - **Colour:** ink `#111111`, paper `#f4f3ef`, green `#86de4e` as the only signal colour.
   Dark mode swaps ink and paper and uses a lighter blue for text so it stays readable.
-- **Type:** Bricolage Grotesque (brand), Pacifico (accent words), JetBrains Mono (metadata).
+- **Type:** Bricolage Grotesque (brand), Pacifico (accent words), Azeret Mono (metadata).
   A fluid scale (`--fs-label` … `--fs-mega`) grows smoothly from phone to desktop; big headlines
   scale to their container, so they never run off the screen. Nothing is smaller than 12px.
 - **Spacing:** a 4px scale (`--s1` … `--s9`) plus `--section` for the gap between sections.

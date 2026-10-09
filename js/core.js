@@ -1356,21 +1356,6 @@
     document.addEventListener("click", function () { if (loupe) { loupe.remove(); loupe = null; } }, true);
   }
 
-  /* ---------- Stretchy dock (mouse only) ----------
-     Icons in the bottom menu grow as the pointer passes, like the Mac dock. */
-  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduce) {
-    $all(".dock").forEach(function (dock) {
-      var dockItems = $all(".dock-item", dock);
-      dock.addEventListener("mousemove", function (e) {
-        dockItems.forEach(function (it) {
-          var r = it.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2));
-          it.style.setProperty("--dk", (1 + .8 * Math.max(0, 1 - d / 180)).toFixed(3));
-        });
-      });
-      dock.addEventListener("mouseleave", function () { dockItems.forEach(function (it) { it.style.setProperty("--dk", 1); }); });
-    });
-  }
-
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
     syncSaved(); DS.reveal();

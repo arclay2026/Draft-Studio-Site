@@ -75,7 +75,7 @@
     });
     x.fillStyle = "#f4f3ef"; x.fillRect(0, H - 120, W, 120);
     x.fillStyle = "#111111"; x.font = "800 40px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillText(name, 32, H - 50);
-    x.font = "500 22px 'JetBrains Mono', monospace"; x.fillStyle = "#5f5e59";
+    x.font = "500 22px 'Azeret Mono', monospace"; x.fillStyle = "#5f5e59";
     var tag = "DRAFT STUDIO · PALETTES"; x.fillText(tag, W - 32 - x.measureText(tag).width, H - 52);
     cv.toBlob(function (b) { DS.saveBlob(b, String(name).toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-palette.png"); DS.toast("Saved " + name + " as PNG"); });
   }
