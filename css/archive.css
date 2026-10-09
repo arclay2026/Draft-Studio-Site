@@ -2616,3 +2616,6 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 #ov-keys .overlay-panel { top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(620px, calc(100vw - 2 * var(--gutter))); max-height: 88vh; padding: 0 var(--s6) var(--s6); border-radius: var(--r-card); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .55); animation: fade .25s var(--ease); }
 #ov-keys .h2 { font-size: clamp(30px, 20px + 2vw, 46px); margin-top: var(--s2); }
 #ov-keys .keys { max-width: none; }
+
+/* ===== TYPING SEARCH HINTS: a blinking cursor after the typed hint ===== */
+.ph.is-typing::after { content: ""; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -.15em; background: var(--signal-ink); animation: lg-blink .9s steps(1, end) infinite; }

@@ -401,6 +401,7 @@
       input.value = b.getAttribute("data-q"); render(); input.focus();
     });
     input.value = initial || "";
+    if (!initial) DS.typeHints(input, "all");
     render();
     DS.open(el, "#q-all");
   }
@@ -1278,9 +1279,65 @@
     }
   });
 
+  /* ---------- Typing search hints ----------
+     Empty search boxes type out real things you can find ("hoodie mockup",
+     "letter m logo", "camera"), like a cursor writing. Every hint is taken
+     from the catalogue and checked to return results.                    */
+  function hintsFor(kind) {
+    var pick = function (list, n) { return list.filter(function (v, i) { return v && list.indexOf(v) === i; }).sort(function () { return Math.random() - .5; }).slice(0, n); };
+    var short = function (t) { return String(t).split(/\s+[—–-]\s+/)[0].toLowerCase(); };
+    var tpl = DS.ofType("template"), lg = DS.ofType("logo");
+    var tH = tpl.map(function (i) { return short(i.title); }).concat(tpl.map(function (i) { return i.category.toLowerCase(); }), ["photoshop mockup", "apparel"]);
+    var lH = lg.map(function (i) { var l = i.tags.filter(function (t) { return /^letter /.test(t); })[0]; return l ? l + " logo" : ""; }).concat(lg.map(function (i) { return i.category.toLowerCase(); }), ["monogram", "red logo"]);
+    var iH = DS.icons.map(function (i) { return i.name.toLowerCase(); });
+    var out = kind === "template" ? pick(tH, 5) : kind === "logo" ? pick(lH, 5) : kind === "icon" ? pick(iH, 6)
+      : pick(tH, 2).concat(pick(lH, 2), pick(iH, 2));
+    var pool = kind === "icon" ? DS.icons : kind === "template" ? tpl : kind === "logo" ? lg : items.concat(DS.icons);
+    return out.filter(function (h) { return pool.some(function (x) { return DS.matches(x, h); }); });
+  }
+  DS.typeHints = function (el, kind, lead) {
+    if (!el || el.hasAttribute("data-typing") || reduce) return;
+    var isInput = el.tagName === "INPUT", base = isInput ? el.placeholder : el.textContent, hints = hintsFor(kind);
+    if (!hints.length) return;
+    el.setAttribute("data-typing", "");
+    if (isInput && !el.getAttribute("aria-label")) el.setAttribute("aria-label", base);
+    var k = 0, pos = 0, phase = "wait", hold = 2600, timer, live = true;
+    function show(txt, typing) {
+      if (isInput) el.placeholder = txt + (typing ? "|" : "");
+      else { el.textContent = txt; el.classList.toggle("is-typing", !!typing); }
+      el.__hint = typing ? hints[k] : "";
+    }
+    function busy() { return isInput && (el.value || document.activeElement === el); }
+    function step() {
+      if (!el.isConnected) return;
+      if (!live || busy() || document.hidden) { show(base, false); phase = "wait"; pos = 0; timer = setTimeout(step, 900); return; }
+      var word = hints[k], txt = (lead || "Try: ") + "“" + word.slice(0, pos) + (pos >= word.length ? "”" : "");
+      if (phase === "wait") { show(base, false); phase = "type"; timer = setTimeout(step, hold); return; }
+      if (phase === "type") {
+        pos++; show((lead || "Try: ") + "“" + word.slice(0, pos) + (pos >= word.length ? "”" : ""), true);
+        if (pos >= word.length) { phase = "erase"; timer = setTimeout(step, 1500); } else timer = setTimeout(step, 55 + Math.random() * 60);
+        return;
+      }
+      if (phase === "erase") {
+        pos--; show((lead || "Try: ") + "“" + word.slice(0, Math.max(0, pos)), true);
+        if (pos <= 0) { k = (k + 1) % hints.length; phase = k === 0 ? "wait" : "type"; hold = 2600; timer = setTimeout(step, 350); } else timer = setTimeout(step, 28);
+      }
+    }
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { live = en[0].isIntersecting; }).observe(isInput ? el : el.parentNode);
+    timer = setTimeout(step, 1200);
+  };
+  // clicking the home search while a hint is showing searches for that hint
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("#intro-search"); if (!b) return;
+    var ph = $(".ph", b); if (ph && ph.__hint) { e.preventDefault(); e.stopImmediatePropagation(); DS.closeAll(); openSearch(ph.__hint); }
+  }, true);
+
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
     syncSaved(); DS.reveal();
+    var pg = document.body.getAttribute("data-page");
+    DS.typeHints($("#f-q"), pg === "browse" ? document.body.getAttribute("data-type") : pg === "icons" ? "icon" : "all");
+    DS.typeHints($("#intro-search .ph"), "all");
     $all("select").forEach(DS.customSelect);
     $all('input[type="color"]').forEach(DS.colorPicker);
     $all('input[type="range"]').forEach(DS.rangeSlider);
