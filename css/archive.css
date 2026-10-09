@@ -2773,3 +2773,22 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 :root[data-theme="dark"] .side-badge .sb-light { display: block; }
 .side-badge:hover, .side-badge:focus-visible { transform: translateX(-4px); box-shadow: -10px 0 24px -14px rgba(0, 0, 0, .45); }
 html.ds-boot .side-badge, html.is-xray .side-badge { display: none; }
+
+/* ===== POP-UP CARDS (founding offer, after a download) ===== */
+.pop { position: fixed; z-index: 140; left: var(--gutter); right: var(--gutter); bottom: calc(var(--nav-clear) + 12px);
+  padding: var(--s5); padding-right: calc(var(--s5) + 36px); border-radius: var(--r-card); background: var(--fg); color: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--fg) 12%, transparent), 0 24px 50px -20px rgba(0, 0, 0, .55); opacity: 0; transform: translateY(24px) scale(.97); pointer-events: none;
+  transition: opacity .3s, transform .45s var(--ease); }
+.pop.is-in { opacity: 1; transform: none; pointer-events: auto; }
+@media (min-width: 768px) { .pop { right: auto; width: 360px; } }
+@media (min-width: 1024px) { .pop { left: 28px; } }
+.pop-label { color: inherit; opacity: .7; } .pop-label b { color: var(--signal); opacity: 1; }
+:root[data-theme="dark"] .pop-label b { color: #2e7a14; }
+.pop-title { margin-top: var(--s2); font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -.03em; }
+.pop-text { margin-top: var(--s2); font-size: var(--fs-small); line-height: 1.45; opacity: .8; }
+.pop-btn { margin-top: var(--s4); }
+.pop-x { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+.pop-x svg { width: 18px; height: 18px; }
+.pop-x:hover, .pop-x:focus-visible { background: color-mix(in srgb, var(--bg) 14%, transparent); }
+html.is-xray .pop { display: none; }
+@media (prefers-reduced-motion: reduce) { .pop { transition: opacity .2s; transform: none; } }

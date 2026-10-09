@@ -1186,6 +1186,7 @@
   function firstDownload() {
     var done; try { done = localStorage.getItem("ds_first_dl"); localStorage.setItem("ds_first_dl", "1"); } catch (e) { done = 1; }
     if (!done) { DS.confetti(null, null, 90); setTimeout(function () { DS.toast("Your first download. Welcome to the studio!"); }, 300); }
+    if (DS.afterDownload) DS.afterDownload();
   }
   DS.firstDownload = firstDownload;
   document.addEventListener("click", function (e) { if (e.target.closest("[data-dl]")) firstDownload(); });
@@ -1365,6 +1366,56 @@
       '<img class="sb-dark" src="assets/badge/site-by-draft-studio-vertical-dark.svg" alt="Site by Draft Studio" width="36" height="188">';
     document.body.appendChild(a);
   })();
+
+  /* ---------- pop-up cards: at most one per visit, closed with one tap ---------- */
+  var popOpen = null;
+  function popSeen() { try { return sessionStorage.getItem("ds_pop"); } catch (e) { return "1"; } }
+  DS.pop = function (o) {
+    if (popOpen || popSeen() || document.documentElement.classList.contains("ds-boot")) return;
+    try { sessionStorage.setItem("ds_pop", o.id); } catch (e) {}
+    var c = document.createElement("aside");
+    c.className = "pop"; c.setAttribute("aria-label", o.aria || o.title);
+    c.innerHTML = '<button class="pop-x" type="button" aria-label="Close">' + I.close + "</button>" +
+      '<p class="label pop-label">' + o.label + "</p>" +
+      '<p class="pop-title">' + o.title + "</p>" +
+      (o.text ? '<p class="pop-text">' + o.text + "</p>" : "") +
+      '<a class="btn btn-signal pop-btn" href="' + DS.esc(o.href) + '"' + (o.ext ? ' target="_blank" rel="noopener"' : "") + ">" + o.btn + "</a>";
+    function close() { if (!popOpen) return; c.classList.remove("is-in"); popOpen = null; document.removeEventListener("keydown", esc); setTimeout(function () { c.remove(); }, 400); }
+    function esc(e) { if (e.key === "Escape") close(); }
+    c.querySelector(".pop-x").addEventListener("click", close);
+    c.querySelector(".pop-btn").addEventListener("click", function () { setTimeout(close, 100); });
+    document.addEventListener("keydown", esc);
+    document.body.appendChild(c); popOpen = c;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { c.classList.add("is-in"); }); });
+    if (DS.sound) DS.sound.play("paper");
+  };
+
+  /* founding-client offer: halfway down the Websites and Packages pages */
+  (function () {
+    var pg = document.body.getAttribute("data-page"), spots = +DS.site.foundingSpots || 0;
+    if ((pg !== "web" && pg !== "packages") || spots < 1 || popSeen()) return;
+    var wa = String(DS.site.whatsapp || "").replace(/\D/g, ""), msg = "Hi Ishaaq, I'd like one of your founding client spots for a website. Here's a bit about my business: ";
+    function check() {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      if (max <= 0 || scrollY < max * .5) return;
+      var fd = $("#founding"), r = fd && !fd.hidden && fd.getBoundingClientRect();
+      if (r && r.top < innerHeight && r.bottom > 0) return; // the offer is already on screen
+      removeEventListener("scroll", check);
+      DS.pop({ id: "founding", label: "Founding clients · <b>" + spots + (spots === 1 ? " spot" : " spots") + " left</b>",
+        title: "30% off your first website.", text: "Be one of my first website clients. In return, I ask for an honest testimonial.",
+        btn: DS.icon.wa + "Claim a spot", href: wa ? "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg) : "mailto:" + (DS.site.email || "") + "?subject=Founding%20client%20spot", ext: true });
+    }
+    addEventListener("scroll", check, { passive: true });
+  })();
+
+  /* after a download: point to the paid work */
+  DS.afterDownload = function () {
+    if (document.body.getAttribute("data-page") === "packages") return;
+    setTimeout(function () {
+      DS.pop({ id: "download", label: "Thanks for downloading", title: "Enjoying it?",
+        text: "I also make logos and websites, designed for you from scratch.", btn: "See packages <span class=\"arrow arrow-right\">→</span>", href: "packages.html" });
+    }, 2600);
+  };
 
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
