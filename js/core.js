@@ -1332,6 +1332,45 @@
     var ph = $(".ph", b); if (ph && ph.__hint) { e.preventDefault(); e.stopImmediatePropagation(); DS.closeAll(); openSearch(ph.__hint); }
   }, true);
 
+  /* ---------- Magnifying loupe (design pages, mouse only) ----------
+     Hovering the big preview shows a round magnifier at 2.5x so the
+     details can be checked before downloading.                      */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var loupe = null, ZOOM = 2.5;
+    document.addEventListener("mousemove", function (e) {
+      var img = e.target.closest && e.target.closest(".lighttable img");
+      var lt = img && img.closest(".lighttable");
+      if (!img || lt.classList.contains("is-zoom")) { if (loupe) { loupe.remove(); loupe = null; } return; }
+      if (!loupe || loupe.parentNode !== lt) {
+        if (loupe) loupe.remove();
+        loupe = document.createElement("div"); loupe.className = "loupe"; loupe.setAttribute("aria-hidden", "true");
+        loupe.innerHTML = "<b>" + ZOOM + "×</b>"; lt.appendChild(loupe);
+      }
+      var r = img.getBoundingClientRect(), L = lt.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, R = loupe.offsetWidth / 2;
+      loupe.style.left = (e.clientX - L.left + lt.scrollLeft - R) + "px"; loupe.style.top = (e.clientY - L.top + lt.scrollTop - R) + "px";
+      loupe.style.backgroundImage = 'url("' + (img.currentSrc || img.src) + '")';
+      loupe.style.backgroundSize = (r.width * ZOOM) + "px " + (r.height * ZOOM) + "px";
+      loupe.style.backgroundPosition = (R - x * ZOOM) + "px " + (R - y * ZOOM) + "px";
+    }, { passive: true });
+    document.addEventListener("mouseout", function (e) { if (loupe && e.target.closest && e.target.closest(".lighttable img") && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(".loupe"))) { loupe.remove(); loupe = null; } });
+    document.addEventListener("click", function () { if (loupe) { loupe.remove(); loupe = null; } }, true);
+  }
+
+  /* ---------- Stretchy dock (mouse only) ----------
+     Icons in the bottom menu grow as the pointer passes, like the Mac dock. */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduce) {
+    $all(".dock").forEach(function (dock) {
+      var dockItems = $all(".dock-item", dock);
+      dock.addEventListener("mousemove", function (e) {
+        dockItems.forEach(function (it) {
+          var r = it.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2));
+          it.style.setProperty("--dk", (1 + .8 * Math.max(0, 1 - d / 180)).toFixed(3));
+        });
+      });
+      dock.addEventListener("mouseleave", function () { dockItems.forEach(function (it) { it.style.setProperty("--dk", 1); }); });
+    });
+  }
+
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
     syncSaved(); DS.reveal();

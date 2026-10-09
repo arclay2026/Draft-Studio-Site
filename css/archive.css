@@ -2619,3 +2619,15 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 
 /* ===== TYPING SEARCH HINTS: a blinking cursor after the typed hint ===== */
 .ph.is-typing::after { content: ""; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -.15em; background: var(--signal-ink); animation: lg-blink .9s steps(1, end) infinite; }
+
+/* ===== MAGNIFYING LOUPE (design pages) ===== */
+@media (hover: hover) and (pointer: fine) { .lighttable:not(.is-zoom) img { cursor: none; } }
+.loupe { position: absolute; z-index: 5; width: 190px; height: 190px; border-radius: 50%; pointer-events: none; background-color: var(--plate); background-repeat: no-repeat;
+  box-shadow: 0 0 0 3px #f4f3ef, 0 0 0 5px #111111, 0 24px 50px -12px rgba(0, 0, 0, .55); }
+.loupe b { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); padding: 3px 7px; border-radius: 999px; background: #111111; color: var(--signal); font: 600 10px/1 var(--f-mono); letter-spacing: .08em; }
+.loupe::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; border: 1.5px solid rgba(17, 17, 17, .45); }
+
+/* ===== STRETCHY DOCK ===== */
+.dock { overflow: visible; }
+.dock-item > svg { transform-origin: 50% 85%; transform: translateY(calc((1 - var(--dk, 1)) * 14px)) scale(var(--dk, 1)); transition: transform .14s cubic-bezier(.3, .7, .4, 1); }
+.dock-item > span:not(.n):not(.kbd):not(.saved-n) { display: inline-block; transform: translateY(calc((1 - var(--dk, 1)) * 6px)); transition: transform .14s cubic-bezier(.3, .7, .4, 1); }
