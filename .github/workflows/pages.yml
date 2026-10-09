@@ -25,6 +25,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history, for the code stats on the Websites page
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -35,6 +37,8 @@ jobs:
           rm -rf _site/.github _site/tools
       - name: Build link-preview pages
         run: node tools/build-share-pages.js _site
+      - name: Count the work behind the site
+        run: node tools/code-stats.js _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
