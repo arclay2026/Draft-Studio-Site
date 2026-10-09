@@ -2738,3 +2738,9 @@ html.ds-boot .side-badge, html.is-xray .side-badge { display: none; }
 .founding p { margin-top: var(--s3); max-width: 56ch; line-height: 1.55; color: rgba(244, 243, 239, .8); }
 .founding .btn { min-height: 56px; justify-self: start; }
 @media (prefers-reduced-motion: reduce) { .web-open i { animation: none; } }
+/* Websites page: four packages side by side on wide screens, and the notes below */
+@media (min-width: 1280px) { .web-pk { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.pk-notes { display: grid; gap: var(--s3); margin-top: var(--s5); max-width: 80ch; }
+.pk-notes p:not(.label) { line-height: 1.55; color: var(--mute); }
+.pk-notes b { color: var(--fg); }
+.founding p b { color: var(--signal); font-weight: 700; }

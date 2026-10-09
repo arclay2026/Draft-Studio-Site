@@ -134,23 +134,29 @@ window.DRAFT_STUDIO = {
     // empty ("") to show "Price on request". featured: true highlights a card.
     webPackages: [
       {
-        name: "One-page website",
-        price: "",
-        text: "A single, striking page that tells people who you are and how to reach you.",
-        includes: ["Custom design, no templates", "Works on phones, tablets and computers", "WhatsApp and contact buttons", "Help connecting your own web address"]
+        name: "Starter page",
+        price: "R2,500",
+        text: "One striking page that tells people who you are and how to reach you. Perfect to get online fast.",
+        includes: ["Custom design, no templates", "Works on phones, tablets and computers", "WhatsApp, call and map buttons", "Your social media links", "1 round of changes"]
       },
       {
         name: "Business website",
-        price: "",
+        price: "R5,500",
+        featured: true,
         text: "A full site for your business: home, about, services, gallery and contact.",
-        includes: ["Up to 5 pages", "Design matched to your brand", "Fast, even on mobile data", "Set up to be found on Google", "2 rounds of changes"]
+        includes: ["Up to 5 pages", "Design matched to your brand", "Contact form and WhatsApp button", "Fast, even on mobile data", "Set up to be found on Google", "2 rounds of changes"]
       },
       {
         name: "Online catalogue",
-        price: "",
-        featured: true,
+        price: "R8,500",
         text: "Show your products with photos and prices, and take orders straight to WhatsApp.",
-        includes: ["Everything in Business website", "Product pages with photos and prices", "Order buttons that open WhatsApp", "Easy for you to add new products"]
+        includes: ["Everything in Business website", "Up to 30 products with photos and prices", "Categories and search", "Order buttons that open WhatsApp", "Easy for you to add new products"]
+      },
+      {
+        name: "Signature brand + website",
+        price: "R12,500",
+        text: "A whole new brand and the website to match, with custom animations like the ones on this site.",
+        includes: ["Logo design and brand colours", "Font pairing and a mini brand guide", "Business website (up to 5 pages)", "A custom loading or logo animation", "Social media profile kit", "3 rounds of changes"]
       }
     ],
 
