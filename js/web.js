@@ -1,5 +1,5 @@
-/* Draft Studio — Websites page (web.html): live demos, the draft-to-live
-   process animation and the website packages (site.webPackages).      */
+/* Draft Studio — Websites page (web.html): the draft-to-live process
+   animation and the website packages (site.webPackages).              */
 (function () {
   "use strict";
   var DS = window.DS, $ = DS.$, $all = DS.$all, esc = DS.esc;
@@ -19,29 +19,6 @@
       '<a class="btn' + (x.featured ? " btn-signal" : "") + ' svc-btn" href="' + esc(href) + '" target="_blank" rel="noopener">' + DS.icon.wa + "Ask on WhatsApp</a>" +
       "</article>";
   }).join("");
-
-  /* ---------- Live demos ---------- */
-  var dh = $("#demo-dh");
-  function soundLabel(b) { b.textContent = DS.sound && DS.sound.on() ? "Turn sound off" : "Turn sound on"; }
-  $all("[data-demo]").forEach(function (b) {
-    var kind = b.getAttribute("data-demo");
-    if (kind === "sound") soundLabel(b);
-    b.addEventListener("click", function () {
-      if (kind === "intro" && window.DSPlayIntro) window.DSPlayIntro();
-      else if (kind === "heading" && dh) {
-        dh.style.setProperty("--dh-ink", getComputedStyle(dh).color);
-        dh.classList.remove("dh-drawn"); dh.classList.add("dh", "dh-pending"); void dh.offsetWidth;
-        setTimeout(function () { dh.classList.remove("dh-pending"); dh.classList.add("dh-drawn"); }, 120);
-      }
-      else if (kind === "theme") { var t = $("[data-theme-toggle]"); if (t) t.click(); }
-      else if (kind === "confetti") { var r = b.getBoundingClientRect(); DS.confetti(r.left + r.width / 2, r.top, 90); }
-      else if (kind === "sound") { var s = $("[data-sound]"); if (s) s.click(); soundLabel(b); }
-    });
-  });
-  $all("[data-xray]").forEach(function (b) {
-    new MutationObserver(function () { if (b.closest(".demo-card")) b.textContent = b.getAttribute("aria-pressed") === "true" ? "Turn off X-ray" : "Turn on X-ray"; })
-      .observe(b, { attributes: true, attributeFilter: ["aria-pressed"] });
-  });
 
   /* ---------- Draft to live: the frame follows the step in view ---------- */
   var wf = $("#wf"), steps = $all(".proc-steps li"), launched = false;

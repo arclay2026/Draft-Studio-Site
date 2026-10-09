@@ -2632,16 +2632,6 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 .web-head .aside { display: grid; gap: var(--s5); align-content: end; }
 .web-head-btns { display: flex; flex-wrap: wrap; gap: var(--s3); }
 .web-head-btns .btn { min-height: 52px; }
-/* demo cards */
-.demo-grid { display: grid; gap: var(--tile-gap, 16px); grid-template-columns: minmax(0, 1fr); margin-top: var(--s6); }
-@media (min-width: 768px) { .demo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1280px) { .demo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.demo-card { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s5); border-radius: var(--r-card); background: var(--card-bg); box-shadow: var(--card-hi); min-height: 250px; }
-.demo-card h3 { font-weight: 800; letter-spacing: -.03em; font-size: clamp(26px, 18px + 1.2vw, 38px); line-height: 1; margin-top: var(--s2); }
-.demo-card p { color: var(--mute); line-height: 1.5; }
-.demo-card .btn { margin-top: auto; align-self: flex-start; min-width: 170px; }
-.demo-note { margin-top: var(--s5); }
-.demo-note kbd { font: 600 11px/1 var(--f-mono); padding: 4px 7px; border-radius: 6px; background: var(--card-bg); box-shadow: var(--card-hi); }
 /* process: the frame stays in view while the steps scroll */
 .proc { display: grid; gap: var(--s6); margin-top: var(--s6); }
 @media (min-width: 1024px) { .proc { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--s8); } }
