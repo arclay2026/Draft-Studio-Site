@@ -126,6 +126,10 @@ window.DRAFT_STUDIO = {
       }
     ],
 
+    // FOUNDING CLIENTS — the launch offer on the Websites page. Lower the
+    // number as spots are taken; 0 hides the offer.
+    foundingSpots: 3,
+
     // WEBSITE PACKAGES — shown on the Websites page (web.html). Leave price
     // empty ("") to show "Price on request". featured: true highlights a card.
     webPackages: [

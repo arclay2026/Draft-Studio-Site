@@ -11,7 +11,7 @@
     var msg = "Hi Draft Studio, I'm interested in a " + x.name.toLowerCase() + (x.price ? " (from " + x.price + ")" : "") + ". Here's a bit about my business: ";
     var href = wa ? "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg) : "mailto:" + (DS.site.email || "") + "?subject=" + encodeURIComponent(x.name);
     return '<article class="svc' + (x.featured ? " is-featured" : "") + '" data-reveal>' +
-      '<div class="svc-top"><span class="label">' + DS.pad(n + 1, 2) + "</span>" + (x.featured ? '<span class="label svc-tag">Most popular</span>' : "") + "</div>" +
+      '<div class="svc-top"><span class="label">' + DS.pad(n + 1, 2) + "</span>" + (x.featured ? '<span class="label svc-tag">Best value</span>' : "") + "</div>" +
       '<h3 class="svc-name">' + esc(x.name) + "</h3>" +
       (x.price ? '<p class="svc-price"><span class="label">From</span> ' + esc(x.price) + "</p>" : '<p class="svc-price svc-quote">Quote <span class="label">on request</span></p>') +
       (x.text ? '<p class="svc-text">' + esc(x.text) + "</p>" : "") +
@@ -19,6 +19,17 @@
       '<a class="btn' + (x.featured ? " btn-signal" : "") + ' svc-btn" href="' + esc(href) + '" target="_blank" rel="noopener">' + DS.icon.wa + "Ask on WhatsApp</a>" +
       "</article>";
   }).join("");
+
+  /* ---------- Founding clients (site.foundingSpots; 0 hides the offer) ---------- */
+  var spots = +DS.site.foundingSpots || 0, fd = $("#founding");
+  if (fd && spots > 0) {
+    var words = ["", "one", "two", "three", "four", "five", "six"];
+    $("#founding-n").textContent = spots;
+    $("h3 em", fd).textContent = (words[spots] || spots) + ".";
+    var fmsg = "Hi Ishaaq, I'd like one of your founding client spots for a website. Here's a bit about my business: ";
+    $("#founding-btn").href = wa ? "https://wa.me/" + wa + "?text=" + encodeURIComponent(fmsg) : "mailto:" + (DS.site.email || "") + "?subject=" + encodeURIComponent("Founding client spot");
+    fd.hidden = false;
+  }
 
   /* ---------- Draft to live: the frame follows the step in view ---------- */
   var wf = $("#wf"), steps = $all(".proc-steps li"), launched = false;

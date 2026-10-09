@@ -2726,3 +2726,15 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 :root[data-theme="dark"] .side-badge .sb-dark { display: block; }
 .side-badge:hover, .side-badge:focus-visible { transform: translateX(-4px); box-shadow: -10px 0 24px -14px rgba(0, 0, 0, .45); }
 html.ds-boot .side-badge, html.is-xray .side-badge { display: none; }
+/* Websites page: "now taking clients" and the founding-client offer */
+.web-open { display: inline-flex; align-items: center; gap: 10px; justify-self: start; padding: 7px 12px; border-radius: 999px; background: var(--card-bg); box-shadow: var(--card-hi); font: 600 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; }
+.web-open i { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 0 0 rgba(134, 222, 78, .6); animation: open-ping 1.8s ease-out infinite; }
+@keyframes open-ping { 70% { box-shadow: 0 0 0 7px rgba(134, 222, 78, 0); } 100% { box-shadow: 0 0 0 0 rgba(134, 222, 78, 0); } }
+.founding { display: grid; gap: var(--s5); align-items: center; margin: var(--s6) 0 var(--tile-gap, 16px); padding: var(--s6); border-radius: var(--r-card); background: #111111; color: #f4f3ef; }
+@media (min-width: 1024px) { .founding { grid-template-columns: minmax(0, 1fr) auto; padding: var(--s6) var(--s7); } }
+.founding .label { color: rgba(244, 243, 239, .65); } .founding .label b { color: var(--signal); }
+.founding h3 { margin-top: var(--s3); font-weight: 800; letter-spacing: -.035em; font-size: clamp(30px, 20px + 2vw, 54px); line-height: 1; }
+.founding h3 em.s { color: var(--signal); }
+.founding p { margin-top: var(--s3); max-width: 56ch; line-height: 1.55; color: rgba(244, 243, 239, .8); }
+.founding .btn { min-height: 56px; justify-self: start; }
+@media (prefers-reduced-motion: reduce) { .web-open i { animation: none; } }

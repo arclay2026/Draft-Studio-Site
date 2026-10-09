@@ -13,7 +13,7 @@ It runs on GitHub Pages or any web host.
 | `logos.html` | Logos browser, same as templates |
 | `item.html?id=…` | Full record for one design: large artwork with zoom, spec sheet, downloads, save, share link, previous/next and related designs |
 | `icons.html` | Icon specimen sheet with an inspector: recolour, download SVG/PNG, copy code |
-| `web.html` | Websites page: the draft-to-live process animation and website packages (edit them in `webPackages` in `js/catalog.js`; leave `price` empty for "Quote on request") |
+| `web.html` | Websites page: the draft-to-live process animation and website packages (edit them in `webPackages` in `js/catalog.js`; leave `price` empty for "Quote on request"; `foundingSpots` sets the founding-client offer, 0 hides it) |
 
 Across the site: a floating dock for navigation, a full-screen **Index** menu,
 search from anywhere (press `/`), **Quick look** on any design, and
