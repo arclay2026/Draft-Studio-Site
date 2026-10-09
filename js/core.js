@@ -1356,6 +1356,16 @@
     document.addEventListener("click", function () { if (loupe) { loupe.remove(); loupe = null; } }, true);
   }
 
+  /* ---------- "Site by Draft Studio" tab on the right edge (tablets and up) ---------- */
+  (function () {
+    var onWeb = document.body.getAttribute("data-page") === "web";
+    var a = document.createElement("a");
+    a.className = "side-badge"; a.href = onWeb ? "#badge" : "web.html"; a.title = "Site by Draft Studio — websites I design and build";
+    a.innerHTML = '<img class="sb-light" src="assets/badge/site-by-draft-studio-vertical-light.svg" alt="Site by Draft Studio" width="36" height="188">' +
+      '<img class="sb-dark" src="assets/badge/site-by-draft-studio-vertical-dark.svg" alt="" width="36" height="188">';
+    document.body.appendChild(a);
+  })();
+
   // Page scripts run after this file; finish shared setup once they have rendered.
   document.addEventListener("DOMContentLoaded", function () {
     syncSaved(); DS.reveal();

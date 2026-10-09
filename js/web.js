@@ -39,4 +39,13 @@
     }
     steps.forEach(function (s) { s.addEventListener("click", function () { setStage(+s.getAttribute("data-step")); }); });
   }
+  /* ---------- "Site by Draft Studio" badge: copy the embed code ---------- */
+  var base = String(DS.site.url || (location.origin + location.pathname.replace(/[^/]*$/, ""))).replace(/\/?$/, "/");
+  $all("[data-badge]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var v = b.getAttribute("data-badge");
+      DS.copy('<a href="' + base + 'web.html" target="_blank" rel="noopener" title="Site by Draft Studio"><img src="' + base +
+        "assets/badge/site-by-draft-studio-" + v + '.svg" alt="Site by Draft Studio" width="184" height="36"></a>', "Badge code copied");
+    });
+  });
 })();
