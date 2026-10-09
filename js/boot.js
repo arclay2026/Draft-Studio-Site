@@ -13,7 +13,11 @@
       setTimeout(function () { html.classList.remove("ds-wipe-in", "ds-wipe-out"); }, 420);
     }); });
   }
-  if (!/\bds-boot\b/.test(html.className)) return;
+  // the Websites page can replay the intro on demand
+  window.DSPlayIntro = function () { if (document.getElementById("boot")) return; html.classList.add("ds-boot"); play(true); };
+  if (/\bds-boot\b/.test(html.className)) play(false);
+
+  function play(replay) {
   var src = document.querySelector(".masthead .logo-live");
   if (!src) { html.classList.remove("ds-boot", "ds-booting"); return; }
 
@@ -48,7 +52,7 @@
     '<div class="boot-bar"><i></i></div>';
   boot.querySelector(".boot-mark").appendChild(logo);
   var header = src.closest("header");
-  header.parentNode.insertBefore(boot, header.nextSibling);
+  if (replay) document.body.appendChild(boot); else header.parentNode.insertBefore(boot, header.nextSibling);
   html.classList.add("ds-booting");
 
   // the counter runs with the drawing, 000 → 100
@@ -60,7 +64,7 @@
   })(t0);
   requestAnimationFrame(function () { boot.classList.add("is-on"); });
 
-  var drawn = false, loaded = document.readyState === "complete", gone = false;
+  var drawn = false, loaded = replay || document.readyState === "complete", gone = false;
   setTimeout(function () { drawn = true; maybeGo(); }, DRAW);
   window.addEventListener("load", function () { loaded = true; maybeGo(); });
   setTimeout(function () { loaded = true; drawn = true; maybeGo(); }, LIMIT);
@@ -69,7 +73,7 @@
   function leave() {
     // fly the logo to where the header logo sits
     var from = logo.getBoundingClientRect(), to = src.getBoundingClientRect();
-    if (!reduce && to.width) {
+    if (!reduce && to.width && to.bottom > 0) {
       var s = to.width / from.width, dx = to.left - from.left, dy = to.top - from.top;
       logo.style.transformOrigin = "0 0";
       logo.style.transform = "translate(" + dx + "px," + dy + "px) scale(" + s + ")";
@@ -80,5 +84,6 @@
       boot.classList.add("is-gone");
       setTimeout(function () { boot.remove(); }, 400);
     }, reduce ? 300 : 820);
+  }
   }
 })();

@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>(function(){var d=document.documentElement;d.className+=" js";try{if(!sessionStorage.getItem("ds_intro")){d.className+=" ds-boot";sessionStorage.setItem("ds_intro","1");}else if(sessionStorage.getItem("ds_wipe")){d.className+=" ds-wipe-in";}sessionStorage.removeItem("ds_wipe");}catch(e){}try{var t=localStorage.getItem("ds_theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches))d.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<title>Design eye test — how good is your eye? · Draft Studio</title>
-<meta name="description" content="How good is your design eye? 8 quick challenges: kern a word, find the true centre, match a colour and name the font. Get a score and challenge your friends.">
-<meta property="og:title" content="How good is your design eye? · Draft Studio">
-<meta property="og:description" content="How good is your design eye? 8 quick challenges: kern a word, find the true centre, match a colour and name the font. Get a score and challenge your friends.">
+<title>Websites — design and build by Draft Studio</title>
+<meta name="description" content="Websites designed and built by Ishaaq Matovu at Draft Studio. This site is the live demo: try the X-ray mode, the drafting intro and more, then pick a package.">
+<meta property="og:title" content="Websites — design and build by Draft Studio">
+<meta property="og:description" content="Websites designed and built by Ishaaq Matovu at Draft Studio. This site is the live demo: try the X-ray mode, the drafting intro and more, then pick a package.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Draft Studio">
-<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/eye.html">
+<meta property="og:url" content="https://arclay2026.github.io/Draft-Studio-Site/web.html">
 <meta property="og:image" content="https://arclay2026.github.io/Draft-Studio-Site/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Pacifico&family=Azeret+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/archive.css?v=895b049b86">
 </head>
-<body data-page="eye">
+<body data-page="web">
 <a class="skip" href="#main">Skip to content</a>
 <header class="masthead">
   <a href="index.html" class="brand" aria-label="Draft Studio — front page">
@@ -39,13 +39,83 @@
 <script src="js/boot.js?v=eefae657e7"></script>
 
 <main id="main">
-  <section class="page-head eye-head" aria-labelledby="eye-title">
-    <div class="title-wrap"><p class="label">§ 08 — Game</p><h1 id="eye-title">Eye <em class="s">test</em></h1></div>
-    <div class="aside"><p class="lede">Kern a word, find the true centre, match a colour, name the font. Eight quick rounds to test your design eye, then challenge your friends.</p></div>
+  <!-- ============ HERO ============ -->
+  <section class="page-head web-head" aria-labelledby="web-title">
+    <div class="title-wrap">
+      <p class="label">§ Websites — Design · Build · Launch</p>
+      <h1 class="display" id="web-title">Websites that <em class="s blue">feel alive.</em></h1>
+    </div>
+    <div class="aside">
+      <p class="lede">I design and build websites for brands and small businesses. Don’t take my word for it: you’re standing in one. Everything below is a live demo you can try.</p>
+      <div class="web-head-btns"><a class="btn btn-signal" href="#packages">See packages</a><a class="btn" href="#demo">Try the demo ↓</a></div>
+    </div>
   </section>
-  <section class="section eye-wrap" aria-live="polite"><div id="eye"></div></section>
-</main>
 
+  <!-- ============ 01 THIS SITE IS THE DEMO ============ -->
+  <section class="section" id="demo" aria-labelledby="h-demo">
+    <div class="folio"><span class="label label-ink">§ 01</span><span class="label">This site is the demo</span><span class="rule"></span><span class="label folio-note">Tap to try</span></div>
+    <div class="sect-head"><h2 class="display" id="h-demo">Don’t read it. <em class="s blue">Try it.</em></h2><div class="sect-aside"><p class="lede">Every one of these was designed and coded for Draft Studio. Your website can have its own moments like these.</p></div></div>
+    <div class="demo-grid">
+      <article class="demo-card"><span class="label">01 · Opening animation</span><h3>The logo, drafted live</h3><p>Guide lines, an outline that fills in, then the logo flies into the header.</p><button class="btn btn-signal" type="button" data-demo="intro">Replay it</button></article>
+      <article class="demo-card"><span class="label">02 · X-ray mode</span><h3>See the skeleton</h3><p>The grid, the spacing in pixels and every font, drawn over the page.</p><button class="btn btn-signal" type="button" data-xray aria-pressed="false">Turn on X-ray</button></article>
+      <article class="demo-card"><span class="label">03 · Drafting headings</span><h3 class="demo-dh" id="demo-dh">Start as a <em class="s">draft.</em></h3><p>Headings trace themselves in outline as you scroll, then fill in.</p><button class="btn btn-signal" type="button" data-demo="heading">Draw it again</button></article>
+      <article class="demo-card"><span class="label">04 · Theme switch</span><h3>Day to night</h3><p>Dark mode spreads out from the button in a circle.</p><button class="btn btn-signal" type="button" data-demo="theme">Flip the theme</button></article>
+      <article class="demo-card"><span class="label">05 · Branded confetti</span><h3>Little celebrations</h3><p>Green squares and ink dots, the logo’s own shapes, for big moments.</p><button class="btn btn-signal" type="button" data-demo="confetti">Celebrate</button></article>
+      <article class="demo-card"><span class="label">06 · Paper sounds</span><h3>Sound you can feel</h3><p>A pencil scratch when you save, paper sliding on downloads. Made in code.</p><button class="btn btn-signal" type="button" data-demo="sound">Turn sound on</button></article>
+    </div>
+    <p class="label demo-note">On a computer: hold <kbd>X</kbd> for X-ray, press <kbd>?</kbd> for every shortcut.</p>
+  </section>
+
+  <!-- ============ 02 PROCESS ============ -->
+  <section class="section" id="process" aria-labelledby="h-process">
+    <div class="folio"><span class="label label-ink">§ 02</span><span class="label">How a website gets made</span><span class="rule"></span><span class="label folio-note">5 steps</span></div>
+    <div class="sect-head"><h2 class="display" id="h-process">From draft <em class="s blue">to live.</em></h2><div class="sect-aside"><p class="lede">Every site starts as a rough draft. Scroll to watch one become a finished website.</p></div></div>
+    <div class="proc">
+      <div class="proc-stage"><div class="wf" id="wf" data-stage="1" aria-hidden="true">
+        <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url"><b class="wf-lock"></b><span>yourbrand.co.za</span></span><b class="wf-live">Live</b></div>
+        <div class="wf-body">
+          <div class="wf-page">
+            <div class="wf-nav"><span class="wf-logo">Your Brand</span><span class="wf-links"><i></i><i></i><i></i></span></div>
+            <div class="wf-hero"><div class="wf-copy"><span class="wf-h">Fresh ideas, <em>daily.</em></span><span class="wf-p"></span><span class="wf-p wf-short"></span><span class="wf-btn">Order now</span></div><div class="wf-img"></div></div>
+            <div class="wf-cards"><i></i><i></i><i></i></div>
+          </div>
+          <div class="wf-brief"><b>Brief</b><span>Who is the site for?</span><span>What should visitors do?</span><span>Colours, fonts and feel</span><span>Pages and photos needed</span></div>
+          <pre class="wf-code"><span>&lt;header class="nav"&gt;</span><span>  &lt;a class="logo"&gt;Your Brand&lt;/a&gt;</span><span>&lt;/header&gt;</span><span>&lt;section class="hero"&gt;</span><span>  &lt;h1&gt;Fresh ideas, daily.&lt;/h1&gt;</span><span>  &lt;a class="btn"&gt;Order now&lt;/a&gt;</span><span>&lt;/section&gt;</span></pre>
+        </div>
+        <span class="wf-tag"></span>
+      </div></div>
+      <ol class="proc-steps">
+        <li data-step="1"><span class="proc-n">01</span><h3>Brief</h3><p>We talk on WhatsApp: who the site is for, what visitors should do, and the feel you want. I write it up as a one-page brief.</p></li>
+        <li data-step="2"><span class="proc-n">02</span><h3>Wireframe</h3><p>A rough draft of every page in grey boxes. We agree on the layout before any colour goes in, so changes are quick.</p></li>
+        <li data-step="3"><span class="proc-n">03</span><h3>Design</h3><p>Your colours, fonts and photos go in. You see exactly how the site will look on a computer and on a phone.</p></li>
+        <li data-step="4"><span class="proc-n">04</span><h3>Build</h3><p>I code the site by hand so it’s fast, even on mobile data, and fits every screen from phones to big monitors.</p></li>
+        <li data-step="5"><span class="proc-n">05</span><h3>Launch</h3><p>Your site goes live on your own address. I show you how to keep it up to date, and I’m a WhatsApp message away.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 03 PACKAGES ============ -->
+  <section class="section services" id="packages" aria-labelledby="h-packages">
+    <div class="folio"><span class="label label-ink">§ 03</span><span class="label">Website packages</span><span class="rule"></span><span class="label folio-note">Quote on WhatsApp</span></div>
+    <div class="sect-head"><h2 class="display" id="h-packages">Pick your <em class="s blue">starting point.</em></h2><div class="sect-aside"><p class="lede">Every website is designed for you from scratch. Pick the package closest to what you need and message me. The message is already written.</p></div></div>
+    <div class="svc-grid web-pk" id="pk-grid"></div>
+    <p class="label svc-note">Prices depend on your project · tell me about it on WhatsApp for a quote</p>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="about-cta" aria-labelledby="h-cta">
+    <div class="folio"><span class="label">§ 04</span><span class="label">Start a project</span><span class="rule"></span><span class="label folio-note">Message me on WhatsApp</span></div>
+    <div class="about-cta-body">
+      <h2 class="display" id="h-cta">Need a website? <em class="s">Let’s draft it.</em></h2>
+      <div class="about-cta-actions">
+        <a class="btn btn-signal" href="https://wa.me/27736684875?text=Hi%20Ishaaq%2C%20I%27d%20like%20a%20website%20for%20my%20business.%20Here%27s%20a%20bit%20about%20it%3A%20" target="_blank" rel="noopener">Start on WhatsApp <span class="arrow arrow-right">→</span></a>
+        <a class="btn about-cta-alt" href="#packages">Compare packages</a>
+        <a class="btn about-cta-alt" href="mailto:thedraftstudio.design@gmail.com?subject=Website%20project">Or send an email</a>
+        <p class="label about-cta-note">WhatsApp +27 73 668 4875 · South Africa</p>
+      </div>
+    </div>
+  </section>
+</main>
 
 <footer class="colophon">
   <div class="folio"><span class="label label-ink">§ Colophon</span><span class="label">Draft Studio</span><span class="rule"></span><span class="label folio-note">Vol. 01 — <span data-year></span></span></div>
@@ -71,6 +141,6 @@
 
 <script>/* always load the newest catalog, never a cached copy */document.write('<script src="js/catalog.js?v=' + Date.now() + '"><\/script>');</script>
 <script src="js/core.js?v=ece9219d5f"></script>
-<script src="js/eye.js?v=11f48b22b9"></script>
+<script src="js/web.js?v=f733d63518"></script>
 </body>
 </html>

@@ -126,6 +126,30 @@ window.DRAFT_STUDIO = {
       }
     ],
 
+    // WEBSITE PACKAGES — shown on the Websites page (web.html). Leave price
+    // empty ("") to show "Price on request". featured: true highlights a card.
+    webPackages: [
+      {
+        name: "One-page website",
+        price: "",
+        text: "A single, striking page that tells people who you are and how to reach you.",
+        includes: ["Custom design, no templates", "Works on phones, tablets and computers", "WhatsApp and contact buttons", "Help connecting your own web address"]
+      },
+      {
+        name: "Business website",
+        price: "",
+        text: "A full site for your business: home, about, services, gallery and contact.",
+        includes: ["Up to 5 pages", "Design matched to your brand", "Fast, even on mobile data", "Set up to be found on Google", "2 rounds of changes"]
+      },
+      {
+        name: "Online catalogue",
+        price: "",
+        featured: true,
+        text: "Show your products with photos and prices, and take orders straight to WhatsApp.",
+        includes: ["Everything in Business website", "Product pages with photos and prices", "Order buttons that open WhatsApp", "Easy for you to add new products"]
+      }
+    ],
+
     // STUDENTS — shown in "Students" on the home page; each student also
     // gets a portfolio page (student.html?id=blessed).
     //   name       first name (or full name)
