@@ -2706,26 +2706,6 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 .svc-quote { font-size: clamp(28px, 18px + 1.6vw, 40px) !important; }
 @media (prefers-reduced-motion: reduce) { .wf * { transition: none; } }
 @media (max-width: 1023px) { .proc-stage { background: var(--bg); margin-inline: calc(-1 * var(--pad-x)); padding: 6px var(--pad-x) 12px; } }
-/* "Site by Draft Studio" badge cards */
-.badge-grid { display: grid; gap: var(--tile-gap, 16px); margin-top: var(--s6); }
-@media (min-width: 768px) { .badge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.badge-card { border-radius: var(--r-card); overflow: hidden; box-shadow: var(--card-hi); background: var(--card-bg); }
-.badge-show { display: grid; place-items: center; min-height: 190px; padding: var(--s6); }
-.badge-card.is-light .badge-show { background: #ffffff; }
-.badge-card.is-dark .badge-show { background: #1b1b1b; }
-.badge-show img { width: min(260px, 70%); height: auto; }
-.badge-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); padding: var(--s3) var(--s4); }
-
-/* ===== "SITE BY DRAFT STUDIO" TAB: vertical, square, on the right edge ===== */
-.side-badge { position: fixed; right: 0; bottom: calc(var(--nav-clear) + 12px); z-index: 85; display: none; line-height: 0; transform: translateX(1px); transition: transform .3s var(--ease), box-shadow .3s; }
-@media (min-width: 1024px) { .side-badge { bottom: 28px; } }
-@media (min-width: 768px) { .side-badge { display: block; } }
-.side-badge img { display: block; width: 36px; height: 188px; }
-.side-badge .sb-dark { display: none; }
-:root[data-theme="dark"] .side-badge .sb-light { display: none; }
-:root[data-theme="dark"] .side-badge .sb-dark { display: block; }
-.side-badge:hover, .side-badge:focus-visible { transform: translateX(-4px); box-shadow: -10px 0 24px -14px rgba(0, 0, 0, .45); }
-html.ds-boot .side-badge, html.is-xray .side-badge { display: none; }
 /* Websites page: "now taking clients" and the founding-client offer */
 .web-open { display: inline-flex; align-items: center; gap: 10px; justify-self: start; padding: 7px 12px; border-radius: 999px; background: var(--card-bg); box-shadow: var(--card-hi); font: 600 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; }
 .web-open i { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 0 0 rgba(134, 222, 78, .6); animation: open-ping 1.8s ease-out infinite; }
