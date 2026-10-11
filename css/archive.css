@@ -716,6 +716,12 @@ select { cursor: pointer; }
 .wall-glyph svg { width: 34%; height: 34%; }
 .wall-caption { display: none; }
 .seal { display: none; }
+/* Phones: designs first, then one headline and the search; the reading moves off the first screen */
+@media (max-width: 767px) {
+  .intro-wall { order: -1; height: clamp(200px, min(46svh, 100svh - var(--masthead-h) - var(--nav-clear) - 380px), 420px); }
+  .intro-text { gap: var(--s4); padding-top: var(--s5); padding-bottom: var(--s5); }
+  .intro .lede, .intro .stats, .intro .st-cta, .intro .last-filed { display: none; }
+}
 
 @media (min-width: 768px) {
   .wall { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 12px; }
