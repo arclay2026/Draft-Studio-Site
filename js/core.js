@@ -1401,7 +1401,7 @@
       var fd = $("#founding"), r = fd && !fd.hidden && fd.getBoundingClientRect();
       if (r && r.top < innerHeight && r.bottom > 0) return; // the offer is already on screen
       removeEventListener("scroll", check);
-      DS.pop({ id: "founding", label: "Founding clients · <b>" + spots + (spots === 1 ? " spot" : " spots") + " left</b>",
+      DS.pop({ id: "founding", label: "Founding clients · <b>" + spots + " left</b>",
         title: "30% off your first website.", text: "Be one of my first website clients. In return, I ask for an honest testimonial.",
         btn: DS.icon.wa + "Claim a spot", href: wa ? "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg) : "mailto:" + (DS.site.email || "") + "?subject=Founding%20client%20spot", ext: true });
     }
