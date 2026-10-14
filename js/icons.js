@@ -12,7 +12,7 @@
   var initialHash = decodeURIComponent(location.hash.slice(1));
   var current = null, raw = null;
 
-  var ink = function () { return document.documentElement.getAttribute("data-theme") === "dark" ? "#f4f3ef" : "#111111"; };
+  var ink = function () { return document.documentElement.getAttribute("data-theme") === "dark" ? "#fbfff5" : "#111111"; };
   colorIn.value = ink(); mColor.value = ink(); mHex.textContent = mColor.value;
   find.value = state.q;
   DS.uniq(all.map(function (i) { return i.category; })).sort().forEach(function (c) {

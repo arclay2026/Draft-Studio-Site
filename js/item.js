@@ -32,8 +32,8 @@
   var lcSvg = lcFile ? lcFile.path : "";
   var lcArt = it.type === "logo" && !lcSvg ? it.art : "";   // logos for sale: a transparent PNG preview instead
   var LC_PRESETS = [
-    ["Original on paper", "#f4f3ef", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""], ["Reversed on ink", "#111111", "rev"],
-    ["Ink on paper", "#f4f3ef", "#111111"], ["White on ink", "#111111", "#ffffff"], ["Ink on green", "#86de4e", "#111111"]
+    ["Original on paper", "#fbfff5", ""], ["Original on white", "#ffffff", ""], ["Original on ink", "#111111", ""], ["Reversed on ink", "#111111", "rev"],
+    ["Ink on paper", "#fbfff5", "#111111"], ["White on ink", "#111111", "#ffffff"], ["Ink on green", "#86de4e", "#111111"]
   ];
 
   var sizes = it.files.filter(function (f) { return f.size; }).map(function (f) { return String(f.format).toUpperCase() + " " + f.size; });
@@ -167,7 +167,7 @@
                 (p[2] && p[2] !== "rev" ? "" : '<i style="background:#ff4e3b"></i><i style="background:#86de4e"></i>') + "</span>" + p[0] + "</button>";
             }).join("") + "</div></div>" +
           '<div class="lc-pickers">' +
-            '<div class="field"><span>Background</span><label class="lc-pick"><span class="sr-only">Background</span><input type="color" id="lc-bg" value="#f4f3ef"><code id="lc-bg-hex"></code></label></div>' +
+            '<div class="field"><span>Background</span><label class="lc-pick"><span class="sr-only">Background</span><input type="color" id="lc-bg" value="#fbfff5"><code id="lc-bg-hex"></code></label></div>' +
             '<div class="field"><span id="lc-ik">Logo colour</span><div class="lc-ink" role="radiogroup" aria-labelledby="lc-ik">' +
               '<button type="button" role="radio" aria-checked="true" data-ink="orig">Original</button>' +
               '<button type="button" role="radio" aria-checked="false" data-ink="rev">Reversed</button>' +
@@ -199,7 +199,7 @@
   if (lcSvg || lcArt) colourTest();
   function colourTest() {
     var stage = $("#lc-stage"), art = $("#lc-art"), bgIn = $("#lc-bg"), inkIn = $("#lc-ink"), out = $("#lc-contrast");
-    var st = { bg: "#f4f3ef", ink: "", raw: "", svg: null, colours: [] };
+    var st = { bg: "#fbfff5", ink: "", raw: "", svg: null, colours: [] };
     var lum = function (hex) {
       var n = parseInt(hex.slice(1), 16), c = [n >> 16 & 255, n >> 8 & 255, n & 255].map(function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
       return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
@@ -286,7 +286,7 @@
       var r = Math.round(low * 10) / 10, verdict = r >= 4.5 ? "Strong contrast" : r >= 3 ? "Reads well" : r >= 2 ? "Borderline, use with care" : "Hard to see";
       out.textContent = inks.length ? (md === "one" ? "Contrast " : "Lowest contrast ") + r.toFixed(1) + ":1 · " + verdict : "";
       out.classList.toggle("is-low", !!inks.length && r < 3);
-      out.style.color = lum(st.bg) > .4 ? "#111111" : "#f4f3ef";
+      out.style.color = lum(st.bg) > .4 ? "#111111" : "#fbfff5";
       DS.$all(".lc-presets button").forEach(function (b) { var p = LC_PRESETS[+b.getAttribute("data-p")]; b.setAttribute("aria-pressed", p[1] === st.bg && (p[2] || "") === st.ink); });
       DS.$all(".lc-ink button").forEach(function (b) { b.setAttribute("aria-checked", b.getAttribute("data-ink") === md); });
       $("#lc-ink-pick").hidden = md !== "one";

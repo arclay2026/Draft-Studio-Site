@@ -450,7 +450,7 @@
   function appTheme(req) { var m = APP_MARKS[appKey(req)]; return m ? ' style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '"' : ""; }
   function appMark(req) {
     var key = appKey(req);
-    var m = key ? APP_MARKS[key] : [String(req).trim().slice(0, 2), "#111111", "#f4f3ef"];
+    var m = key ? APP_MARKS[key] : [String(req).trim().slice(0, 2), "#111111", "#fbfff5"];
     if (m[3]) return '<img class="app-mark app-logo app-' + key + '" src="assets/apps/' + m[3] + (m[3].indexOf(".") === -1 ? ".svg" : "") + '" alt="" width="22" height="22">';
     return '<span class="app-mark" style="--app-bg:' + m[1] + ";--app-fg:" + m[2] + '" aria-hidden="true">' + esc(m[0]) + "</span>";
   }
@@ -840,7 +840,7 @@
   /* ---------- Custom colour picker ----------
      Like the dropdowns: the native <input type="color"> stays hidden as the
      source of truth; picking a colour sets its value and fires "input". */
-  var SWATCHES = [["#111111", "Ink"], ["#f4f3ef", "Paper"], ["#86de4e", "Draft green"], ["#ffffff", "White"], ["#8e4ec6", "Purple"],
+  var SWATCHES = [["#111111", "Ink"], ["#fbfff5", "Paper"], ["#86de4e", "Draft green"], ["#ffffff", "White"], ["#8e4ec6", "Purple"],
     ["#e5484d", "Red"], ["#f76b15", "Orange"], ["#ffc53d", "Yellow"], ["#30a46c", "Green"], ["#12a594", "Teal"]];
   var RECENT_KEY = "ds_recent_colors";
   function getRecent() { try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (e) { return []; } }
@@ -1165,7 +1165,7 @@
     var cv = document.createElement("canvas"), dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
     cv.className = "confetti"; cv.width = W * dpr; cv.height = H * dpr; document.body.appendChild(cv);
     var g = cv.getContext("2d"); g.scale(dpr, dpr);
-    var COLORS = ["#86de4e", "#86de4e", "#86de4e", "#111111", "#2e7a14", "#f4f3ef"], parts = [];
+    var COLORS = ["#86de4e", "#86de4e", "#86de4e", "#111111", "#2e7a14", "#fbfff5"], parts = [];
     for (var i = 0; i < count; i++) {
       var a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.1, sp = 6 + Math.random() * 9;
       parts.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 3 + Math.random() * 5, rot: Math.random() * 6, vr: (Math.random() - .5) * .4,

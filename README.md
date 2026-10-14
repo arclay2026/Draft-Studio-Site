@@ -32,7 +32,7 @@ navigation and controls always sit on the grid.
 
 All tokens live at the top of `css/archive.css`:
 
-- **Colour:** ink `#111111`, paper `#f4f3ef`, green `#86de4e` as the only signal colour.
+- **Colour:** ink `#111111`, paper `#fbfff5`, green `#86de4e` as the only signal colour.
   Dark mode swaps ink and paper and uses a lighter blue for text so it stays readable.
 - **Type:** Bricolage Grotesque (brand), Pacifico (accent words), Azeret Mono (metadata).
   A fluid scale (`--fs-label` … `--fs-mega`) grows smoothly from phone to desktop; big headlines
@@ -75,7 +75,7 @@ page so visitors' browsers load the new files instead of an old saved copy.
 
 ## Branding
 
-- Colours: `#86de4e` (green), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/archive.css`.
+- Colours: `#86de4e` (green), `#fbfff5` (paper), `#111111` (ink), set at the top of `css/archive.css`.
 - Font: Bricolage Grotesque (Google Fonts).
 - Original logo uploads: `assets/brand/` (navbar wordmark and stacked brand mark,
   light and dark). The files below are cropped from them. The old striped-D logo

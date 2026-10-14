@@ -69,7 +69,7 @@ ${size ? `<meta property="og:image:width" content="${size[0]}">\n<meta property=
 <meta http-equiv="refresh" content="0; url=${esc(target)}">
 <script>location.replace(${JSON.stringify(target)});</script>
 </head>
-<body style="font-family:system-ui,sans-serif;background:#f4f3ef;color:#111;padding:40px">
+<body style="font-family:system-ui,sans-serif;background:#fbfff5;color:#111;padding:40px">
 <p>Opening <a href="${esc(target)}">${esc(it.title)}</a>…</p>
 </body>
 </html>
