@@ -51,7 +51,8 @@
   --shadow-art: 0 1px 0 rgba(0, 0, 0, .04), 0 22px 40px -24px rgba(0, 0, 0, .45);
 
   /* type families */
-  --f-sans: "Bricolage Grotesque", system-ui, sans-serif;
+  --f-head: "Bricolage Grotesque", system-ui, sans-serif;   /* headlines */
+  --f-sans: "Inter", system-ui, sans-serif;                 /* text, buttons, labels */
   --f-serif: var(--f-sans);   /* no script accent font: accents use the brand sans */
   --f-mono: "Azeret Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -2878,3 +2879,21 @@ html.is-xray .pop { display: none; }
   .pager .t { font-size: clamp(15px, 7px + .9vw, 20px); }
   .filters { font-size: 15px; }
 }
+
+/* =====================================================================
+   TYPE PAIRING — Bricolage Grotesque for headlines, Inter for everything
+   else, Azeret Mono only for catalogue numbers.
+   ===================================================================== */
+body { letter-spacing: -.008em; }
+h1, h2, h3, .display, .h2, .h3, .intro-title, .svc-name, .svc-price, .stats b, .cat-list .name, .studio blockquote,
+.spread .big-no, .fact b, .creator-stats b, .eye-promo-t b, .tl-meta h3, .founding h3, .index-list a, .pager .t, .pop-title {
+  font-family: var(--f-head); font-weight: 700; }
+.display, .intro-title, h1, h2 { letter-spacing: -.035em; }
+/* labels: plain Inter, sentence case */
+.label, .field > span:first-child, .field-k { font-family: var(--f-sans); text-transform: none; letter-spacing: 0; font-weight: 500; }
+.label-ink { font-weight: 600; }
+/* catalogue numbers keep the mono archive detail */
+.ticker .label-ink, .last-filed .when, .spec-cells a .n, .icon-cell .n, .spec-focus .no, .crumbs .label-ink, .wall-tile .tag { font-family: var(--f-mono); }
+/* the hero design wall keeps its original look */
+.intro-wall { --f-sans: var(--f-head); }
+.intro-wall .label { font-family: var(--f-mono); text-transform: uppercase; letter-spacing: .08em; }

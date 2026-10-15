@@ -34,7 +34,7 @@ All tokens live at the top of `css/archive.css`:
 
 - **Colour:** ink `#111111`, paper `#f4f3ef`, green `#86de4e` as the only signal colour.
   Dark mode swaps ink and paper and uses a lighter blue for text so it stays readable.
-- **Type:** Bricolage Grotesque (brand and accent words, set in green), Azeret Mono (metadata).
+- **Type:** Bricolage Grotesque (headlines), Inter (text, buttons and labels), Azeret Mono (catalogue numbers only).
   A fluid scale (`--fs-label` … `--fs-mega`) grows smoothly from phone to desktop; big headlines
   scale to their container, so they never run off the screen. Nothing is smaller than 12px.
 - **Spacing:** a 4px scale (`--s1` … `--s9`) plus `--section` for the gap between sections.
@@ -76,7 +76,7 @@ page so visitors' browsers load the new files instead of an old saved copy.
 ## Branding
 
 - Colours: `#86de4e` (green), `#f4f3ef` (paper), `#111111` (ink), set at the top of `css/archive.css`.
-- Font: Bricolage Grotesque (Google Fonts).
+- Fonts: Bricolage Grotesque for headlines and Inter for everything else (Google Fonts).
 - Original logo uploads: `assets/brand/` (navbar wordmark and stacked brand mark,
   light and dark). The files below are cropped from them. The old striped-D logo
   is kept there too (`draft-studio-logo-original.svg`) but no longer used.
