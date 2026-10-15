@@ -1165,7 +1165,7 @@
     var cv = document.createElement("canvas"), dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
     cv.className = "confetti"; cv.width = W * dpr; cv.height = H * dpr; document.body.appendChild(cv);
     var g = cv.getContext("2d"); g.scale(dpr, dpr);
-    var COLORS = ["#86de4e", "#86de4e", "#86de4e", "#111111", "#2e7a14", "#f4f3ef"], parts = [];
+    var COLORS = ["#86de4e", "#86de4e", "#86de4e", "#111111", "#111111", "#f4f3ef"], parts = [];
     for (var i = 0; i < count; i++) {
       var a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.1, sp = 6 + Math.random() * 9;
       parts.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: 3 + Math.random() * 5, rot: Math.random() * 6, vr: (Math.random() - .5) * .4,
