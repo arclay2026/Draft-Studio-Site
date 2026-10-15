@@ -26,7 +26,7 @@
     font: { name: "Name that font", how: "Which font is this? Pick one." }
   };
   var FONTS = [
-    { f: "Playfair Display", w: 700 }, { f: "Bebas Neue", w: 400 }, { f: "Pacifico", w: 400 }, { f: "Montserrat", w: 700 },
+    { f: "Playfair Display", w: 700 }, { f: "Bebas Neue", w: 400 }, { f: "Dancing Script", w: 700 }, { f: "Montserrat", w: 700 },
     { f: "Lora", w: 500 }, { f: "Oswald", w: 500 }, { f: "Space Grotesk", w: 600 }, { f: "Courier Prime", w: 400 },
     { f: "Lobster", w: 400 }, { f: "Roboto Slab", w: 600 }, { f: "Abril Fatface", w: 400 }, { f: "Caveat", w: 600 }
   ];
@@ -34,7 +34,7 @@
   function loadFonts() {
     if (fontsLoaded) return; fontsLoaded = true;
     var l = document.createElement("link"); l.rel = "stylesheet";
-    l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Bebas+Neue&family=Montserrat:wght@700&family=Lora:wght@500&family=Oswald:wght@500&family=Space+Grotesk:wght@600&family=Courier+Prime&family=Lobster&family=Roboto+Slab:wght@600&family=Abril+Fatface&family=Caveat:wght@600&display=swap";
+    l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Bebas+Neue&family=Montserrat:wght@700&family=Lora:wght@500&family=Oswald:wght@500&family=Space+Grotesk:wght@600&family=Courier+Prime&family=Lobster&family=Roboto+Slab:wght@600&family=Abril+Fatface&family=Caveat:wght@600&family=Dancing+Script:wght@700&display=swap";
     document.head.appendChild(l);
   }
 
@@ -135,7 +135,7 @@
     x.fillStyle = "#111111"; x.fillRect(0, 0, W, H);
     x.fillStyle = "#86de4e"; x.fillRect(0, H - 18, W, 18);
     x.fillStyle = "#f4f3ef"; x.font = "500 34px 'Azeret Mono', monospace"; x.fillText("DRAFT STUDIO · DESIGN EYE TEST", 80, 130);
-    x.font = "400 92px Pacifico, cursive"; x.fillStyle = "#86de4e"; x.fillText("My design eye", 80, 330);
+    x.font = "800 88px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillStyle = "#86de4e"; x.fillText("My design eye", 80, 330);
     x.fillStyle = "#f4f3ef"; x.font = "800 420px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillText(String(total), 60, 760);
     var nw = x.measureText(String(total)).width;
     x.font = "700 70px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillStyle = "rgba(244,243,239,.55)"; x.fillText("/ 100", 60 + nw + 24, 760);

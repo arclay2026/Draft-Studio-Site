@@ -10,7 +10,6 @@
   var DS = window.DS, $ = DS.$, $all = DS.$all, esc = DS.esc, pad = DS.pad;
 
   var PAIRS = [
-    { h: { f: "Pacifico", w: 400, s: "cursive" },  b: { f: "Bricolage Grotesque", s: "sans-serif" }, moods: ["Editorial", "Modern"], note: "The Draft Studio pair" },
     { h: { f: "Playfair Display", w: 700, s: "serif" },  b: { f: "Source Sans 3", s: "sans-serif" }, moods: ["Editorial", "Classic"] },
     { h: { f: "Montserrat", w: 700, s: "sans-serif" },   b: { f: "Merriweather", s: "serif" }, moods: ["Modern", "Classic"] },
     { h: { f: "Bebas Neue", w: 400, s: "sans-serif" },   b: { f: "Inter", s: "sans-serif" }, moods: ["Bold"] },
@@ -31,7 +30,6 @@
     { h: { f: "Prata", w: 400, s: "serif" },             b: { f: "Lato", s: "sans-serif" }, moods: ["Luxury", "Editorial"] },
     { h: { f: "Righteous", w: 400, s: "sans-serif" },    b: { f: "Nunito", s: "sans-serif" }, moods: ["Playful"] },
     { h: { f: "Sora", w: 700, s: "sans-serif" },         b: { f: "Karla", s: "sans-serif" }, moods: ["Tech", "Modern"] },
-    { h: { f: "Pacifico", w: 400, s: "cursive" },        b: { f: "Quicksand", s: "sans-serif" }, moods: ["Playful"] },
     { h: { f: "Anton", w: 400, s: "sans-serif" },        b: { f: "Roboto", s: "sans-serif" }, moods: ["Bold"] },
     { h: { f: "Josefin Sans", w: 700, s: "sans-serif" }, b: { f: "Lora", s: "serif" }, moods: ["Classic", "Modern"] },
     { h: { f: "Plus Jakarta Sans", w: 800, s: "sans-serif" }, b: { f: "Newsreader", s: "serif" }, moods: ["Editorial", "Modern"] },
@@ -60,7 +58,6 @@
   function loadFonts(i) {
     if (loaded[i]) return; loaded[i] = true;
     var p = PAIRS[i];
-    if (p.h.f === "Pacifico" && p.b.f === "Bricolage Grotesque") return;   // already on every page
     var l = document.createElement("link"); l.rel = "stylesheet"; l.href = cssUrl(p); document.head.appendChild(l);
   }
   var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {

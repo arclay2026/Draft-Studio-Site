@@ -157,7 +157,7 @@
   if (tools) {
     var loadToolFonts = function () {
       var l = document.createElement("link"); l.rel = "stylesheet";
-      l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Bebas+Neue&family=Fraunces:wght@700&display=swap";
+      l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Bebas+Neue&family=Fraunces:wght@700&family=Unbounded:wght@700&display=swap";
       document.head.appendChild(l);
     };
     if ("IntersectionObserver" in window) {

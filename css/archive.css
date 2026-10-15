@@ -52,7 +52,7 @@
 
   /* type families */
   --f-sans: "Bricolage Grotesque", system-ui, sans-serif;
-  --f-serif: "Pacifico", cursive;
+  --f-serif: var(--f-sans);   /* no script accent font: accents use the brand sans */
   --f-mono: "Azeret Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* type scale (fluid between 390px and 1440px) */
@@ -185,7 +185,7 @@ ul, ol { margin: 0; padding: 0; }
 .display { font-weight: 800; letter-spacing: -.032em; line-height: .95; font-size: var(--fs-display); text-wrap: balance; }
 .h2 { font-weight: 800; letter-spacing: -.03em; line-height: 1; font-size: var(--fs-h2); text-wrap: balance; }
 .h3 { font-weight: 700; letter-spacing: -.03em; line-height: 1.1; font-size: var(--fs-h3); }
-em.s, .serif { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -.02em; }
+em.s, .serif { font-family: var(--f-sans); font-style: normal; font-weight: inherit; letter-spacing: inherit; color: var(--signal-ink); }
 .blue { color: var(--signal-ink); }
 .mono { font-family: var(--f-mono); }
 .label {
@@ -788,7 +788,7 @@ select { cursor: pointer; }
   min-height: var(--touch); padding: var(--s3) 0; border-bottom: 1px solid var(--rule); transition: color .25s, padding .45s var(--ease);
 }
 .cat-list .name { font-weight: 800; letter-spacing: -.032em; line-height: 1; font-size: clamp(28px, 8cqi, 104px); overflow-wrap: anywhere; }
-.cat-list li:nth-child(even) .name { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -.03em; }
+.cat-list li:nth-child(even) .name { font-style: normal; }
 .cat-list .ty { display: none; }
 .cat-list .c { font: 500 var(--fs-small)/1 var(--f-mono); text-align: right; }
 .cat-list a:hover { color: var(--signal-ink); }
@@ -844,7 +844,7 @@ select { cursor: pointer; }
 
 /* Studio / creator */
 .studio { display: grid; gap: var(--s7); align-items: end; }
-.studio blockquote { font-family: var(--f-serif); font-style: italic; font-size: clamp(30px, 16px + 3.4vw, 72px); line-height: 1.02; letter-spacing: -.025em; max-width: 20ch; }
+.studio blockquote { font-family: var(--f-sans); font-style: normal; font-weight: 700; font-size: clamp(30px, 16px + 3.4vw, 72px); line-height: 1.02; letter-spacing: -.025em; max-width: 20ch; }
 .studio blockquote b { font-family: var(--f-sans); font-style: normal; font-weight: 800; letter-spacing: -.032em; }
 .creator { border: 1px solid var(--rule-strong); }
 .creator-top { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--s4); align-items: center; padding: var(--s4); border-bottom: 1px solid var(--rule); }
@@ -2049,11 +2049,8 @@ input[type="range"]::-webkit-slider-runnable-track { border-radius: 2px; }
 .fp-foot { flex-wrap: wrap; }
 @media (max-width: 479px) { .fp-foot { flex-direction: column; align-items: stretch; } .fp-css { align-self: flex-start; } }
 
-/* Accent font: Pacifico is an upright script with no italic, so it is set
-   upright (no fake slant) and a little smaller to sit with the headlines */
-em.s, .serif, .cat-list li:nth-child(even) .name, .studio blockquote { font-style: normal; font-synthesis: none; letter-spacing: 0; }
-em.s { font-size: .86em; }
-.studio blockquote { font-size: clamp(26px, 12px + 2.8vw, 58px); line-height: 1.25; }
+/* Accent words are set in the brand sans, coloured, at full size */
+.studio blockquote { font-size: clamp(26px, 12px + 2.8vw, 58px); line-height: 1.12; letter-spacing: -.03em; }
 
 /* =====================================================================
    HOME — "Free design tools": previews of Palettes and Font pairs
@@ -2459,7 +2456,7 @@ html.ds-boot:not(.ds-booting) body::before {   /* covers the page until the load
 #boot .lg-dot { fill: #111111; transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; animation: none; }
 #boot .boot-foot { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--s5) + 6px); display: flex; justify-content: space-between; gap: var(--s4); font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); opacity: 0; }
 #boot .boot-n b { color: var(--fg); font-weight: 600; }
-#boot .boot-tag { font: 400 15px/1 var(--f-serif); letter-spacing: 0; text-transform: none; color: var(--signal-ink); opacity: 0; }
+#boot .boot-tag { font: 700 15px/1 var(--f-sans); letter-spacing: 0; text-transform: none; color: var(--signal-ink); opacity: 0; }
 #boot .boot-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
 #boot .boot-bar i { display: block; height: 100%; background: var(--signal); transform-origin: 0 50%; transform: scaleX(0); }
 
@@ -2527,7 +2524,7 @@ html.ds-boot:not(.ds-booting) body::before {   /* covers the page until the load
 .mark-loop .lg-studio { fill: #111111; transform-box: fill-box; transform: translateY(115%); }
 .mark-loop .lg-dot { fill: #111111; transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; }
 .mark-loop .ml-foot { position: absolute; left: var(--s5); right: var(--s5); bottom: var(--s5); display: flex; justify-content: space-between; gap: var(--s4); font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(244, 243, 239, .55); }
-.mark-loop .ml-tag { font: 400 16px/1 var(--f-serif); letter-spacing: 0; text-transform: none; color: var(--signal); opacity: 0; }
+.mark-loop .ml-tag { font: 700 16px/1 var(--f-sans); letter-spacing: 0; text-transform: none; color: var(--signal); opacity: 0; }
 .mark-loop .ml-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
 .mark-loop .ml-bar i { display: block; height: 100%; background: var(--signal); transform-origin: 0 50%; transform: scaleX(0); }
 
@@ -2669,7 +2666,7 @@ html.ds-wipe-out body::after { transition: transform .38s cubic-bezier(.7, 0, .3
 .wf-hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5%; padding: 0 5%; align-items: center; }
 .wf-copy { display: grid; gap: 10px; align-content: center; }
 .wf-h { font-weight: 800; font-size: clamp(16px, 2.6vw, 38px); line-height: 1; letter-spacing: -.035em; }
-.wf-h em { font: 400 .9em var(--f-serif); color: #2e7a14; font-style: normal; }
+.wf-h em { font: inherit; color: #2e7a14; font-style: normal; }
 .wf-p { height: 8px; border-radius: 4px; background: #d7d5ce; } .wf-short { width: 70%; }
 .wf-btn { justify-self: start; margin-top: 6px; padding: 8px 14px; border-radius: 999px; background: var(--signal); font-weight: 700; font-size: clamp(9px, .9vw, 13px); }
 .wf-img { aspect-ratio: 1; border-radius: 12px; background: radial-gradient(circle at 70% 30%, #86de4e 0 22%, transparent 23%), linear-gradient(135deg, #111 0%, #2e7a14 100%); }
