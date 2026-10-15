@@ -8,7 +8,7 @@
   var DS = window.DS, $ = DS.$, $all = DS.$all, esc = DS.esc, pad = DS.pad;
 
   var PALETTES = [
-    { name: "Draft Studio",       colors: ["#111111", "#2E7A14", "#86DE4E", "#E8E6DF", "#FBFFF5"], moods: ["Bold", "Neutral"] },
+    { name: "Draft Studio",       colors: ["#111111", "#2E7A14", "#86DE4E", "#E8E6DF", "#F4F3EF"], moods: ["Bold", "Neutral"] },
     { name: "Lagos Market",       colors: ["#E63946", "#F4A261", "#E9C46A", "#2A9D8F", "#264653"], moods: ["Warm", "Bold"] },
     { name: "Joburg Dusk",        colors: ["#2B2D42", "#8D99AE", "#EDF2F4", "#EF233C", "#D90429"], moods: ["Cool", "Bold"] },
     { name: "Karoo Sand",         colors: ["#582F0E", "#7F5539", "#A68A64", "#C2A878", "#E6D5B8"], moods: ["Earthy", "Warm"] },
@@ -73,7 +73,7 @@
       x.fillStyle = c; x.fillRect(i * w, 0, Math.ceil(w), H - 120);
       x.fillStyle = ink(c); x.font = "600 34px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillText(c, i * w + 32, H - 170);
     });
-    x.fillStyle = "#fbfff5"; x.fillRect(0, H - 120, W, 120);
+    x.fillStyle = "#f4f3ef"; x.fillRect(0, H - 120, W, 120);
     x.fillStyle = "#111111"; x.font = "800 40px 'Bricolage Grotesque', system-ui, sans-serif"; x.fillText(name, 32, H - 50);
     x.font = "500 22px 'Azeret Mono', monospace"; x.fillStyle = "#5f5e59";
     var tag = "DRAFT STUDIO · PALETTES"; x.fillText(tag, W - 32 - x.measureText(tag).width, H - 52);
